@@ -123,7 +123,7 @@ function Home() {
           <Animate delay={300} type="blink">
             <div className="flex items-center w-full justify-center">
               <img
-                alt="electrical design"
+                alt="tech design"
                 src="bg_small.png" // Replace with relevant image
                 className="opacity-30 -mt-10 lg:-mt-[20vh] lg:w-[30vw]"
               />
@@ -131,7 +131,7 @@ function Home() {
           </Animate>
         </div>
 
-        {/* Updated "My Work" section for electrical projects */}
+        {/* My Work section */}
         <div className="flex flex-col lg:flex-row items-center justify-center">
           <div className="px-4">
             <div
@@ -198,7 +198,7 @@ function Home() {
         </div>
         <div className="pb-[5vh]">
           <Projects />{" "}
-          {/* Ensure Projects component shows Venky's electrical projects */}
+          {/* Projects component */}
         </div>
         <div ref={scrollView === "EXPERIENCE" ? targetDivRef : null}>
           <Experience />{" "}

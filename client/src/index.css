@@ -177,3 +177,243 @@ h2 {
     transform: rotate(360deg);
   }
 }
+
+/* ===== PROGRAMMER THEMED ANIMATIONS ===== */
+
+/* Glitch Effect */
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+.glitch-effect:hover {
+  animation: glitch 0.3s infinite;
+}
+
+/* Terminal Cursor Blink */
+@keyframes cursor-blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background-color: #02ffff;
+  margin-left: 2px;
+  animation: cursor-blink 1s infinite;
+}
+
+/* Code Typing Animation */
+@keyframes typing-code {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.typing-animation {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid #02ffff;
+  animation: typing-code 3s steps(40) 1s 1 normal both,
+             cursor-blink 0.75s step-end infinite;
+}
+
+/* Matrix Rain Effect */
+@keyframes matrix-rain {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+.matrix-char {
+  animation: matrix-rain linear infinite;
+  color: #02ffff;
+  text-shadow: 0 0 5px #02ffff;
+}
+
+/* Neon Glow Effect */
+.neon-glow {
+  text-shadow: 
+    0 0 5px #02ffff,
+    0 0 10px #02ffff,
+    0 0 20px #02ffff,
+    0 0 40px #02ffff;
+  animation: neon-flicker 2s infinite alternate;
+}
+
+@keyframes neon-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow: 
+      0 0 5px #02ffff,
+      0 0 10px #02ffff,
+      0 0 20px #02ffff,
+      0 0 40px #02ffff;
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+  }
+}
+
+/* Code Block Hover Effect */
+.code-block {
+  position: relative;
+  background: linear-gradient(135deg, rgba(2, 255, 255, 0.05) 0%, rgba(2, 255, 255, 0.02) 100%);
+  border-left: 3px solid #02ffff;
+  transition: all 0.3s ease;
+}
+
+.code-block:hover {
+  background: linear-gradient(135deg, rgba(2, 255, 255, 0.1) 0%, rgba(2, 255, 255, 0.05) 100%);
+  transform: translateX(5px);
+  box-shadow: 0 0 20px rgba(2, 255, 255, 0.3);
+}
+
+/* Scan Line Effect */
+@keyframes scan-line {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+.scan-line-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.scan-line-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to bottom, transparent, #02ffff, transparent);
+  animation: scan-line 4s linear infinite;
+  opacity: 0.3;
+  z-index: 10;
+}
+
+/* Binary Rain Background */
+@keyframes binary-fall {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+.binary-rain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.03;
+}
+
+/* Holographic Card Effect */
+.holographic-card {
+  background: linear-gradient(
+    135deg,
+    rgba(2, 255, 255, 0.1) 0%,
+    rgba(2, 255, 255, 0.05) 50%,
+    rgba(2, 255, 255, 0.1) 100%
+  );
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(2, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.holographic-card:hover {
+  border-color: rgba(2, 255, 255, 0.5);
+  box-shadow: 
+    0 0 20px rgba(2, 255, 255, 0.2),
+    inset 0 0 20px rgba(2, 255, 255, 0.1);
+  transform: translateY(-5px) scale(1.02);
+}
+
+/* Terminal Window Style */
+.terminal-window {
+  background: #0a0a0a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.terminal-header {
+  background: #1a1a1a;
+  padding: 8px 12px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.terminal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.terminal-dot.red { background: #ff5f56; }
+.terminal-dot.yellow { background: #ffbd2e; }
+.terminal-dot.green { background: #27c93f; }
+
+/* Pixel Transition */
+@keyframes pixelate {
+  0% {
+    filter: blur(0px);
+  }
+  50% {
+    filter: blur(5px);
+  }
+  100% {
+    filter: blur(0px);
+  }
+}
+
+.pixel-transition {
+  animation: pixelate 0.5s ease-in-out;
+}

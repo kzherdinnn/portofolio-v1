@@ -16,7 +16,7 @@ function App() {
 
   function handleEmailClick() {
     const mailtoUrl =
-      "mailto:venkateshdaggupati2003@gmail.com?subject=Electrical Engineering Inquiry";
+      "mailto:venkateshdaggupati2003@gmail.com?subject=Software Development Inquiry";
     window.open(mailtoUrl);
   }
 
@@ -53,7 +53,7 @@ function App() {
               <img
                 src="cover.jpg"
                 className="object-cover h-full w-full"
-                alt="Electrical engineering background"
+                alt="Software development background"
               />
             </div>
             <div className="circle h-[50px] w-[50px] rounded-full z-[202] absolute top-[22.5vh] left-[56vw] animate-move-left-right"></div>
