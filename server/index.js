@@ -28,6 +28,11 @@ connectDB();
 // Routes
 app.use('/api/contact', require('./routes/contact'));
 app.use('/api/messages', require('./routes/messages'));
+app.use('/api/portfolio', require('./routes/portfolio'));
+app.use('/api', require('./routes/upload'));
+
+// Serve uploaded files
+app.use('/uploads', express.static('uploads'));
 
 // Health Check
 app.get('/api/health', (req, res) => {

@@ -1,19 +1,37 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Animate from "../../utils/animations/Animate";
 import ProjectCard from "./ProjectCard";
 import { useUpdateProjectDetails } from "../../hooks/appHooks";
+import { api } from "../../utils/api";
 
 function Projects() {
   const [selectedType, setSelectedType] = useState<
     "ALL" | "FULLSTACK" | "AI" | "MOBILE" | "BLOCKCHAIN"
   >("ALL");
 
+  const [projects, setProjects] = useState([]);
   const { updateProjectDetails } = useUpdateProjectDetails();
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await api.getProjects();
+        setProjects(response.data);
+      } catch (error) {
+        console.error("Failed to fetch projects:", error);
+      }
+    };
+    fetchProjects();
+  }, []);
 
   function handleCallBack(project: string) {
     updateProjectDetails(project);
   }
+
+  const filteredProjects = selectedType === "ALL"
+    ? projects
+    : projects.filter((p: any) => p.type === selectedType);
 
   return (
     <div className="mt-[10vh] px-4">
@@ -31,12 +49,12 @@ function Projects() {
                 }}
               >
                 <div className="absolute -right-3 text-xs -top-3 text-foreground/40">
-                  6
+                  {projects.length}
                 </div>
                 <h3
                   className={`${selectedType === "ALL"
-                      ? "scale-105 border-b border-primary text-primary"
-                      : "text-foreground/50"
+                    ? "scale-105 border-b border-primary text-primary"
+                    : "text-foreground/50"
                     } hover:border-b border-primary hover:scale-105 hover:text-primary`}
                 >
                   Filter by ALL
@@ -58,12 +76,12 @@ function Projects() {
                 }}
               >
                 <div className="absolute -right-3 text-xs -top-3 text-foreground/40">
-                  2
+                  {projects.filter((p: any) => p.type === "FULLSTACK").length}
                 </div>
                 <h3
                   className={`${selectedType === "FULLSTACK"
-                      ? "scale-105 border-b border-primary text-primary"
-                      : "text-foreground/50"
+                    ? "scale-105 border-b border-primary text-primary"
+                    : "text-foreground/50"
                     } hover:border-b border-primary hover:scale-105 hover:text-primary`}
                 >
                   Full-Stack
@@ -87,12 +105,12 @@ function Projects() {
                 }}
               >
                 <div className="absolute -right-3 text-xs -top-3 text-foreground/40">
-                  2
+                  {projects.filter((p: any) => p.type === "AI").length}
                 </div>
                 <h3
                   className={`${selectedType === "AI"
-                      ? "scale-105 border-b border-primary text-primary"
-                      : "text-foreground/50"
+                    ? "scale-105 border-b border-primary text-primary"
+                    : "text-foreground/50"
                     } hover:border-b border-primary hover:scale-105 hover:text-primary`}
                 >
                   AI/ML
@@ -113,12 +131,12 @@ function Projects() {
                 }}
               >
                 <div className="absolute -right-3 text-xs -top-3 text-foreground/40">
-                  1
+                  {projects.filter((p: any) => p.type === "MOBILE").length}
                 </div>
                 <h3
                   className={`${selectedType === "MOBILE"
-                      ? "scale-105 border-b border-primary text-primary"
-                      : "text-foreground/50"
+                    ? "scale-105 border-b border-primary text-primary"
+                    : "text-foreground/50"
                     } hover:border-b border-primary hover:scale-105 hover:text-primary`}
                 >
                   Mobile Dev
@@ -142,12 +160,12 @@ function Projects() {
                 }}
               >
                 <div className="absolute -right-3 text-xs -top-3 text-foreground/40">
-                  1
+                  {projects.filter((p: any) => p.type === "BLOCKCHAIN").length}
                 </div>
                 <h3
                   className={`${selectedType === "BLOCKCHAIN"
-                      ? "scale-105 border-b border-primary text-primary"
-                      : "text-foreground/50"
+                    ? "scale-105 border-b border-primary text-primary"
+                    : "text-foreground/50"
                     } hover:border-b border-primary hover:scale-105 hover:text-primary`}
                 >
                   Blockchain
@@ -159,86 +177,19 @@ function Projects() {
       </div>
 
       <div className="flex flex-col items-center justify-center mt-[5vh] pb-[5vh]">
-        <div className="flex flex-col lg:flex-row gap-10 pt-[5vh]">
-          {(selectedType === "FULLSTACK" || selectedType === "ALL") && (
-            <Animate delay={300} type="slideUp">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 pt-[5vh]">
+          {filteredProjects.map((project: any, index: number) => (
+            <Animate key={index} delay={300} type="slideUp">
               <ProjectCard
                 callBack={() => {
-                  handleCallBack("ECOMMERCE");
+                  handleCallBack(project.slug || "ECOMMERCE"); // Default or use project slug
                 }}
-                category="Full-Stack Development"
-                title="E-Commerce Platform"
-                image="/projects/ecommerce-home.png"
+                category={project.category}
+                title={project.title}
+                image={project.image}
               />
             </Animate>
-          )}
-
-          {(selectedType === "FULLSTACK" || selectedType === "ALL") && (
-            <Animate delay={300} type="slideUp">
-              <ProjectCard
-                callBack={() => {
-                  handleCallBack("SOCIAL_MEDIA");
-                }}
-                category="Full-Stack Development"
-                title="Social Media Analytics"
-                image="/projects/analytics-overview.png"
-              />
-            </Animate>
-          )}
-
-          {(selectedType === "AI" || selectedType === "ALL") && (
-            <Animate delay={300} type="slideUp">
-              <ProjectCard
-                callBack={() => {
-                  handleCallBack("AI_CHATBOT");
-                }}
-                category="AI/Machine Learning"
-                title="AI Customer Service Bot"
-                image="/projects/chatbot-interface.png"
-              />
-            </Animate>
-          )}
-        </div>
-
-        <div className="flex flex-col lg:flex-row gap-10 pt-[5vh]">
-          {(selectedType === "AI" || selectedType === "ALL") && (
-            <Animate delay={300} type="slideUp">
-              <ProjectCard
-                callBack={() => {
-                  handleCallBack("IMAGE_CLASSIFIER");
-                }}
-                category="AI/Machine Learning"
-                title="Medical Image Classifier"
-                image="/projects/medical-upload.png"
-              />
-            </Animate>
-          )}
-
-          {(selectedType === "MOBILE" || selectedType === "ALL") && (
-            <Animate delay={300} type="slideUp">
-              <ProjectCard
-                callBack={() => {
-                  handleCallBack("MOBILE_FITNESS");
-                }}
-                category="Mobile Development"
-                title="Fitness Tracking App"
-                image="/projects/fitness-dashboard.png"
-              />
-            </Animate>
-          )}
-
-          {(selectedType === "BLOCKCHAIN" || selectedType === "ALL") && (
-            <Animate delay={300} type="slideUp">
-              <ProjectCard
-                callBack={() => {
-                  handleCallBack("BLOCKCHAIN_WALLET");
-                }}
-                category="Blockchain Development"
-                title="Crypto Wallet App"
-                image="/projects/wallet-dashboard.png"
-              />
-            </Animate>
-          )}
+          ))}
         </div>
       </div>
     </div>

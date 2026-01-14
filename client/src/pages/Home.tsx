@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useUpdateProjectDetails } from "../hooks/appHooks";
 import Animate from "../utils/animations/Animate";
 import { ABOUT_ME, NAME } from "../utils/AppConstants";
@@ -10,47 +10,23 @@ import BottomNav from "./homeutils/BottomNav";
 import Experience from "./homeutils/Experience";
 import Projects from "./homeutils/Projects";
 import ContactForm from "./homeutils/ContactForm";
+import { api } from "../utils/api";
 
 function Home() {
   const { updateProjectDetails } = useUpdateProjectDetails();
-  const expertise = [
-    {
-      icon: "SUBSTATION",
-      desc: "Proficient in React, Vue.js, Next.js, and modern CSS frameworks. Building responsive, accessible, and performant web applications with clean UI/UX.",
-      heading: "Frontend",
-      headingContemt: "Development",
-    },
-    {
-      icon: "MATLAB",
-      desc: "Expert in Node.js, Express, Django, and Spring Boot. RESTful API design, microservices architecture, and database optimization.",
-      heading: "Backend",
-      headingContemt: "Development",
-    },
-    {
-      icon: "AI",
-      desc: "Experience with TensorFlow, PyTorch, and scikit-learn. Building CNN, RNN, and transformer models for computer vision and NLP tasks.",
-      heading: "AI/Machine",
-      headingContemt: "Learning",
-    },
-    {
-      icon: "RENEWABLE",
-      desc: "Skilled in MySQL, PostgreSQL, MongoDB, and Redis. Database design, query optimization, and data modeling for scalable applications.",
-      heading: "Database",
-      headingContemt: "Management",
-    },
-    {
-      icon: "SAFETY",
-      desc: "Hands-on experience with AWS, Docker, Kubernetes, and CI/CD pipelines. Infrastructure as Code and automated deployment strategies.",
-      heading: "Cloud &",
-      headingContemt: "DevOps",
-    },
-    {
-      icon: "CONTROL",
-      desc: "Creating intuitive user interfaces with Figma and Adobe XD. User research, wireframing, prototyping, and usability testing.",
-      heading: "UI/UX",
-      headingContemt: "Design",
-    },
-  ];
+  const [expertise, setExpertise] = useState([]);
+
+  useEffect(() => {
+    const fetchExpertise = async () => {
+      try {
+        const response = await api.getExpertise();
+        setExpertise(response.data);
+      } catch (error) {
+        console.error("Failed to fetch expertise:", error);
+      }
+    };
+    fetchExpertise();
+  }, []);
 
   const { scrollView, dispatch } = useAppContext();
   const targetDivRef = useRef<HTMLDivElement>(null);
