@@ -1,0 +1,21 @@
+{
+    "name": "portfolio-fullstack",
+    "version": "1.0.0",
+    "description": "Full-stack portfolio with React frontend and Node.js backend",
+    "scripts": {
+        "client": "cd client && npm run dev",
+        "server": "cd server && npm run dev",
+        "dev": "echo Run 'npm run client' and 'npm run server' in separate terminals",
+        "install-all": "cd client && npm install && cd ../server && npm install",
+        "build": "cd client && npm run build"
+    },
+    "keywords": [
+        "portfolio",
+        "fullstack",
+        "react",
+        "nodejs",
+        "mongodb"
+    ],
+    "author": "Alex Chen",
+    "license": "MIT"
+}
