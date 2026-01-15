@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
-const API_URL = '/api/portfolio';
+const API_URL = `${API_BASE_URL}/api/portfolio`;
 
 export const api = {
     // Projects
@@ -16,16 +17,16 @@ export const api = {
     deleteExperience: (id: string) => axios.delete(`${API_URL}/experience/${id}`),
 
     // Certificates
-    getCertificates: () => axios.get('/api/certificates'),
-    createCertificate: (data: any) => axios.post('/api/certificates', data),
-    updateCertificate: (id: string, data: any) => axios.put(`/api/certificates/${id}`, data),
-    deleteCertificate: (id: string) => axios.delete(`/api/certificates/${id}`),
+    getCertificates: () => axios.get(`${API_BASE_URL}/api/certificates`),
+    createCertificate: (data: any) => axios.post(`${API_BASE_URL}/api/certificates`, data),
+    updateCertificate: (id: string, data: any) => axios.put(`${API_BASE_URL}/api/certificates/${id}`, data),
+    deleteCertificate: (id: string) => axios.delete(`${API_BASE_URL}/api/certificates/${id}`),
 
     // Upload
     uploadImage: (file: File) => {
         const formData = new FormData();
         formData.append('image', file);
-        return axios.post('/api/upload', formData, {
+        return axios.post(`${API_BASE_URL}/api/upload`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },

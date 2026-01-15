@@ -36,7 +36,7 @@ function ContactSection() {
         setSubmitStatus({ type: null, message: '' });
 
         try {
-            const response = await fetch('/api/contact', {
+            const response = await fetch('https://herdinkz-portofolio.vercel.app/api/contact', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -34,7 +34,7 @@ function Comments() {
 
     const fetchComments = async () => {
         try {
-            const response = await fetch('/api/comments');
+            const response = await fetch('https://herdinkz-portofolio.vercel.app/api/comments');
             const data = await response.json();
             if (data.success) {
                 setComments(data.data);
@@ -74,7 +74,7 @@ function Comments() {
                 const photoFormData = new FormData();
                 photoFormData.append('image', formData.profilePhoto);
 
-                const uploadResponse = await fetch('/api/upload', {
+                const uploadResponse = await fetch('https://herdinkz-portofolio.vercel.app/api/upload', {
                     method: 'POST',
                     body: photoFormData
                 });
@@ -86,7 +86,7 @@ function Comments() {
             }
 
             // Post comment
-            const response = await fetch('/api/comments', {
+            const response = await fetch('https://herdinkz-portofolio.vercel.app/api/comments', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
