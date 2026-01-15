@@ -35,7 +35,7 @@ function Comments() {
 
     const fetchComments = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/comments');
+            const response = await fetch('/api/comments');
             const data = await response.json();
             if (data.success) {
                 setComments(data.data);
@@ -75,7 +75,7 @@ function Comments() {
                 const photoFormData = new FormData();
                 photoFormData.append('image', formData.profilePhoto);
 
-                const uploadResponse = await fetch('http://localhost:5000/api/upload', {
+                const uploadResponse = await fetch('/api/upload', {
                     method: 'POST',
                     body: photoFormData
                 });
@@ -87,7 +87,7 @@ function Comments() {
             }
 
             // Post comment
-            const response = await fetch('http://localhost:5000/api/comments', {
+            const response = await fetch('/api/comments', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

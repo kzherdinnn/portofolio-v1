@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/portfolio';
+const API_URL = '/api/portfolio';
 
 export const api = {
     // Projects
@@ -16,16 +16,16 @@ export const api = {
     deleteExperience: (id: string) => axios.delete(`${API_URL}/experience/${id}`),
 
     // Certificates
-    getCertificates: () => axios.get('http://localhost:5000/api/certificates'),
-    createCertificate: (data: any) => axios.post('http://localhost:5000/api/certificates', data),
-    updateCertificate: (id: string, data: any) => axios.put(`http://localhost:5000/api/certificates/${id}`, data),
-    deleteCertificate: (id: string) => axios.delete(`http://localhost:5000/api/certificates/${id}`),
+    getCertificates: () => axios.get('/api/certificates'),
+    createCertificate: (data: any) => axios.post('/api/certificates', data),
+    updateCertificate: (id: string, data: any) => axios.put(`/api/certificates/${id}`, data),
+    deleteCertificate: (id: string) => axios.delete(`/api/certificates/${id}`),
 
     // Upload
     uploadImage: (file: File) => {
         const formData = new FormData();
         formData.append('image', file);
-        return axios.post('http://localhost:5000/api/upload', formData, {
+        return axios.post('/api/upload', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },

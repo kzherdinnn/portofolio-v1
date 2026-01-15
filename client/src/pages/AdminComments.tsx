@@ -21,7 +21,7 @@ function AdminComments() {
 
     const fetchComments = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/comments');
+            const response = await fetch('/api/comments');
             const data = await response.json();
             if (data.success) {
                 setComments(data.data);
@@ -36,7 +36,7 @@ function AdminComments() {
     const handleTogglePin = async (id: string) => {
         setActionLoading(id);
         try {
-            const response = await fetch(`http://localhost:5000/api/comments/${id}/pin`, {
+            const response = await fetch(`/api/comments/${id}/pin`, {
                 method: 'PATCH',
             });
 
@@ -58,7 +58,7 @@ function AdminComments() {
 
         setActionLoading(id);
         try {
-            const response = await fetch(`http://localhost:5000/api/comments/${id}`, {
+            const response = await fetch(`/api/comments/${id}`, {
                 method: 'DELETE',
             });
 
@@ -141,8 +141,8 @@ function AdminComments() {
                                     <div
                                         key={comment._id}
                                         className={`p-4 lg:p-6 rounded-lg transition-all ${comment.isPinned
-                                                ? 'bg-primary/10 border-2 border-primary/30'
-                                                : 'bg-foreground/5 border border-foreground/10'
+                                            ? 'bg-primary/10 border-2 border-primary/30'
+                                            : 'bg-foreground/5 border border-foreground/10'
                                             }`}
                                     >
                                         <div className="flex items-start gap-4">
@@ -190,8 +190,8 @@ function AdminComments() {
                                                         onClick={() => handleTogglePin(comment._id)}
                                                         disabled={actionLoading === comment._id}
                                                         className={`px-4 py-2 rounded-lg font-medium text-sm transition-all flex items-center gap-2 ${comment.isPinned
-                                                                ? 'bg-foreground/10 hover:bg-foreground/20 text-foreground'
-                                                                : 'bg-primary/20 hover:bg-primary/30 text-primary'
+                                                            ? 'bg-foreground/10 hover:bg-foreground/20 text-foreground'
+                                                            : 'bg-primary/20 hover:bg-primary/30 text-primary'
                                                             } disabled:opacity-50 disabled:cursor-not-allowed`}
                                                     >
                                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
