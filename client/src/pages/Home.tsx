@@ -33,9 +33,9 @@ function Home() {
 
   return (
     <div className="w-full h-full flex flex-col">
-      <div className="min-h-[100vh] flex flex-col">
+      <div className="min-h-[100vh] flex flex-col relative">
         <NavBar />
-        <div className="p-3 flex flex-col justify-between py-10 h-[85vh]">
+        <div className="p-3 flex flex-col justify-between py-10 h-[85vh] relative z-[205]">
           <div className="flex flex-col justify-center gap-3 mt-[25vh] lg:mt-[15vh] items-center">
             <Animate delay={450}>
               <h1 className="typewriter neon-glow text-[40px] font-bold lg:text-[150px]">
@@ -80,8 +80,11 @@ function Home() {
             </div>
           </Animate>
         </div>
+
+        {/* Seamless Blend Gradient - Fade to Black */}
+        <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-b from-transparent via-black/60 to-black z-[203] pointer-events-none" />
       </div>
-      <div className="bg-black -mt-4 lg:-mt-0 w-full">
+      <div className="bg-black -mt-4 lg:-mt-0 w-full relative z-[204]">
         {/* About Me section */}
         <div ref={scrollView === "ABOUT" ? targetDivRef : null}>
           <AboutMe />

@@ -668,3 +668,128 @@ h2 {
   scrollbar-width: thin;
   scrollbar-color: rgba(2, 255, 255, 0.3) rgba(255, 255, 255, 0.05);
 }
+
+/* ===== ADVANCED PROFILE IMAGE ANIMATIONS ===== */
+
+/* Slow Spin Animation */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+/* Reverse Spin Animation */
+@keyframes spin-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 15s linear infinite;
+}
+
+/* Floating Particles Animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-100px) translateX(20px);
+    opacity: 0.5;
+  }
+  90% {
+    opacity: 0;
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Scan Line Effect */
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.animate-scan {
+  animation: scan 2s linear infinite;
+}
+
+/* Glitch Animation */
+@keyframes glitch {
+  0%, 100% {
+    transform: translate(0);
+    opacity: 1;
+  }
+  20% {
+    transform: translate(-2px, 2px);
+    opacity: 0.8;
+  }
+  40% {
+    transform: translate(-2px, -2px);
+    opacity: 0.9;
+  }
+  60% {
+    transform: translate(2px, 2px);
+    opacity: 0.8;
+  }
+  80% {
+    transform: translate(2px, -2px);
+    opacity: 0.9;
+  }
+}
+
+.animate-glitch {
+  animation: glitch 0.5s infinite;
+}
+
+/* Pulse Slow Animation */
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+/* Shadow Glow Effects for Profile */
+.shadow-glow-primary {
+  box-shadow: 
+    0 0 10px rgba(2, 255, 255, 0.8),
+    0 0 20px rgba(2, 255, 255, 0.6),
+    0 0 30px rgba(2, 255, 255, 0.4);
+}
+
+.shadow-glow-purple {
+  box-shadow: 
+    0 0 10px rgba(168, 85, 247, 0.8),
+    0 0 20px rgba(168, 85, 247, 0.6),
+    0 0 30px rgba(168, 85, 247, 0.4);
+}
