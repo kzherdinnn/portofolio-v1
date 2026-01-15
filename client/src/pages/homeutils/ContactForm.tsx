@@ -34,35 +34,46 @@ function ContactForm() {
         setIsSubmitting(true);
         setSubmitStatus({ type: null, message: '' });
 
+        // Payload optimized for Formspree
+        const payload = {
+            name: formData.name,
+            email: formData.email,
+            subject: `[Portfolio] ${formData.subject}`, // Standard subject field
+            message: formData.message
+        };
+
         try {
-            const { name, email, subject, message } = formData;
-
-            const subjectEncoded = encodeURIComponent(`[Portfolio] ${subject}`);
-            const bodyEncoded = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
-
-            // Redirect to mailto link
-            // Alasan: Layanan gratis seperti Formspree/Web3Forms sering memblokir kiriman dari 'localhost' (spam protection).
-            // Solusi: Gunakan mailto client-side untuk dev environment.
-            const mailtoLink = `mailto:kzherdin03@gmail.com?subject=${subjectEncoded}&body=${bodyEncoded}`;
-
-            window.location.href = mailtoLink;
-
-            setSubmitStatus({
-                type: 'success',
-                message: 'Membuka aplikasi email...'
+            // Using Formspree for Vercel Production
+            const response = await fetch("https://formspree.io/f/mpqqwlon", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify(payload)
             });
 
-            setTimeout(() => {
-                setFormData({ name: '', email: '', subject: '', message: '' });
-                setIsSubmitting(false);
-                setSubmitStatus({ type: null, message: '' });
-            }, 3000);
+            const data = await response.json();
 
+            if (response.ok) {
+                setSubmitStatus({
+                    type: 'success',
+                    message: 'Message sent successfully! (Pesan terkirim!)'
+                });
+                setFormData({ name: '', email: '', subject: '', message: '' });
+            } else {
+                setSubmitStatus({
+                    type: 'error',
+                    message: data.error || 'Failed to send message.'
+                });
+            }
         } catch (error) {
+            console.error("Submission Error:", error);
             setSubmitStatus({
                 type: 'error',
-                message: 'Gagal membuka aplikasi email.'
+                message: 'Connection error. Please try again.'
             });
+        } finally {
             setIsSubmitting(false);
         }
     };
@@ -162,7 +173,7 @@ function ContactForm() {
                             : 'bg-primary hover:bg-primary/90 hover:scale-105 text-black'
                             }`}
                     >
-                        {isSubmitting ? 'Membuka Email...' : 'Kirim Pesan (via Email App)'}
+                        {isSubmitting ? 'Mengirim...' : 'Kirim Pesan'}
                     </button>
                 </form>
             </Animate>
