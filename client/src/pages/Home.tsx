@@ -92,8 +92,7 @@ function Home() {
           <PortfolioShowcase />
         </div>
         <div ref={scrollView === "EXPERIENCE" ? targetDivRef : null}>
-          <Experience />{" "}
-          {/* Ensure Experience shows Venky's internships/research */}
+          <Experience />
         </div>
         <div ref={scrollView === "CONTACT" ? targetDivRef : null}>
           <ContactSection />
