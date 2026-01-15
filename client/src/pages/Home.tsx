@@ -70,7 +70,7 @@ function Home() {
             <div
               className="w-full flex items-center justify-center"
               onClick={() => {
-                dispatch({ type: "setScrollView", payload: "EXPERTISE" });
+                dispatch({ type: "setScrollView", payload: "ABOUT" });
                 setTimeout(() => {
                   dispatch({ type: "setScrollView", payload: undefined });
                 }, 400);
@@ -83,7 +83,9 @@ function Home() {
       </div>
       <div className="bg-black -mt-4 lg:-mt-0 w-full">
         {/* About Me section */}
-        <AboutMe />
+        <div ref={scrollView === "ABOUT" ? targetDivRef : null}>
+          <AboutMe />
+        </div>
 
         {/* Portfolio Showcase section */}
         <div ref={scrollView === "WORK" ? targetDivRef : null}>

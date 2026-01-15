@@ -74,11 +74,11 @@ function NavBar() {
                 <Animate delay={200} type="slideLeft">
                   <div
                     onClick={() => {
-                      handleMenuItemsClick("EXPERTISE");
+                      handleMenuItemsClick("ABOUT");
                     }}
                     className="cursor-pointer"
                   >
-                    &lt;/&gt; Expertise
+                    &lt;/&gt; About
                   </div>
                 </Animate>
                 <Animate delay={300} type="slideLeft">
@@ -108,7 +108,7 @@ function NavBar() {
                     }}
                     className="cursor-pointer"
                   >
-                    &lt;/&gt; Conatct
+                    &lt;/&gt; Contact
                   </div>{" "}
                 </Animate>
               </div>
@@ -163,14 +163,14 @@ function NavBar() {
           </div>
           <div
             onClick={() => {
-              handleScrollViewClick("EXPERTISE");
+              handleScrollViewClick("ABOUT");
             }}
             className="relative cursor-pointer hover:scale-105  hover:text-primary "
           >
             <div className="flex items-center gap-2">
               <span className="text-secondary">&lt;/&gt;</span>{" "}
               <span className="lg:hover:border-b lg:border-primary">
-                Expertise
+                About
               </span>
             </div>
             <a className=" absolute -top-2 font-thin -right-2 text-primary text-xs ">
@@ -217,7 +217,7 @@ function NavBar() {
             <div className="flex items-center gap-2">
               <span className="text-secondary">&lt;/&gt;</span>{" "}
               <span className="lg:hover:border-b lg:border-primary">
-                Conatct
+                Contact
               </span>
             </div>
             <a className=" absolute -top-2 font-thin -right-2 text-primary text-xs ">
