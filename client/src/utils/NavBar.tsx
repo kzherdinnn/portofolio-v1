@@ -119,10 +119,10 @@ function NavBar() {
                   <div className="flex r text-xs">
                     © 2025. Made with passion by{" "}
                     <span className="font-semibold ml-1 mr-1 text-blue-600 border-b border-blue-600 cursor-pointer" onClick={() => {
-                      window.open("mailto:venkateshdaggupati2003@gmail.com?subject=Software Development Collaboration")
-                    }}>Venky</span>&{" "}
-                    <span className="font-semibold ml-1 text-blue-600 border-b border-blue-600 cursor-pointer" onClick={() => { window.open("mailto:afridayan01@gmail.com?subject=Software development collaboration") }}>
-                      Afrid
+                      window.open("mailto:kzherdin03@gmail.com?subject=Software Development Collaboration")
+                    }}>HerdinKz</span>&{" "}
+                    <span className="font-semibold ml-1 text-blue-600 border-b border-blue-600 cursor-pointer" onClick={() => { window.open("mailto:kzherdin03@gmail.com?subject=Software development collaboration") }}>
+                      Team
                     </span>
                   </div>
                   <div className="flex r text-xs">All rights reserved</div>
@@ -154,10 +154,10 @@ function NavBar() {
         <div className="lg:flex items-center hover:text-foreground/40 text-foreground hidden gap-12 text-xl ml-[15vw]">
           <div className="relative cursor-pointer hover:scale-105 hover:text-primary ">
             <div className="flex items-center gap-2" onClick={handleHomeClick}>
-              &lt;/&gt;{" "}
+              <span className="text-secondary">&lt;/&gt;</span>{" "}
               <span className="lg:hover:border-b lg:border-primary">Home</span>
             </div>
-            <a className=" absolute -top-2 font-thin -right-2 text-foreground/50 text-xs ">
+            <a className=" absolute -top-2 font-thin -right-2 text-primary text-xs ">
               01
             </a>
           </div>
@@ -168,12 +168,12 @@ function NavBar() {
             className="relative cursor-pointer hover:scale-105  hover:text-primary "
           >
             <div className="flex items-center gap-2">
-              &lt;/&gt;{" "}
+              <span className="text-secondary">&lt;/&gt;</span>{" "}
               <span className="lg:hover:border-b lg:border-primary">
                 Expertise
               </span>
             </div>
-            <a className=" absolute -top-2 font-thin -right-2 text-foreground/50 text-xs ">
+            <a className=" absolute -top-2 font-thin -right-2 text-primary text-xs ">
               02
             </a>
           </div>
@@ -184,10 +184,10 @@ function NavBar() {
             className="relative cursor-pointer hover:scale-105  hover:text-primary "
           >
             <div className="flex items-center gap-2">
-              &lt;/&gt;{" "}
+              <span className="text-secondary">&lt;/&gt;</span>{" "}
               <span className="lg:hover:border-b lg:border-primary">Work</span>
             </div>
-            <a className=" absolute -top-2 font-thin -right-2 text-foreground/50 text-xs ">
+            <a className=" absolute -top-2 font-thin -right-2 text-primary text-xs ">
               03
             </a>
           </div>
@@ -198,12 +198,12 @@ function NavBar() {
             className="relative cursor-pointer hover:scale-105  hover:text-primary "
           >
             <div className="flex items-center gap-2">
-              &lt;/&gt;{" "}
+              <span className="text-secondary">&lt;/&gt;</span>{" "}
               <span className="lg:hover:border-b lg:border-primary">
                 Experience
               </span>
             </div>
-            <a className=" absolute -top-2 font-thin -right-2 text-foreground/50 text-xs ">
+            <a className=" absolute -top-2 font-thin -right-2 text-primary text-xs ">
               04
             </a>
           </div>
@@ -215,12 +215,12 @@ function NavBar() {
             className="relative cursor-pointer hover:scale-105  hover:text-primary "
           >
             <div className="flex items-center gap-2">
-              &lt;/&gt;{" "}
+              <span className="text-secondary">&lt;/&gt;</span>{" "}
               <span className="lg:hover:border-b lg:border-primary">
                 Conatct
               </span>
             </div>
-            <a className=" absolute -top-2 font-thin -right-2 text-foreground/50 text-xs ">
+            <a className=" absolute -top-2 font-thin -right-2 text-primary text-xs ">
               05
             </a>
           </div>

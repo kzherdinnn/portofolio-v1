@@ -1,18 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const {
-  submitContact,
-  getAllContacts,
-  markAsRead,
-  deleteContact
-} = require('../controllers/contactController');
+const { submitContact, getMessages } = require('../controllers/contactController');
 
-// Public route - Submit contact form
-router.post('/', submitContact);
-
-// Admin routes - Should add authentication middleware in production
-router.get('/', getAllContacts);
-router.patch('/:id/read', markAsRead);
-router.delete('/:id', deleteContact);
+router.route('/')
+    .post(submitContact)
+    .get(getMessages); // Nanti bisa diprotect dengan middleware
 
 module.exports = router;

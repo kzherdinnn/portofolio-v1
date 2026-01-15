@@ -304,32 +304,10 @@ h2 {
   box-shadow: 0 0 20px rgba(2, 255, 255, 0.3);
 }
 
-/* Scan Line Effect */
-@keyframes scan-line {
-  0% {
-    top: 0;
-  }
-  100% {
-    top: 100%;
-  }
-}
-
+/* Scan Line Effect - REMOVED */
 .scan-line-container {
   position: relative;
   overflow: hidden;
-}
-
-.scan-line-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(to bottom, transparent, #02ffff, transparent);
-  animation: scan-line 4s linear infinite;
-  opacity: 0.3;
-  z-index: 10;
 }
 
 /* Binary Rain Background */
@@ -416,4 +394,277 @@ h2 {
 
 .pixel-transition {
   animation: pixelate 0.5s ease-in-out;
+}
+
+/* ===== ENHANCED PROJECT CARD HOVER EFFECTS ===== */
+
+/* 3D Card Transform */
+.project-card-3d {
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-card-3d:hover {
+  box-shadow: 
+    0 20px 60px rgba(2, 255, 255, 0.3),
+    0 0 40px rgba(2, 255, 255, 0.2),
+    inset 0 0 30px rgba(2, 255, 255, 0.1);
+}
+
+/* Animated Border Glow */
+@keyframes border-glow {
+  0%, 100% {
+    box-shadow: 
+      0 0 5px rgba(2, 255, 255, 0.5),
+      0 0 10px rgba(2, 255, 255, 0.4),
+      0 0 20px rgba(2, 255, 255, 0.3),
+      inset 0 0 10px rgba(2, 255, 255, 0.2);
+  }
+  50% {
+    box-shadow: 
+      0 0 10px rgba(2, 255, 255, 0.8),
+      0 0 20px rgba(2, 255, 255, 0.6),
+      0 0 30px rgba(2, 255, 255, 0.4),
+      inset 0 0 15px rgba(2, 255, 255, 0.3);
+  }
+}
+
+.animate-border-glow {
+  animation: border-glow 2s ease-in-out infinite;
+  border: 1px solid rgba(2, 255, 255, 0.5);
+}
+
+/* Terminal Dot Glow Effects */
+.shadow-glow-red {
+  box-shadow: 0 0 10px #ff5f56, 0 0 20px #ff5f56;
+}
+
+.shadow-glow-yellow {
+  box-shadow: 0 0 10px #ffbd2e, 0 0 20px #ffbd2e;
+}
+
+.shadow-glow-green {
+  box-shadow: 0 0 10px #27c93f, 0 0 20px #27c93f;
+}
+
+/* Hover Particles */
+@keyframes particle-rise-1 {
+  0% {
+    transform: translate(0, 0) scale(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(80px, -80px) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes particle-rise-2 {
+  0% {
+    transform: translate(0, 0) scale(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-60px, -90px) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes particle-rise-3 {
+  0% {
+    transform: translate(0, 0) scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(50px, -70px) scale(1) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+@keyframes particle-rise-4 {
+  0% {
+    transform: translate(0, 0) scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-40px, -100px) scale(1) rotate(-180deg);
+    opacity: 0;
+  }
+}
+
+.hover-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #02ffff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #02ffff, 0 0 20px #02ffff;
+}
+
+.particle-1 {
+  bottom: 30%;
+  left: 20%;
+  animation: particle-rise-1 1.5s ease-out infinite;
+}
+
+.particle-2 {
+  bottom: 40%;
+  right: 30%;
+  animation: particle-rise-2 1.8s ease-out infinite;
+  animation-delay: 0.3s;
+}
+
+.particle-3 {
+  bottom: 25%;
+  left: 60%;
+  animation: particle-rise-3 1.6s ease-out infinite;
+  animation-delay: 0.6s;
+}
+
+.particle-4 {
+  bottom: 35%;
+  right: 50%;
+  animation: particle-rise-4 1.7s ease-out infinite;
+  animation-delay: 0.9s;
+}
+
+/* Smooth transitions for card elements */
+.project-card-3d * {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced image hover */
+.project-card-3d img {
+  will-change: transform;
+}
+
+/* ===== EXPERTISE CARD ANIMATIONS ===== */
+
+/* 3D Expertise Card Transform */
+.expertise-card-3d {
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.expertise-card-3d:hover {
+  box-shadow: 
+    0 20px 60px rgba(2, 255, 255, 0.3),
+    0 0 40px rgba(2, 255, 255, 0.2),
+    inset 0 0 30px rgba(2, 255, 255, 0.1);
+}
+
+/* Icon Particle Animations */
+@keyframes icon-particle-float-1 {
+  0% {
+    transform: translate(0, 0) scale(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(30px, -30px) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes icon-particle-float-2 {
+  0% {
+    transform: translate(0, 0) scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-25px, -35px) scale(1) rotate(90deg);
+    opacity: 0;
+  }
+}
+
+@keyframes icon-particle-float-3 {
+  0% {
+    transform: translate(0, 0) scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(20px, -40px) scale(1) rotate(-90deg);
+    opacity: 0;
+  }
+}
+
+.icon-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px currentColor;
+}
+
+.icon-particle.particle-1 {
+  top: 20%;
+  left: 50%;
+  animation: icon-particle-float-1 1.5s ease-out infinite;
+}
+
+.icon-particle.particle-2 {
+  top: 50%;
+  left: 20%;
+  animation: icon-particle-float-2 1.8s ease-out infinite;
+  animation-delay: 0.3s;
+}
+
+.icon-particle.particle-3 {
+  top: 30%;
+  right: 20%;
+  animation: icon-particle-float-3 1.6s ease-out infinite;
+  animation-delay: 0.6s;
+}
+
+/* Expertise Card Smooth Transitions */
+.expertise-card-3d * {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== CUSTOM SCROLLBAR ===== */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(2, 255, 255, 0.3);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(2, 255, 255, 0.5);
+}
+
+/* Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(2, 255, 255, 0.3) rgba(255, 255, 255, 0.05);
 }

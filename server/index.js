@@ -26,9 +26,12 @@ const connectDB = async () => {
 connectDB();
 
 // Routes
+app.use('/api/auth', require('./routes/auth'));
 app.use('/api/contact', require('./routes/contact'));
 app.use('/api/messages', require('./routes/messages'));
 app.use('/api/portfolio', require('./routes/portfolio'));
+app.use('/api/comments', require('./routes/comments'));
+app.use('/api/certificates', require('./routes/certificates'));
 app.use('/api', require('./routes/upload'));
 
 // Serve uploaded files

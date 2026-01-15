@@ -35,34 +35,34 @@ function ContactForm() {
         setSubmitStatus({ type: null, message: '' });
 
         try {
-            const response = await fetch('http://localhost:5000/api/contact', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
+            const { name, email, subject, message } = formData;
+
+            const subjectEncoded = encodeURIComponent(`[Portfolio] ${subject}`);
+            const bodyEncoded = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+
+            // Redirect to mailto link
+            // Alasan: Layanan gratis seperti Formspree/Web3Forms sering memblokir kiriman dari 'localhost' (spam protection).
+            // Solusi: Gunakan mailto client-side untuk dev environment.
+            const mailtoLink = `mailto:kzherdin03@gmail.com?subject=${subjectEncoded}&body=${bodyEncoded}`;
+
+            window.location.href = mailtoLink;
+
+            setSubmitStatus({
+                type: 'success',
+                message: 'Membuka aplikasi email...'
             });
 
-            const data = await response.json();
-
-            if (data.success) {
-                setSubmitStatus({
-                    type: 'success',
-                    message: data.message
-                });
+            setTimeout(() => {
                 setFormData({ name: '', email: '', subject: '', message: '' });
-            } else {
-                setSubmitStatus({
-                    type: 'error',
-                    message: data.message || 'Failed to send message'
-                });
-            }
+                setIsSubmitting(false);
+                setSubmitStatus({ type: null, message: '' });
+            }, 3000);
+
         } catch (error) {
             setSubmitStatus({
                 type: 'error',
-                message: 'Network error. Please make sure the backend server is running.'
+                message: 'Gagal membuka aplikasi email.'
             });
-        } finally {
             setIsSubmitting(false);
         }
     };
@@ -146,8 +146,8 @@ function ContactForm() {
                     {submitStatus.type && (
                         <div
                             className={`p-4 rounded-lg ${submitStatus.type === 'success'
-                                    ? 'bg-green-500/20 border border-green-500/50 text-green-400'
-                                    : 'bg-red-500/20 border border-red-500/50 text-red-400'
+                                ? 'bg-green-500/20 border border-green-500/50 text-green-400'
+                                : 'bg-red-500/20 border border-red-500/50 text-red-400'
                                 }`}
                         >
                             {submitStatus.message}
@@ -158,11 +158,11 @@ function ContactForm() {
                         type="submit"
                         disabled={isSubmitting}
                         className={`w-full py-4 px-6 rounded-lg font-semibold text-lg transition-all ${isSubmitting
-                                ? 'bg-foreground/20 cursor-not-allowed'
-                                : 'bg-primary hover:bg-primary/90 hover:scale-105 text-black'
+                            ? 'bg-foreground/20 cursor-not-allowed'
+                            : 'bg-primary hover:bg-primary/90 hover:scale-105 text-black'
                             }`}
                     >
-                        {isSubmitting ? 'Sending...' : 'Send Message'}
+                        {isSubmitting ? 'Membuka Email...' : 'Kirim Pesan (via Email App)'}
                     </button>
                 </form>
             </Animate>

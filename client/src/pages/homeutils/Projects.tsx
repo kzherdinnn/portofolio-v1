@@ -4,6 +4,7 @@ import Animate from "../../utils/animations/Animate";
 import ProjectCard from "./ProjectCard";
 import { useUpdateProjectDetails } from "../../hooks/appHooks";
 import { api } from "../../utils/api";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 function Projects() {
   const [selectedType, setSelectedType] = useState<
@@ -11,6 +12,7 @@ function Projects() {
   >("ALL");
 
   const [projects, setProjects] = useState([]);
+  const [showAll, setShowAll] = useState(false);
   const { updateProjectDetails } = useUpdateProjectDetails();
 
   useEffect(() => {
@@ -33,6 +35,10 @@ function Projects() {
     ? projects
     : projects.filter((p: any) => p.type === selectedType);
 
+  // Show only 3 projects initially, or all if showAll is true
+  const displayedProjects = showAll ? filteredProjects : filteredProjects.slice(0, 3);
+  const hasMoreProjects = filteredProjects.length > 3;
+
   return (
     <div className="mt-[10vh] px-4">
       <div className="text-xs flex flex-col gap-5 lg:items-center justify-center lg:gap-2 lg:flex-row hover:text-foreground/50">
@@ -48,7 +54,7 @@ function Projects() {
                   }, 100);
                 }}
               >
-                <div className="absolute -right-3 text-xs -top-3 text-foreground/40">
+                <div className="absolute -right-3 text-xs -top-3 text-secondary">
                   {projects.length}
                 </div>
                 <h3
@@ -75,7 +81,7 @@ function Projects() {
                   }, 100);
                 }}
               >
-                <div className="absolute -right-3 text-xs -top-3 text-foreground/40">
+                <div className="absolute -right-3 text-xs -top-3 text-secondary">
                   {projects.filter((p: any) => p.type === "FULLSTACK").length}
                 </div>
                 <h3
@@ -104,7 +110,7 @@ function Projects() {
                   }, 100);
                 }}
               >
-                <div className="absolute -right-3 text-xs -top-3 text-foreground/40">
+                <div className="absolute -right-3 text-xs -top-3 text-secondary">
                   {projects.filter((p: any) => p.type === "AI").length}
                 </div>
                 <h3
@@ -130,7 +136,7 @@ function Projects() {
                   }, 100);
                 }}
               >
-                <div className="absolute -right-3 text-xs -top-3 text-foreground/40">
+                <div className="absolute -right-3 text-xs -top-3 text-secondary">
                   {projects.filter((p: any) => p.type === "MOBILE").length}
                 </div>
                 <h3
@@ -159,7 +165,7 @@ function Projects() {
                   }, 100);
                 }}
               >
-                <div className="absolute -right-3 text-xs -top-3 text-foreground/40">
+                <div className="absolute -right-3 text-xs -top-3 text-secondary">
                   {projects.filter((p: any) => p.type === "BLOCKCHAIN").length}
                 </div>
                 <h3
@@ -178,7 +184,7 @@ function Projects() {
 
       <div className="flex flex-col items-center justify-center mt-[5vh] pb-[5vh]">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 pt-[5vh]">
-          {filteredProjects.map((project: any, index: number) => (
+          {displayedProjects.map((project: any, index: number) => (
             <Animate key={index} delay={300} type="slideUp">
               <ProjectCard
                 callBack={() => {
@@ -191,6 +197,28 @@ function Projects() {
             </Animate>
           ))}
         </div>
+
+        {/* See More / See Less Button */}
+        {hasMoreProjects && (
+          <Animate delay={400} type="slideUp">
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="mt-10 flex items-center gap-2 bg-primary/10 hover:bg-primary/20 border-2 border-primary/50 hover:border-primary text-primary font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105"
+            >
+              {showAll ? (
+                <>
+                  <FaChevronUp className="w-4 h-4" />
+                  See Less
+                </>
+              ) : (
+                <>
+                  <FaChevronDown className="w-4 h-4" />
+                  See More ({filteredProjects.length - 3} more projects)
+                </>
+              )}
+            </button>
+          </Animate>
+        )}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaInstagram } from "react-icons/fa";
 import Animate from "../../utils/animations/Animate";
 import { CiLinkedin } from "react-icons/ci";
 
@@ -6,11 +6,16 @@ function BottomNav() {
   function handleOpenSocialLink(type: string) {
     switch (type) {
       case "GITHUB":
-        window.open("https://github.com/alexchen");
+        window.open("https://github.com/kzherdinnn");
         break;
       case "LINKEDIN":
         window.open(
-          "https://www.linkedin.com/in/alexchen"
+          "https://www.linkedin.com/in/kzherdinnn/"
+        );
+        break;
+      case "INSTAGRAM":
+        window.open(
+          "https://www.instagram.com/kzherdinnn/"
         );
         break;
     }
@@ -18,7 +23,7 @@ function BottomNav() {
 
   function handleEmailClick() {
     const mailtoUrl =
-      "mailto:alex.chen@example.com?subject=Project Collaboration";
+      "mailto:kzherdin03@gmail.com?subject=Project Collaboration";
     window.open(mailtoUrl);
   }
 
@@ -43,7 +48,7 @@ function BottomNav() {
             onClick={handleEmailClick}
             className="text-xl border-b-4 border-secondary cursor-pointer lg:hover:scale-105 lg:hover:text-primary"
           >
-            alex.chen@example.com
+            kzherdin03@gmail.com
           </div>
 
           <div className="text-center mt-[3vh] flex items-center justify-center gap-4">
@@ -59,6 +64,12 @@ function BottomNav() {
             >
               <FaGithub className="h-6 w-5" />
             </h3>
+            <h3
+              onClick={() => handleOpenSocialLink("INSTAGRAM")}
+              className="flex items-center bg-foreground/10 rounded-md px-3 py-2 cursor-pointer lg:hover:bg-foreground/20 lg:hover:scale-105"
+            >
+              <FaInstagram className="h-6 w-5" />
+            </h3>
           </div>
         </div>
       </Animate>
@@ -69,10 +80,10 @@ function BottomNav() {
             <div className="flex items-center justify-center text-foreground/40 text-xs lg:text-md">
               © 2026.
               <a
-                href="mailto:alex.chen@example.com?subject=Project Collaboration"
+                href="mailto:kzherdin03@gmail.com?subject=Project Collaboration"
                 className="ml-1 font-semibold text-blue-600 border-b border-blue-600"
               >
-                Alex Chen
+                HerdinKz
               </a>{" "}
               – Software Engineer
             </div>

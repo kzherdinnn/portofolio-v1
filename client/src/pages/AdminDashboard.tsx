@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { api } from '../utils/api';
-import { FaEdit, FaTrash, FaPlus, FaTimes, FaImage, FaUpload } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaPlus, FaTimes, FaImage, FaUpload, FaComments } from 'react-icons/fa';
 
 const AdminDashboard = () => {
-    const [activeTab, setActiveTab] = useState<'EXPERTISE' | 'PROJECTS' | 'EXPERIENCE'>('EXPERTISE');
+    const navigate = useNavigate();
+    const [activeTab, setActiveTab] = useState<'PROJECTS' | 'EXPERIENCE' | 'CERTIFICATES'>('PROJECTS');
     const [items, setItems] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,12 +18,20 @@ const AdminDashboard = () => {
         setLoading(true);
         try {
             let response;
-            if (activeTab === 'EXPERTISE') response = await api.getExpertise();
-            else if (activeTab === 'PROJECTS') response = await api.getProjects();
+            if (activeTab === 'PROJECTS') response = await api.getProjects();
             else if (activeTab === 'EXPERIENCE') response = await api.getExperience();
-            setItems(response?.data || []);
+            else if (activeTab === 'CERTIFICATES') response = await api.getCertificates();
+            const responseData = response?.data;
+            if (Array.isArray(responseData)) {
+                setItems(responseData);
+            } else if (responseData?.data && Array.isArray(responseData.data)) {
+                setItems(responseData.data);
+            } else {
+                setItems([]);
+            }
         } catch (error) {
             console.error('Fetch error:', error);
+            setItems([]);
         } finally {
             setLoading(false);
         }
@@ -34,9 +44,9 @@ const AdminDashboard = () => {
     const handleDelete = async (id: string) => {
         if (!window.confirm('Are you sure you want to delete this item?')) return;
         try {
-            if (activeTab === 'EXPERTISE') await api.deleteExpertise(id);
-            else if (activeTab === 'PROJECTS') await api.deleteProject(id);
+            if (activeTab === 'PROJECTS') await api.deleteProject(id);
             else if (activeTab === 'EXPERIENCE') await api.deleteExperience(id);
+            else if (activeTab === 'CERTIFICATES') await api.deleteCertificate(id);
             fetchData();
         } catch (error) {
             console.error('Delete error:', error);
@@ -47,13 +57,13 @@ const AdminDashboard = () => {
         e.preventDefault();
         try {
             if (editingId) {
-                if (activeTab === 'EXPERTISE') await api.updateExpertise(editingId, formData);
-                else if (activeTab === 'PROJECTS') await api.updateProject(editingId, formData);
+                if (activeTab === 'PROJECTS') await api.updateProject(editingId, formData);
                 else if (activeTab === 'EXPERIENCE') await api.updateExperience(editingId, formData);
+                else if (activeTab === 'CERTIFICATES') await api.updateCertificate(editingId, formData);
             } else {
-                if (activeTab === 'EXPERTISE') await api.createExpertise(formData);
-                else if (activeTab === 'PROJECTS') await api.createProject(formData);
+                if (activeTab === 'PROJECTS') await api.createProject(formData);
                 else if (activeTab === 'EXPERIENCE') await api.createExperience(formData);
+                else if (activeTab === 'CERTIFICATES') await api.createCertificate(formData);
             }
             setIsModalOpen(false);
             setFormData({});
@@ -95,30 +105,54 @@ const AdminDashboard = () => {
         const inputClass = "w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-800 focus:border-[#02ffff] focus:outline-none transition-colors";
         const labelClass = "block text-sm font-medium mb-2 text-gray-300";
 
-        if (activeTab === 'EXPERTISE') {
+        if (activeTab === 'CERTIFICATES') {
             return (
                 <div className="space-y-4">
                     <div>
-                        <label className={labelClass}>Icon Name</label>
-                        <input className={inputClass} placeholder="e.g., REACT, NODE" value={formData.icon || ''} onChange={e => setFormData({ ...formData, icon: e.target.value })} />
+                        <label className={labelClass}>Certificate Title</label>
+                        <input className={inputClass} placeholder="AWS Certified Solutions Architect" value={formData.title || ''} onChange={e => setFormData({ ...formData, title: e.target.value })} />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className={labelClass}>Heading</label>
-                            <input className={inputClass} placeholder="Frontend" value={formData.heading || ''} onChange={e => setFormData({ ...formData, heading: e.target.value })} />
+                            <label className={labelClass}>Issuer</label>
+                            <input className={inputClass} placeholder="Amazon Web Services" value={formData.issuer || ''} onChange={e => setFormData({ ...formData, issuer: e.target.value })} />
                         </div>
                         <div>
-                            <label className={labelClass}>Heading Content</label>
-                            <input className={inputClass} placeholder="Development" value={formData.headingContemt || ''} onChange={e => setFormData({ ...formData, headingContemt: e.target.value })} />
+                            <label className={labelClass}>Issue Date</label>
+                            <input type="date" className={inputClass} value={formData.issueDate || ''} onChange={e => setFormData({ ...formData, issueDate: e.target.value })} />
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className={labelClass}>Credential ID</label>
+                            <input className={inputClass} placeholder="Optional" value={formData.credentialId || ''} onChange={e => setFormData({ ...formData, credentialId: e.target.value })} />
+                        </div>
+                        <div>
+                            <label className={labelClass}>Credential URL</label>
+                            <input className={inputClass} placeholder="https://..." value={formData.credentialUrl || ''} onChange={e => setFormData({ ...formData, credentialUrl: e.target.value })} />
                         </div>
                     </div>
                     <div>
-                        <label className={labelClass}>Description</label>
-                        <textarea className={inputClass} placeholder="Describe your expertise..." rows={4} value={formData.desc || ''} onChange={e => setFormData({ ...formData, desc: e.target.value })} />
+                        <label className={labelClass}><FaImage className="inline mr-2" />Certificate Image</label>
+                        <div className="border-2 border-dashed border-gray-800 rounded-lg p-6 text-center hover:border-[#02ffff] transition-colors">
+                            {formData.image ? (
+                                <div className="space-y-3">
+                                    <img src={formData.image} alt="Preview" className="mx-auto h-40 object-cover rounded-lg" />
+                                    <button type="button" onClick={() => setFormData({ ...formData, image: '' })} className="text-red-400 hover:text-red-300 text-sm">Remove Image</button>
+                                </div>
+                            ) : (
+                                <label className="cursor-pointer block">
+                                    <FaUpload className="mx-auto text-4xl text-gray-400 mb-2" />
+                                    <span className="text-gray-400">Click to upload or drag and drop</span>
+                                    <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e, 'image')} disabled={uploading} />
+                                    {uploading && <p className="text-[#02ffff] mt-2">Uploading...</p>}
+                                </label>
+                            )}
+                        </div>
                     </div>
                     <div>
-                        <label className={labelClass}>Display Order</label>
-                        <input type="number" className={inputClass} placeholder="0" value={formData.displayOrder || 0} onChange={e => setFormData({ ...formData, displayOrder: parseInt(e.target.value) })} />
+                        <label className={labelClass}>Skills (comma separated)</label>
+                        <input className={inputClass} placeholder="Cloud Computing, AWS, Security" value={formData.skills?.join(',') || ''} onChange={e => setFormData({ ...formData, skills: e.target.value.split(',').map((s: string) => s.trim()) })} />
                     </div>
                 </div>
             );
@@ -243,16 +277,27 @@ const AdminDashboard = () => {
                             <h1 className="text-3xl font-bold text-white">Portfolio Admin</h1>
                             <p className="text-gray-400 mt-1">Manage your portfolio content</p>
                         </div>
-                        <button onClick={() => openModal()} className="flex items-center gap-2 bg-[#02ffff] hover:bg-[#02ffff]/90 text-black px-6 py-3 rounded-lg font-medium transition-colors shadow-lg">
-                            <FaPlus /> Add New
-                        </button>
+                        <div className="flex gap-3">
+                            <button
+                                onClick={() => navigate('/admin/comments')}
+                                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors shadow-lg"
+                            >
+                                <FaComments /> Manage Comments
+                            </button>
+                            <button
+                                onClick={() => openModal()}
+                                className="flex items-center gap-2 bg-[#02ffff] hover:bg-[#02ffff]/90 text-black px-6 py-3 rounded-lg font-medium transition-colors shadow-lg"
+                            >
+                                <FaPlus /> Add New
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="flex gap-2 mb-8 bg-gray-900 p-2 rounded-lg w-fit border border-gray-800">
-                    {['EXPERTISE', 'PROJECTS', 'EXPERIENCE'].map((tab) => (
+                    {['PROJECTS', 'EXPERIENCE', 'CERTIFICATES'].map((tab) => (
                         <button key={tab} onClick={() => setActiveTab(tab as any)} className={`px-6 py-3 rounded-lg font-medium transition-all ${activeTab === tab ? 'bg-[#02ffff] text-black shadow-lg' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}>
                             {tab}
                         </button>
