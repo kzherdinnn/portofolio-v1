@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { BsPinAngleFill } from 'react-icons/bs';
-import { FaPaperPlane } from 'react-icons/fa';
 import Animate from '../../utils/animations/Animate';
 
 interface Comment {
