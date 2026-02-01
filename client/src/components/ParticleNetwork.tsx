@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Particle {
     x: number;
@@ -9,6 +9,38 @@ interface Particle {
 }
 
 const ParticleNetwork = () => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [canvasCount, setCanvasCount] = useState(1);
+
+    useEffect(() => {
+        const updateCanvasCount = () => {
+            if (containerRef.current) {
+                const containerHeight = containerRef.current.offsetHeight;
+                const viewportHeight = window.innerHeight;
+                // Calculate how many viewport-sized canvases we need
+                const count = Math.ceil(containerHeight / viewportHeight);
+                setCanvasCount(count);
+            }
+        };
+
+        updateCanvasCount();
+        window.addEventListener('resize', updateCanvasCount);
+
+        return () => {
+            window.removeEventListener('resize', updateCanvasCount);
+        };
+    }, []);
+
+    return (
+        <div ref={containerRef} className="absolute top-0 left-0 w-full h-full pointer-events-none">
+            {Array.from({ length: canvasCount }).map((_, index) => (
+                <ParticleCanvas key={index} offsetY={index * window.innerHeight} />
+            ))}
+        </div>
+    );
+};
+
+const ParticleCanvas = ({ offsetY }: { offsetY: number }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
@@ -18,11 +50,10 @@ const ParticleNetwork = () => {
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-
-        // Set canvas size - ALWAYS use viewport dimensions to prevent stretching
+        // Set canvas size - ALWAYS viewport dimensions
         const resizeCanvas = () => {
             canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight; // Always viewport height, never container height
+            canvas.height = window.innerHeight;
         };
         resizeCanvas();
 
@@ -97,11 +128,11 @@ const ParticleNetwork = () => {
     return (
         <canvas
             ref={canvasRef}
-            className="absolute top-0 left-0 w-full pointer-events-none opacity-30"
+            className="absolute left-0 w-full pointer-events-none opacity-30"
             style={{
+                top: `${offsetY}px`,
                 zIndex: 1,
-                height: '100vh', // Fixed to viewport height, won't stretch with container
-                maxHeight: '100vh'
+                height: '100vh'
             }}
         />
     );
