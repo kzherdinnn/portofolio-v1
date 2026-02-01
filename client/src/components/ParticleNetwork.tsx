@@ -18,44 +18,29 @@ const ParticleNetwork = () => {
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        // Set canvas size - use viewport dimensions, not container
+
+        // Set canvas size - ALWAYS use viewport dimensions to prevent stretching
         const resizeCanvas = () => {
-            const container = canvas.parentElement;
-            if (container) {
-                canvas.width = container.offsetWidth;
-                canvas.height = container.offsetHeight;
-            }
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight; // Always viewport height, never container height
         };
         resizeCanvas();
 
-        // Particle settings - dynamic count based on area
-        const calculateParticleCount = () => {
-            const area = canvas.width * canvas.height;
-            const baseArea = 1920 * 1080; // Full HD reference
-            const baseCount = 80;
-            // Scale particle count with area, but cap it
-            return Math.min(Math.floor((area / baseArea) * baseCount), 150);
-        };
-
+        // Particle settings - fixed count for consistent animation
+        const particleCount = 80;
+        const particles: Particle[] = [];
         const maxDistance = 150;
-        let particles: Particle[] = [];
 
-        // Function to create particles
-        const createParticles = () => {
-            particles = [];
-            const particleCount = calculateParticleCount();
-            for (let i = 0; i < particleCount; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    vx: (Math.random() - 0.5) * 0.5,
-                    vy: (Math.random() - 0.5) * 0.5,
-                    radius: Math.random() * 2 + 1
-                });
-            }
-        };
-
-        createParticles();
+        // Create particles
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                radius: Math.random() * 2 + 1
+            });
+        }
 
         // Animation loop
         const animate = () => {
@@ -102,23 +87,22 @@ const ParticleNetwork = () => {
         animate();
 
         // Handle resize
-        const handleResize = () => {
-            resizeCanvas();
-            createParticles();
-        };
-
-        window.addEventListener('resize', handleResize);
+        window.addEventListener('resize', resizeCanvas);
 
         return () => {
-            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('resize', resizeCanvas);
         };
     }, []);
 
     return (
         <canvas
             ref={canvasRef}
-            className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-30"
-            style={{ zIndex: 1 }}
+            className="absolute top-0 left-0 w-full pointer-events-none opacity-30"
+            style={{
+                zIndex: 1,
+                height: '100vh', // Fixed to viewport height, won't stretch with container
+                maxHeight: '100vh'
+            }}
         />
     );
 };
