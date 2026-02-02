@@ -27,9 +27,11 @@ const Terminal = () => {
 
     const handleCommand = (cmd: string) => {
         const trimmedCmd = cmd.trim().toLowerCase();
+        const args = trimmedCmd.split(" ");
+        const baseCmd = args[0];
         const newHistory = [...history, `> ${cmd}`];
 
-        switch (trimmedCmd) {
+        switch (baseCmd) {
             case "help":
                 newHistory.push(
                     "Available commands:",
@@ -38,6 +40,11 @@ const Terminal = () => {
                     "  contact  - Get in touch",
                     "  projects - View my work",
                     "  login    - Admin portal access",
+                    "  logout   - Sign out from admin",
+                    "  date     - Show current time",
+                    "  whoami   - Current user info",
+                    "  ls       - List directories",
+                    "  cd <dir> - Change directory",
                     "  clear    - Clear terminal",
                     "  exit     - Close terminal"
                 );
@@ -71,6 +78,66 @@ const Terminal = () => {
                     setIsOpen(false);
                     navigate("/login");
                 }, 1000);
+                break;
+            case "logout":
+                if (localStorage.getItem("adminToken")) {
+                    localStorage.removeItem("adminToken");
+                    newHistory.push("Logged out successfully.");
+                } else {
+                    newHistory.push("You are not logged in.");
+                }
+                break;
+            case "date":
+                newHistory.push(new Date().toLocaleString());
+                break;
+            case "whoami":
+                const user = localStorage.getItem("adminToken") ? "root (admin)" : "guest";
+                newHistory.push(user);
+                break;
+            case "ls":
+                newHistory.push(
+                    "Directories:",
+                    "  home/",
+                    "  projects/",
+                    "  admin/",
+                    "  login/"
+                );
+                break;
+            case "cd":
+                const dir = args[1];
+                if (!dir) {
+                    newHistory.push("Usage: cd <directory>");
+                } else {
+                    switch (dir) {
+                        case "home":
+                            setIsOpen(false);
+                            navigate("/");
+                            break;
+                        case "projects":
+                            setIsOpen(false);
+                            navigate("/projectdetail");
+                            break;
+                        case "admin":
+                            setIsOpen(false);
+                            navigate("/admin");
+                            break;
+                        case "login":
+                            setIsOpen(false);
+                            navigate("/login");
+                            break;
+                        case "..":
+                            newHistory.push("Cannot go up from root.");
+                            break;
+                        default:
+                            newHistory.push(`Directory not found: ${dir}`);
+                    }
+                }
+                break;
+            case "sudo":
+                newHistory.push("Permission denied: You didn't say the magic word.");
+                break;
+            case "secret":
+                newHistory.push("There is no spoon.");
                 break;
             case "clear":
                 setHistory([]);
