@@ -90,7 +90,12 @@ const Terminal = () => {
                     });
                     const data = await res.json();
                     if (data.success) {
-                        setHistory(prev => [...prev, "Logged out successfully."]);
+                        setHistory(prev => [...prev, "Logged out successfully.", "Redirecting to home..."]);
+                        setTimeout(() => {
+                            setIsOpen(false);
+                            navigate("/");
+                            window.location.reload(); // Ensure complete state reset
+                        }, 1000);
                     } else {
                         setHistory(prev => [...prev, "Logout failed or you are not logged in."]);
                     }
