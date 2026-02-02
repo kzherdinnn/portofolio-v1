@@ -7,20 +7,20 @@ function AboutMe() {
         {
             icon: FaCode,
             number: "15+",
-            label: "TOTAL PROJECTS",
-            description: "Innovative web solutions crafted"
+            label: "TOTAL PROYEK",
+            description: "Solusi web inovatif telah dibuat"
         },
         {
             icon: FaCertificate,
             number: "8",
-            label: "CERTIFICATES",
-            description: "Professional skills validated"
+            label: "SERTIFIKAT",
+            description: "Keahlian profesional tervalidasi"
         },
         {
             icon: FaGlobe,
             number: "4",
-            label: "YEARS OF EXPERIENCE",
-            description: "Continuous learning journey"
+            label: "TAHUN PENGALAMAN",
+            description: "Perjalanan belajar tanpa henti"
         }
     ];
 
@@ -35,13 +35,13 @@ function AboutMe() {
                 <div className="text-center mb-16">
                     <Animate delay={200} type="slideDown">
                         <h1 className="text-4xl lg:text-5xl font-bold neon-glow mb-4">
-                            About Me
+                            Tentang Saya
                         </h1>
                     </Animate>
                     <Animate delay={300} type="slideDown">
                         <p className="text-foreground/70 flex items-center justify-center gap-2">
                             <span className="text-primary">✨</span>
-                            Transforming ideas into digital experiences
+                            Mengubah ide menjadi pengalaman digital
                             <span className="text-primary">✨</span>
                         </p>
                     </Animate>
@@ -55,7 +55,7 @@ function AboutMe() {
                             <div className="space-y-6">
                                 <div>
                                     <h2 className="text-2xl lg:text-3xl font-bold mb-2">
-                                        Hello, I'm
+                                        Halo, Saya
                                     </h2>
                                     <h3 className="text-3xl lg:text-5xl font-bold text-primary mb-6">
                                         HerdinKz
@@ -72,7 +72,7 @@ function AboutMe() {
                                 {/* Quote */}
                                 <div className="border-l-4 border-primary/50 pl-4 py-2 bg-primary/5 rounded-r-lg">
                                     <p className="text-foreground/70 italic">
-                                        "Leveraging AI as a professional tool, not a replacement."
+                                        "Memanfaatkan AI sebagai alat profesional, bukan pengganti."
                                     </p>
                                 </div>
 
@@ -80,11 +80,11 @@ function AboutMe() {
                                 <div className="flex flex-wrap gap-4 pt-4">
                                     <button className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-black font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105">
                                         <FaDownload />
-                                        Download CV
+                                        Unduh CV
                                     </button>
                                     <button className="flex items-center gap-2 bg-foreground/10 hover:bg-foreground/20 border-2 border-primary/50 text-primary font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105">
                                         <FaEye />
-                                        View Projects
+                                        Lihat Proyek
                                     </button>
                                 </div>
                             </div>

@@ -63,7 +63,7 @@ function Projects() {
                     : "text-foreground/50"
                     } hover:border-b border-primary hover:scale-105 hover:text-primary`}
                 >
-                  Filter by ALL
+                  Filter SEMUA
                 </h3>
               </div>
               <div className="ml-4 lg:ml-2"> /</div>
@@ -145,7 +145,7 @@ function Projects() {
                     : "text-foreground/50"
                     } hover:border-b border-primary hover:scale-105 hover:text-primary`}
                 >
-                  Mobile Dev
+                  Pengembangan Seluler
                 </h3>
               </div>
               <div className="ml-4 lg:ml-2"> /</div>
@@ -208,12 +208,12 @@ function Projects() {
               {showAll ? (
                 <>
                   <FaChevronUp className="w-4 h-4" />
-                  See Less
+                  Lihat Lebih Sedikit
                 </>
               ) : (
                 <>
                   <FaChevronDown className="w-4 h-4" />
-                  See More ({filteredProjects.length - 3} more projects)
+                  Lihat Seterusnya ({filteredProjects.length - 3} proyek lagi)
                 </>
               )}
             </button>

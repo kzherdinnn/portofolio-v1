@@ -136,7 +136,7 @@ function Comments() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                         </svg>
                         <h3 className="text-xl font-bold">
-                            Comments <span className="text-primary">({comments.length})</span>
+                            Komentar <span className="text-primary">({comments.length})</span>
                         </h3>
                     </div>
 
@@ -144,7 +144,7 @@ function Comments() {
                     <form onSubmit={handleSubmit} className="space-y-4 mb-6">
                         <div>
                             <label htmlFor="comment-name" className="block text-sm font-medium mb-2">
-                                Name *
+                                Nama *
                             </label>
                             <input
                                 type="text"
@@ -154,13 +154,13 @@ function Comments() {
                                 onChange={handleChange}
                                 required
                                 className="w-full px-4 py-2.5 bg-foreground/5 border border-foreground/20 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors text-sm"
-                                placeholder="Enter your name"
+                                placeholder="Masukkan nama Anda"
                             />
                         </div>
 
                         <div>
                             <label htmlFor="comment-message" className="block text-sm font-medium mb-2">
-                                Message *
+                                Pesan *
                             </label>
                             <textarea
                                 id="comment-message"
@@ -170,13 +170,13 @@ function Comments() {
                                 required
                                 rows={3}
                                 className="w-full px-4 py-2.5 bg-foreground/5 border border-foreground/20 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none text-sm"
-                                placeholder="Write your message here..."
+                                placeholder="Tulis pesan Anda di sini..."
                             />
                         </div>
 
                         <div>
                             <label htmlFor="comment-photo" className="block text-sm font-medium mb-2">
-                                Profile Photo <span className="text-foreground/50">(optional)</span>
+                                Foto Profil <span className="text-foreground/50">(opsional)</span>
                             </label>
                             <div className="relative">
                                 <input
@@ -193,9 +193,9 @@ function Comments() {
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
-                                    {formData.profilePhoto ? formData.profilePhoto.name : 'Choose Profile Photo'}
+                                    {formData.profilePhoto ? formData.profilePhoto.name : 'Pilih Foto Profil'}
                                 </label>
-                                <p className="text-xs text-foreground/50 mt-1">Max file size: 2MB</p>
+                                <p className="text-xs text-foreground/50 mt-1">Maks ukuran file: 2MB</p>
                             </div>
                         </div>
 
@@ -210,7 +210,7 @@ function Comments() {
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                             </svg>
-                            {isSubmitting ? 'Posting...' : 'Post Comment'}
+                            {isSubmitting ? 'Memposting...' : 'Kirim Komentar'}
                         </button>
                     </form>
 
@@ -218,11 +218,11 @@ function Comments() {
                         {/* Comments List */}
                         {isLoading ? (
                             <div className="text-center text-foreground/50 py-8">
-                                Loading comments...
+                                Memuat komentar...
                             </div>
                         ) : comments.length === 0 ? (
                             <div className="text-center text-foreground/50 py-8">
-                                No comments yet. Be the first to comment!
+                                Belum ada komentar. Jadilah yang pertama berkomentar!
                             </div>
                         ) : (
                             <div className="space-y-4 max-h-[320px] overflow-y-auto pr-2 custom-scrollbar">
@@ -238,7 +238,7 @@ function Comments() {
                                         {comment.isPinned && (
                                             <div className="flex items-center gap-2 mb-3 text-indigo-400 pb-2 border-b border-indigo-500/20">
                                                 <BsPinAngleFill className="text-sm" />
-                                                <span className="text-[10px] uppercase font-bold tracking-wider">Pinned Comment</span>
+                                                <span className="text-[10px] uppercase font-bold tracking-wider">Komentar Disematkan</span>
                                             </div>
                                         )}
 
