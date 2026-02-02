@@ -31,9 +31,12 @@ function Projects() {
     updateProjectDetails(project);
   }
 
+  // Safety check: ensure projects is an array
+  const safeProjects = Array.isArray(projects) ? projects : [];
+
   const filteredProjects = selectedType === "ALL"
-    ? projects
-    : projects.filter((p: any) => p.type === selectedType);
+    ? safeProjects
+    : safeProjects.filter((p: any) => p.type === selectedType);
 
   // Show only 3 projects initially, or all if showAll is true
   const displayedProjects = showAll ? filteredProjects : filteredProjects.slice(0, 3);
@@ -55,7 +58,7 @@ function Projects() {
                 }}
               >
                 <div className="absolute -right-3 text-xs -top-3 text-secondary">
-                  {projects.length}
+                  {safeProjects.length}
                 </div>
                 <h3
                   className={`${selectedType === "ALL"
@@ -82,7 +85,7 @@ function Projects() {
                 }}
               >
                 <div className="absolute -right-3 text-xs -top-3 text-secondary">
-                  {projects.filter((p: any) => p.type === "FULLSTACK").length}
+                  {safeProjects.filter((p: any) => p.type === "FULLSTACK").length}
                 </div>
                 <h3
                   className={`${selectedType === "FULLSTACK"
@@ -111,7 +114,7 @@ function Projects() {
                 }}
               >
                 <div className="absolute -right-3 text-xs -top-3 text-secondary">
-                  {projects.filter((p: any) => p.type === "AI").length}
+                  {safeProjects.filter((p: any) => p.type === "AI").length}
                 </div>
                 <h3
                   className={`${selectedType === "AI"
@@ -137,7 +140,7 @@ function Projects() {
                 }}
               >
                 <div className="absolute -right-3 text-xs -top-3 text-secondary">
-                  {projects.filter((p: any) => p.type === "MOBILE").length}
+                  {safeProjects.filter((p: any) => p.type === "MOBILE").length}
                 </div>
                 <h3
                   className={`${selectedType === "MOBILE"
@@ -166,7 +169,7 @@ function Projects() {
                 }}
               >
                 <div className="absolute -right-3 text-xs -top-3 text-secondary">
-                  {projects.filter((p: any) => p.type === "BLOCKCHAIN").length}
+                  {safeProjects.filter((p: any) => p.type === "BLOCKCHAIN").length}
                 </div>
                 <h3
                   className={`${selectedType === "BLOCKCHAIN"

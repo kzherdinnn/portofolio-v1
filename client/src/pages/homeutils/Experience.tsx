@@ -36,7 +36,7 @@ function Experience() {
             </div>
           </Animate>
 
-          {experience.map((exp: any, index: number) => (
+          {Array.isArray(experience) && experience.map((exp: any, index: number) => (
             <div key={index} className="mt-[5vh] flex flex-col gap-4 lg:w-[70vw] w-full">
               <Animate delay={300 + (index * 100)} type="slideLeft">
                 {/* Terminal Window Card */}
@@ -75,6 +75,13 @@ function Experience() {
                               src={exp.logo}
                               className="rounded-md w-32 h-20 object-cover border border-primary/20 transition-all duration-300 group-hover/logo:border-primary/50 group-hover/logo:scale-105"
                               alt={exp.company}
+                              onError={(e) => {
+                                const target = e.currentTarget;
+                                if (!target.dataset.fallbackUsed) {
+                                  target.dataset.fallbackUsed = "true";
+                                  target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='80'%3E%3Crect width='100%25' height='100%25' fill='%231a1a1a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='monospace' font-size='14' fill='%2302ffff'%3ECompany%3C/text%3E%3C/svg%3E";
+                                }
+                              }}
                             />
                             <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover/logo:opacity-100 transition-opacity duration-300 rounded-md"></div>
                           </div>

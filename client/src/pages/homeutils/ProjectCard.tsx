@@ -69,6 +69,13 @@ function ProjectCard({ category, image, title, callBack }: ProjectCardInterface)
           src={image}
           className="w-[90vw] lg:h-[30vh] object-cover transition-all duration-700 ease-out group-hover:scale-110 group-hover:brightness-110"
           alt={title}
+          onError={(e) => {
+            const target = e.currentTarget;
+            if (!target.dataset.fallbackUsed) {
+              target.dataset.fallbackUsed = "true";
+              target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250'%3E%3Crect width='400' height='250' fill='%231a1a1a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='monospace' font-size='20' fill='%2302ffff'%3EProject%3C/text%3E%3C/svg%3E";
+            }
+          }}
         />
 
         {/* Dark Gradient Overlay */}
