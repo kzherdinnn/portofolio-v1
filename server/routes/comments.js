@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const commentController = require('../controllers/commentController');
+const { protect } = require('../middleware/authMiddleware');
 
 // GET all comments
 router.get('/', commentController.getComments);
@@ -9,9 +10,9 @@ router.get('/', commentController.getComments);
 router.post('/', commentController.createComment);
 
 // PATCH toggle pin status
-router.patch('/:id/pin', commentController.togglePin);
+router.patch('/:id/pin', protect, commentController.togglePin);
 
 // DELETE comment
-router.delete('/:id', commentController.deleteComment);
+router.delete('/:id', protect, commentController.deleteComment);
 
 module.exports = router;

@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const Contact = require('../models/Contact');
+const { protect } = require('../middleware/authMiddleware');
 
 // @desc    Get message statistics
 // @route   GET /api/messages/stats
 // @access  Private
-router.get('/stats', async (req, res) => {
+router.get('/stats', protect, async (req, res) => {
   try {
     const total = await Contact.countDocuments();
     const unread = await Contact.countDocuments({ isRead: false });
