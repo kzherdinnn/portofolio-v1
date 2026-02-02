@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { FaTerminal, FaTimes, FaMinus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config";
 
 const Terminal = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -25,15 +26,17 @@ const Terminal = () => {
         }
     }, [history, isOpen]);
 
-    const handleCommand = (cmd: string) => {
+    const handleCommand = async (cmd: string) => {
         const trimmedCmd = cmd.trim().toLowerCase();
         const args = trimmedCmd.split(" ");
         const baseCmd = args[0];
-        const newHistory = [...history, `> ${cmd}`];
+
+        // Push the command to history immediately
+        setHistory(prev => [...prev, `> ${cmd}`]);
 
         switch (baseCmd) {
             case "help":
-                newHistory.push(
+                setHistory(prev => [...prev,
                     "Available commands:",
                     "  about    - Who am I?",
                     "  skills   - My technical skills",
@@ -47,66 +50,80 @@ const Terminal = () => {
                     "  cd <dir> - Change directory",
                     "  clear    - Clear terminal",
                     "  exit     - Close terminal"
-                );
+                ]);
                 break;
             case "about":
-                newHistory.push(
+                setHistory(prev => [...prev,
                     "I am a Software Engineer passionate about building scalable web applications,",
                     "AI models, and solving complex problems with code."
-                );
+                ]);
                 break;
             case "skills":
-                newHistory.push(
+                setHistory(prev => [...prev,
                     "Frontend: React, TypeScript, TailwindCSS",
                     "Backend:  Node.js, Express, MongoDB",
                     "AI/ML:    Python, TensorFlow, PyTorch"
-                );
+                ]);
                 break;
             case "contact":
-                newHistory.push(
+                setHistory(prev => [...prev,
                     "Email: kzherdin03@gmail.com",
                     "GitHub: github.com/kzherdinnn"
-                );
+                ]);
                 break;
             case "projects":
-                newHistory.push("Navigate to the Projects section to see my work!");
+                setHistory(prev => [...prev, "Navigate to the Projects section to see my work!"]);
                 // Optional: trigger scroll to projects
                 break;
             case "login":
-                newHistory.push("Initiating secure connection to admin portal...");
+                setHistory(prev => [...prev, "Initiating secure connection to admin portal..."]);
                 setTimeout(() => {
                     setIsOpen(false);
                     navigate("/login");
                 }, 1000);
                 break;
             case "logout":
-                if (localStorage.getItem("adminToken")) {
-                    localStorage.removeItem("adminToken");
-                    newHistory.push("Logged out successfully.");
-                } else {
-                    newHistory.push("You are not logged in.");
+                try {
+                    const res = await fetch(`${API_BASE_URL}/api/auth/logout`, {
+                        method: "POST",
+                        credentials: "include"
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        setHistory(prev => [...prev, "Logged out successfully."]);
+                    } else {
+                        setHistory(prev => [...prev, "Logout failed or you are not logged in."]);
+                    }
+                } catch (e) {
+                    setHistory(prev => [...prev, "Error logging out."]);
                 }
                 break;
             case "date":
-                newHistory.push(new Date().toLocaleString());
+                setHistory(prev => [...prev, new Date().toLocaleString()]);
                 break;
             case "whoami":
-                const user = localStorage.getItem("adminToken") ? "root (admin)" : "guest";
-                newHistory.push(user);
+                try {
+                    const res = await fetch(`${API_BASE_URL}/api/auth/check`, { credentials: "include" });
+                    const data = await res.json();
+                    const user = data.success ? `root (admin: ${data.user.username})` : "guest";
+                    setHistory(prev => [...prev, user]);
+                } catch (e) {
+                    setHistory(prev => [...prev, "guest (offline)"]);
+                }
                 break;
             case "ls":
-                newHistory.push(
+                setHistory(prev => [...prev,
                     "Directories:",
                     "  home/",
                     "  projects/",
                     "  admin/",
                     "  login/"
-                );
+                ]);
                 break;
             case "cd":
                 const dir = args[1];
                 if (!dir) {
-                    newHistory.push("Usage: cd <directory>");
+                    setHistory(prev => [...prev, "Usage: cd <directory>"]);
                 } else {
                     switch (dir) {
                         case "home":
@@ -115,7 +132,7 @@ const Terminal = () => {
                             break;
                         case "projects":
                             setIsOpen(false);
-                            navigate("/projectdetail");
+                            navigate("/projectdetail"); // Note: users might expect /projects but route is projectdetail
                             break;
                         case "admin":
                             setIsOpen(false);
@@ -126,18 +143,18 @@ const Terminal = () => {
                             navigate("/login");
                             break;
                         case "..":
-                            newHistory.push("Cannot go up from root.");
+                            setHistory(prev => [...prev, "Cannot go up from root."]);
                             break;
                         default:
-                            newHistory.push(`Directory not found: ${dir}`);
+                            setHistory(prev => [...prev, `Directory not found: ${dir}`]);
                     }
                 }
                 break;
             case "sudo":
-                newHistory.push("Permission denied: You didn't say the magic word.");
+                setHistory(prev => [...prev, "Permission denied: You didn't say the magic word."]);
                 break;
             case "secret":
-                newHistory.push("There is no spoon.");
+                setHistory(prev => [...prev, "There is no spoon."]);
                 break;
             case "clear":
                 setHistory([]);
@@ -148,10 +165,8 @@ const Terminal = () => {
             case "":
                 break;
             default:
-                newHistory.push(`Command not found: '${trimmedCmd}'. Type 'help' for options.`);
+                setHistory(prev => [...prev, `Command not found: '${trimmedCmd}'. Type 'help' for options.`]);
         }
-
-        setHistory(newHistory);
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {

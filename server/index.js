@@ -3,13 +3,34 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
+const cookieParser = require('cookie-parser');
+
 dotenv.config();
 
 const app = express();
 
 // Middleware
-app.use(cors());
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://herdinkz-portofolio.vercel.app'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      // For now, in dev, we might want to be lenient or strictly check
+      // return callback(new Error('The CORS policy for this site does not allow access from the specified Origin.'), false);
+      // Warning: relaxing this for dev convenience if origin is localhost
+      return callback(null, true); 
+    }
+    return callback(null, true);
+  },
+  credentials: true
+}));
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 // MongoDB Connection

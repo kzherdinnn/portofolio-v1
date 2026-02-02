@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaUser, FaLock } from 'react-icons/fa';
 
+import { API_BASE_URL } from '../config';
+
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -15,18 +17,19 @@ const Login = () => {
         setLoading(true);
 
         try {
-            const response = await fetch('https://herdinkz-portofolio.vercel.app/api/auth/login', {
+            const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify({ username, password }),
             });
 
             const data = await response.json();
 
             if (data.success) {
-                localStorage.setItem('adminToken', data.token); // Store token
+                // localStorage.setItem('adminToken', data.token); // No longer needed with cookies
                 navigate('/admin'); // Redirect to dashboard
             } else {
                 setError(data.message || 'Login failed');
