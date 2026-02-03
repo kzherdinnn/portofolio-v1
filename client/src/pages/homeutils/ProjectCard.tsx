@@ -1,5 +1,5 @@
 import { LuMoveRight, LuExternalLink } from "react-icons/lu";
-import { useState } from "react";
+
 
 interface ProjectCardInterface {
   image: string;
@@ -11,13 +11,10 @@ interface ProjectCardInterface {
 }
 
 function ProjectCard({ category, image, title, description, link, callBack }: ProjectCardInterface) {
-  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div
       onClick={callBack}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       className="project-card relative rounded-xl bg-[#0f111a] border border-gray-800 hover:border-[#02ffff] transition-all duration-300 overflow-hidden group cursor-pointer lg:w-[25vw] flex flex-col h-full shadow-lg hover:shadow-[#02ffff]/20"
     >
       {/* Image Section */}
