@@ -277,31 +277,33 @@ const AdminDashboard = () => {
                             <h1 className="text-3xl font-bold text-white">Portfolio Admin</h1>
                             <p className="text-gray-400 mt-1">Manage your portfolio content</p>
                         </div>
-                        <div className="flex gap-3">
-                            <button
-                                onClick={() => navigate('/admin/comments')}
-                                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors shadow-lg"
-                            >
-                                <FaComments /> Manage Comments
-                            </button>
-                            <button
-                                onClick={() => openModal()}
-                                className="flex items-center gap-2 bg-[#02ffff] hover:bg-[#02ffff]/90 text-black px-6 py-3 rounded-lg font-medium transition-colors shadow-lg"
-                            >
-                                <FaPlus /> Add New
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className="flex gap-2 mb-8 bg-gray-900 p-2 rounded-lg w-fit border border-gray-800">
-                    {['PROJECTS', 'EXPERIENCE', 'CERTIFICATES'].map((tab) => (
-                        <button key={tab} onClick={() => setActiveTab(tab as any)} className={`px-6 py-3 rounded-lg font-medium transition-all ${activeTab === tab ? 'bg-[#02ffff] text-black shadow-lg' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}>
-                            {tab}
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                    <div className="flex gap-2 bg-gray-900 p-2 rounded-lg w-fit border border-gray-800">
+                        {['PROJECTS', 'EXPERIENCE', 'CERTIFICATES'].map((tab) => (
+                            <button key={tab} onClick={() => setActiveTab(tab as any)} className={`px-6 py-3 rounded-lg font-medium transition-all ${activeTab === tab ? 'bg-[#02ffff] text-black shadow-lg' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}>
+                                {tab}
+                            </button>
+                        ))}
+                    </div>
+                    <div className="flex gap-3">
+                        <button
+                            onClick={() => navigate('/admin/comments')}
+                            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors shadow-lg"
+                        >
+                            <FaComments /> Manage Comments
                         </button>
-                    ))}
+                        <button
+                            onClick={() => openModal()}
+                            className="flex items-center gap-2 bg-[#02ffff] hover:bg-[#02ffff]/90 text-black px-6 py-3 rounded-lg font-medium transition-colors shadow-lg"
+                        >
+                            <FaPlus /> Add New
+                        </button>
+                    </div>
                 </div>
 
                 {loading ? (
