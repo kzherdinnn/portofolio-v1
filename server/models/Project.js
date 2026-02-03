@@ -11,12 +11,10 @@ const ProjectSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ['Full-Stack Development', 'AI/Machine Learning', 'Mobile Development', 'Blockchain Development'],
     required: true
   },
   type: {
     type: String,
-    enum: ['FULLSTACK', 'AI', 'MOBILE', 'BLOCKCHAIN'],
     required: true
   },
   image: {
@@ -25,6 +23,7 @@ const ProjectSchema = new mongoose.Schema({
   },
   description: String,
   technologies: [String],
+  features: [String],
   link: String,
   github: String,
   createdAt: {

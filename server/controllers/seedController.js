@@ -68,3 +68,109 @@ exports.seedExperience = async (req, res) => {
     });
   }
 };
+
+const projectTypeData = [
+  { name: 'FULLSTACK', label: 'Full-Stack' },
+  { name: 'AI', label: 'AI/ML' },
+  { name: 'MOBILE', label: 'Pengembangan Seluler' },
+  { name: 'BLOCKCHAIN', label: 'Blockchain' }
+];
+
+const ProjectType = require('../models/ProjectType');
+
+exports.seedProjectTypes = async (req, res) => {
+  try {
+    // Clear existing
+    await ProjectType.deleteMany({});
+    
+    // Insert new
+    const types = await ProjectType.insertMany(projectTypeData);
+    
+    res.json({
+      success: true,
+      message: `Successfully seeded ${types.length} project types`,
+      data: types
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error seeding project types',
+      error: error.message
+    });
+  }
+};
+
+
+const Project = require('../models/Project');
+
+const projectData = [
+  {
+    title: 'Aritmatika Solver',
+    slug: 'aritmatika-solver',
+    category: 'AI/ML',
+    type: 'AI',
+    image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=900&q=80',
+    description: 'Program ini dirancang untuk mempermudah pengguna dalam menyelesaikan soal-soal Aritmatika secara otomatis dengan menggunakan bahasa pemrograman Python. Tujuan utama dari program ini adalah untuk membantu pengguna, terutama pelajar, dalam menyelesaikan soal-soal Aritmatika dengan lebih cepat dan mudah.',
+    technologies: ['Python', 'OpenCV', 'Tesseract OCR', 'Tkinter'],
+    features: [
+      'Menghitung suku tertentu dari barisan aritmatika dengan rumus suku ke-n.',
+      'Menentukan suku pertama atau beda jika hanya dua suku diketahui.',
+      'Menghitung jumlah n suku pertama dengan langkah perhitungan yang jelas.',
+      'Antarmuka pengguna yang sederhana dan mudah digunakan.'
+    ],
+    link: 'https://example.com/aritmatika',
+    github: 'https://github.com/example/aritmatika'
+  },
+  {
+    title: 'AutoChat-Discord',
+    slug: 'autochat-discord',
+    category: 'Full-Stack Development',
+    type: 'FULLSTACK',
+    image: 'https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=900&q=80',
+    description: 'AutoChat adalah solusi otomatisasi untuk mengirim pesan ke saluran Discord secara terjadwal. Dibangun dengan Node.js dan Discord.js, alat ini memungkinkan komunitas untuk tetap aktif dengan pesan otomatis yang dapat disesuaikan sepenuhnya.',
+    technologies: ['Node.js', 'Discord.js', 'MongoDB', 'Cron Jobs'],
+    features: [
+      'Pengiriman pesan otomatis terjadwal (interval waktu kustom).',
+      'Dukungan multi-channel dan multi-server.',
+      'Dashboard admin berbasis web untuk mengelola pesan.',
+      'Log aktivitas real-time.'
+    ],
+    link: 'https://example.com/autochat',
+    github: 'https://github.com/example/autochat'
+  },
+  {
+    title: 'Buku Catatan',
+    slug: 'buku-catatan',
+    category: 'Full-Stack Development',
+    type: 'FULLSTACK',
+    image: 'https://images.unsplash.com/photo-1517842645767-c639042777db?w=900&q=80',
+    description: 'Buku Catatan adalah website yang memungkinkan pengguna untuk membuat, menyimpan, dan mengelola catatan secara digital. Dibuat dengan React dan Firebase, aplikasi ini menawarkan sinkronisasi real-time dan akses offline untuk produktivitas maksimal.',
+    technologies: ['React', 'Firebase', 'Tailwind CSS', 'Redux'],
+    features: [
+      'CRUD Catatan (Create, Read, Update, Delete).',
+      'Kategorisasi catatan dengan label warna.',
+      'Pencarian catatan instan.',
+      'Mode gelap dan terang.'
+    ],
+    link: 'https://example.com/notes',
+    github: 'https://github.com/example/notes'
+  }
+];
+
+exports.seedProjects = async (req, res) => {
+  try {
+    await Project.deleteMany({});
+    const projects = await Project.insertMany(projectData);
+    res.json({
+      success: true,
+      message: `Successfully seeded ${projects.length} projects`,
+      data: projects
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error seeding projects',
+      error: error.message
+    });
+  }
+};

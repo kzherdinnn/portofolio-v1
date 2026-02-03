@@ -6,8 +6,9 @@ import { FaEdit, FaTrash, FaPlus, FaTimes, FaImage, FaUpload, FaComments } from 
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<'PROJECTS' | 'EXPERIENCE' | 'CERTIFICATES'>('PROJECTS');
+    const [activeTab, setActiveTab] = useState<'PROJECTS' | 'EXPERIENCE' | 'CERTIFICATES' | 'CATEGORIES'>('PROJECTS');
     const [items, setItems] = useState<any[]>([]);
+    const [projectTypes, setProjectTypes] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [formData, setFormData] = useState<any>({});
@@ -17,10 +18,16 @@ const AdminDashboard = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
+            // Always fetch types for dropdown
+            const typesResponse = await api.getProjectTypes();
+            setProjectTypes(typesResponse.data);
+
             let response;
             if (activeTab === 'PROJECTS') response = await api.getProjects();
             else if (activeTab === 'EXPERIENCE') response = await api.getExperience();
             else if (activeTab === 'CERTIFICATES') response = await api.getCertificates();
+            else if (activeTab === 'CATEGORIES') response = { data: typesResponse.data };
+
             const responseData = response?.data;
             if (Array.isArray(responseData)) {
                 setItems(responseData);
@@ -47,6 +54,7 @@ const AdminDashboard = () => {
             if (activeTab === 'PROJECTS') await api.deleteProject(id);
             else if (activeTab === 'EXPERIENCE') await api.deleteExperience(id);
             else if (activeTab === 'CERTIFICATES') await api.deleteCertificate(id);
+            else if (activeTab === 'CATEGORIES') await api.deleteProjectType(id);
             fetchData();
         } catch (error) {
             console.error('Delete error:', error);
@@ -60,10 +68,13 @@ const AdminDashboard = () => {
                 if (activeTab === 'PROJECTS') await api.updateProject(editingId, formData);
                 else if (activeTab === 'EXPERIENCE') await api.updateExperience(editingId, formData);
                 else if (activeTab === 'CERTIFICATES') await api.updateCertificate(editingId, formData);
+                // Note: Categories usually don't need update if ID is the key, but we might want to update label
+                else if (activeTab === 'CATEGORIES') await api.createProjectType(formData); // Simple overwrite/add for now or implement update
             } else {
                 if (activeTab === 'PROJECTS') await api.createProject(formData);
                 else if (activeTab === 'EXPERIENCE') await api.createExperience(formData);
                 else if (activeTab === 'CERTIFICATES') await api.createCertificate(formData);
+                else if (activeTab === 'CATEGORIES') await api.createProjectType(formData);
             }
             setIsModalOpen(false);
             setFormData({});
@@ -104,6 +115,22 @@ const AdminDashboard = () => {
     const renderFormFields = () => {
         const inputClass = "w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-800 focus:border-[#02ffff] focus:outline-none transition-colors";
         const labelClass = "block text-sm font-medium mb-2 text-gray-300";
+
+        if (activeTab === 'CATEGORIES') {
+            return (
+                <div className="space-y-4">
+                    <div>
+                        <label className={labelClass}>Unique ID (e.g., FULLSTACK, AI)</label>
+                        <input className={inputClass} placeholder="FULLSTACK" value={formData.name || ''} onChange={e => setFormData({ ...formData, name: e.target.value.toUpperCase() })} />
+                        <p className="text-xs text-gray-500 mt-1">Must be unique, uppercase, no spaces</p>
+                    </div>
+                    <div>
+                        <label className={labelClass}>Display Label (e.g., Full-Stack Development)</label>
+                        <input className={inputClass} placeholder="Full-Stack Development" value={formData.label || ''} onChange={e => setFormData({ ...formData, label: e.target.value })} />
+                    </div>
+                </div>
+            );
+        }
 
         if (activeTab === 'CERTIFICATES') {
             return (
@@ -167,18 +194,33 @@ const AdminDashboard = () => {
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className={labelClass}>Category</label>
-                            <input className={inputClass} placeholder="Full-Stack Development" value={formData.category || ''} onChange={e => setFormData({ ...formData, category: e.target.value })} />
-                        </div>
-                        <div>
                             <label className={labelClass}>Type</label>
-                            <select className={inputClass} value={formData.type || 'FULLSTACK'} onChange={e => setFormData({ ...formData, type: e.target.value })}>
-                                <option value="FULLSTACK">Full-Stack</option>
-                                <option value="AI">AI/ML</option>
-                                <option value="MOBILE">Mobile</option>
-                                <option value="BLOCKCHAIN">Blockchain</option>
+                            <select
+                                className={inputClass}
+                                value={formData.type || ''}
+                                onChange={e => {
+                                    const selectedType = projectTypes.find(t => t.name === e.target.value);
+                                    setFormData({
+                                        ...formData,
+                                        type: e.target.value,
+                                        category: selectedType ? selectedType.label : ''
+                                    });
+                                }}
+                            >
+                                <option value="" disabled>Select Type</option>
+                                {projectTypes.map(type => (
+                                    <option key={type._id} value={type.name}>{type.label}</option>
+                                ))}
                             </select>
                         </div>
+                        <div>
+                            <label className={labelClass}>Slug (optional)</label>
+                            <input className={inputClass} placeholder="ecommerce-platform" value={formData.slug || ''} onChange={e => setFormData({ ...formData, slug: e.target.value })} />
+                        </div>
+                    </div>
+                    <div>
+                        <label className={labelClass}>Description</label>
+                        <textarea className={inputClass} placeholder="Project description..." rows={4} value={formData.description || ''} onChange={e => setFormData({ ...formData, description: e.target.value })} />
                     </div>
                     <div>
                         <label className={labelClass}><FaImage className="inline mr-2" />Project Image</label>
@@ -198,9 +240,23 @@ const AdminDashboard = () => {
                             )}
                         </div>
                     </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className={labelClass}>Live Demo Link</label>
+                            <input className={inputClass} placeholder="https://demo.com" value={formData.link || ''} onChange={e => setFormData({ ...formData, link: e.target.value })} />
+                        </div>
+                        <div>
+                            <label className={labelClass}>Github Link</label>
+                            <input className={inputClass} placeholder="https://github.com/..." value={formData.github || ''} onChange={e => setFormData({ ...formData, github: e.target.value })} />
+                        </div>
+                    </div>
                     <div>
-                        <label className={labelClass}>Slug (optional)</label>
-                        <input className={inputClass} placeholder="ecommerce-platform" value={formData.slug || ''} onChange={e => setFormData({ ...formData, slug: e.target.value })} />
+                        <label className={labelClass}>Technologies (comma separated)</label>
+                        <input className={inputClass} placeholder="React, Node.js, Python" value={formData.technologies?.join(',') || ''} onChange={e => setFormData({ ...formData, technologies: e.target.value.split(',').map((s: string) => s.trim()) })} />
+                    </div>
+                    <div>
+                        <label className={labelClass}>Key Features (comma separated)</label>
+                        <textarea className={inputClass} placeholder="Feature 1, Feature 2, Feature 3" rows={3} value={formData.features?.join(',') || ''} onChange={e => setFormData({ ...formData, features: e.target.value.split(',').map((s: string) => s.trim()) })} />
                     </div>
                 </div>
             );
@@ -283,8 +339,8 @@ const AdminDashboard = () => {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-                    <div className="flex gap-2 bg-gray-900 p-2 rounded-lg w-fit border border-gray-800">
-                        {['PROJECTS', 'EXPERIENCE', 'CERTIFICATES'].map((tab) => (
+                    <div className="flex gap-2 bg-gray-900 p-2 rounded-lg w-fit border border-gray-800 overflow-x-auto">
+                        {['PROJECTS', 'EXPERIENCE', 'CERTIFICATES', 'CATEGORIES'].map((tab) => (
                             <button key={tab} onClick={() => setActiveTab(tab as any)} className={`px-6 py-3 rounded-lg font-medium transition-all ${activeTab === tab ? 'bg-[#02ffff] text-black shadow-lg' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}>
                                 {tab}
                             </button>
@@ -322,8 +378,8 @@ const AdminDashboard = () => {
                                 <div key={item._id} className="bg-gray-900 border border-gray-800 p-6 rounded-lg hover:border-[#02ffff] transition-all">
                                     <div className="flex justify-between items-start">
                                         <div className="flex-1">
-                                            <h3 className="font-bold text-xl text-white mb-2">{item.heading || item.title || item.role}</h3>
-                                            <p className="text-gray-400 line-clamp-2">{item.desc || item.description || item.category}</p>
+                                            <h3 className="font-bold text-xl text-white mb-2">{item.heading || item.title || item.role || item.name}</h3>
+                                            <p className="text-gray-400 line-clamp-2">{item.desc || item.description || item.category || item.label}</p>
                                             {item.image && <img src={item.image} alt="" className="mt-3 h-20 object-cover rounded" />}
                                         </div>
                                         <div className="flex gap-2 ml-4">
@@ -339,21 +395,23 @@ const AdminDashboard = () => {
             </div>
 
             {isModalOpen && (
-                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
-                    <div className="bg-gray-900 rounded-xl w-full max-w-2xl my-8 border border-gray-800 shadow-2xl">
-                        <div className="flex justify-between items-center p-6 border-b border-gray-800">
-                            <h2 className="text-2xl font-bold text-white">{editingId ? 'Edit Item' : 'Add New Item'}</h2>
-                            <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-white transition-colors"><FaTimes size={24} /></button>
-                        </div>
-                        <form onSubmit={handleSubmit} className="p-6">
-                            {renderFormFields()}
-                            <div className="flex gap-3 mt-6">
-                                <button type="submit" disabled={uploading} className="flex-1 bg-[#02ffff] hover:bg-[#02ffff]/90 disabled:bg-gray-600 text-black py-3 rounded-lg font-medium transition-colors">
-                                    {uploading ? 'Uploading...' : 'Save Changes'}
-                                </button>
-                                <button type="button" onClick={() => setIsModalOpen(false)} className="px-6 bg-gray-800 hover:bg-gray-700 text-white py-3 rounded-lg font-medium transition-colors">Cancel</button>
+                <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm">
+                    <div className="flex min-h-full items-center justify-center p-4">
+                        <div className="w-full max-w-2xl rounded-xl border border-gray-800 bg-gray-900 shadow-2xl relative">
+                            <div className="flex justify-between items-center p-6 border-b border-gray-800">
+                                <h2 className="text-2xl font-bold text-white">{editingId ? 'Edit Item' : 'Add New Item'}</h2>
+                                <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-white transition-colors"><FaTimes size={24} /></button>
                             </div>
-                        </form>
+                            <form onSubmit={handleSubmit} className="p-6">
+                                {renderFormFields()}
+                                <div className="flex gap-3 mt-6">
+                                    <button type="submit" disabled={uploading} className="flex-1 bg-[#02ffff] hover:bg-[#02ffff]/90 disabled:bg-gray-600 text-black py-3 rounded-lg font-medium transition-colors">
+                                        {uploading ? 'Uploading...' : 'Save Changes'}
+                                    </button>
+                                    <button type="button" onClick={() => setIsModalOpen(false)} className="px-6 bg-gray-800 hover:bg-gray-700 text-white py-3 rounded-lg font-medium transition-colors">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             )}

@@ -55,6 +55,7 @@ app.use('/api/comments', require('./routes/comments'));
 app.use('/api/certificates', require('./routes/certificates'));
 app.use('/api/seed', require('./routes/seed'));
 app.use('/api', require('./routes/upload'));
+app.use('/api/project-types', require('./routes/projectTypeRoutes'));
 
 // Serve uploaded files
 app.use('/uploads', express.static('uploads'));

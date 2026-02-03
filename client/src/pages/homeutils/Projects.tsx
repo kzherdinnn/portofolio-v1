@@ -2,33 +2,38 @@
 import { useState, useEffect } from "react";
 import Animate from "../../utils/animations/Animate";
 import ProjectCard from "./ProjectCard";
-import { useUpdateProjectDetails } from "../../hooks/appHooks";
 import { api } from "../../utils/api";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function Projects() {
-  const [selectedType, setSelectedType] = useState<
-    "ALL" | "FULLSTACK" | "AI" | "MOBILE" | "BLOCKCHAIN"
-  >("ALL");
+  const navigate = useNavigate();
+  const [selectedType, setSelectedType] = useState<string>("ALL");
+  const [projectTypes, setProjectTypes] = useState<any[]>([]);
 
   const [projects, setProjects] = useState([]);
   const [showAll, setShowAll] = useState(false);
-  const { updateProjectDetails } = useUpdateProjectDetails();
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    const fetchData = async () => {
       try {
-        const response = await api.getProjects();
-        setProjects(response.data);
+        const [projectsRes, typesRes] = await Promise.all([
+          api.getProjects(),
+          api.getProjectTypes()
+        ]);
+        setProjects(projectsRes.data);
+        setProjectTypes(typesRes.data);
       } catch (error) {
-        console.error("Failed to fetch projects:", error);
+        console.error("Failed to fetch data:", error);
       }
     };
-    fetchProjects();
+    fetchData();
   }, []);
 
-  function handleCallBack(project: string) {
-    updateProjectDetails(project);
+  function handleCallBack(slug: string) {
+    if (slug) {
+      navigate(`/project/${slug}`);
+    }
   }
 
   // Safety check: ensure projects is an array
@@ -44,145 +49,66 @@ function Projects() {
 
   return (
     <div className="mt-[10vh] px-4">
-      <div className="text-xs flex flex-col gap-5 lg:items-center justify-center lg:gap-2 lg:flex-row hover:text-foreground/50">
-        <div className="flex gap-3">
-          <Animate type="slideDown" delay={200}>
-            <div className="cursor-pointer flex items-center">
-              <div
-                className="relative flex"
-                onClick={() => {
-                  setSelectedType("NONE" as any);
-                  setTimeout(() => {
-                    setSelectedType("ALL");
-                  }, 100);
-                }}
-              >
-                <div className="absolute -right-3 text-xs -top-3 text-secondary">
-                  {safeProjects.length}
-                </div>
-                <h3
-                  className={`${selectedType === "ALL"
-                    ? "scale-105 border-b border-primary text-primary"
-                    : "text-foreground/50"
-                    } hover:border-b border-primary hover:scale-105 hover:text-primary`}
-                >
-                  Filter SEMUA
-                </h3>
-              </div>
-              <div className="ml-4 lg:ml-2"> /</div>
-            </div>
-          </Animate>
+      <div className="text-xs flex flex-wrap gap-5 items-center justify-center hover:text-foreground/50">
 
-          <Animate type="slideDown" delay={400}>
-            <div className="cursor-pointer flex items-center gap-3">
-              <div
-                className="relative flex"
-                onClick={() => {
-                  setSelectedType("NONE" as any);
-                  setTimeout(() => {
-                    setSelectedType("FULLSTACK");
-                  }, 100);
-                }}
-              >
-                <div className="absolute -right-3 text-xs -top-3 text-secondary">
-                  {safeProjects.filter((p: any) => p.type === "FULLSTACK").length}
-                </div>
-                <h3
-                  className={`${selectedType === "FULLSTACK"
-                    ? "scale-105 border-b border-primary text-primary"
-                    : "text-foreground/50"
-                    } hover:border-b border-primary hover:scale-105 hover:text-primary`}
-                >
-                  Full-Stack
-                </h3>
+        {/* ALL Filter */}
+        <Animate type="slideDown" delay={200}>
+          <div className="cursor-pointer flex items-center">
+            <div
+              className="relative flex"
+              onClick={() => {
+                setSelectedType("NONE");
+                setTimeout(() => {
+                  setSelectedType("ALL");
+                }, 100);
+              }}
+            >
+              <div className="absolute -right-3 text-xs -top-3 text-secondary">
+                {safeProjects.length}
               </div>
-              <div className="ml-4 lg:ml-2 hidden lg:block"> /</div>
+              <h3
+                className={`${selectedType === "ALL"
+                  ? "scale-105 border-b border-primary text-primary"
+                  : "text-foreground/50"
+                  } hover:border-b border-primary hover:scale-105 hover:text-primary transition-all duration-300`}
+              >
+                Filter SEMUA
+              </h3>
             </div>
-          </Animate>
-        </div>
+            <div className="ml-4 lg:ml-2"> /</div>
+          </div>
+        </Animate>
 
-        <div className="flex gap-3">
-          <Animate type="slideDown" delay={600}>
+        {/* Dynamic Filters */}
+        {projectTypes.map((type, index) => (
+          <Animate key={type._id} type="slideDown" delay={200 + (index + 1) * 200}>
             <div className="cursor-pointer flex items-center">
               <div
                 className="relative flex"
                 onClick={() => {
-                  setSelectedType("NONE" as any);
+                  setSelectedType("NONE");
                   setTimeout(() => {
-                    setSelectedType("AI");
+                    setSelectedType(type.name);
                   }, 100);
                 }}
               >
                 <div className="absolute -right-3 text-xs -top-3 text-secondary">
-                  {safeProjects.filter((p: any) => p.type === "AI").length}
+                  {safeProjects.filter((p: any) => p.type === type.name).length}
                 </div>
                 <h3
-                  className={`${selectedType === "AI"
+                  className={`${selectedType === type.name
                     ? "scale-105 border-b border-primary text-primary"
                     : "text-foreground/50"
-                    } hover:border-b border-primary hover:scale-105 hover:text-primary`}
+                    } hover:border-b border-primary hover:scale-105 hover:text-primary transition-all duration-300`}
                 >
-                  AI/ML
+                  {type.label}
                 </h3>
               </div>
-              <div className="ml-4 lg:ml-2"> /</div>
+              {/* Add separator if not likely the last item, though hard to know perfectly in flex wrap, conditional logic is okay */}
+              {index < projectTypes.length - 1 && <div className="ml-4 lg:ml-2"> /</div>}
             </div>
           </Animate>
-          <Animate type="slideDown" delay={800}>
-            <div className="cursor-pointer flex items-center">
-              <div
-                className="relative flex"
-                onClick={() => {
-                  setSelectedType("NONE" as any);
-                  setTimeout(() => {
-                    setSelectedType("MOBILE");
-                  }, 100);
-                }}
-              >
-                <div className="absolute -right-3 text-xs -top-3 text-secondary">
-                  {safeProjects.filter((p: any) => p.type === "MOBILE").length}
-                </div>
-                <h3
-                  className={`${selectedType === "MOBILE"
-                    ? "scale-105 border-b border-primary text-primary"
-                    : "text-foreground/50"
-                    } hover:border-b border-primary hover:scale-105 hover:text-primary`}
-                >
-                  Pengembangan Seluler
-                </h3>
-              </div>
-              <div className="ml-4 lg:ml-2"> /</div>
-            </div>
-          </Animate>
-        </div>
-
-        <div className="flex">
-          <Animate type="slideDown" delay={800}>
-            <div className="cursor-pointer flex items-center">
-              <div
-                className="relative flex"
-                onClick={() => {
-                  setSelectedType("NONE" as any);
-                  setTimeout(() => {
-                    setSelectedType("BLOCKCHAIN");
-                  }, 100);
-                }}
-              >
-                <div className="absolute -right-3 text-xs -top-3 text-secondary">
-                  {safeProjects.filter((p: any) => p.type === "BLOCKCHAIN").length}
-                </div>
-                <h3
-                  className={`${selectedType === "BLOCKCHAIN"
-                    ? "scale-105 border-b border-primary text-primary"
-                    : "text-foreground/50"
-                    } hover:border-b border-primary hover:scale-105 hover:text-primary`}
-                >
-                  Blockchain
-                </h3>
-              </div>
-            </div>
-          </Animate>
-        </div>
+        ))}
       </div>
 
       <div className="flex flex-col items-center justify-center mt-[5vh] pb-[5vh]">
@@ -191,11 +117,13 @@ function Projects() {
             <Animate key={index} delay={300} type="slideUp">
               <ProjectCard
                 callBack={() => {
-                  handleCallBack(project.slug || "ECOMMERCE"); // Default or use project slug
+                  handleCallBack(project.slug || "ECOMMERCE");
                 }}
                 category={project.category}
                 title={project.title}
                 image={project.image}
+                description={project.description}
+                link={project.link}
               />
             </Animate>
           ))}

@@ -22,6 +22,11 @@ export const api = {
     updateCertificate: (id: string, data: any) => axios.put(`${API_BASE_URL}/api/certificates/${id}`, data),
     deleteCertificate: (id: string) => axios.delete(`${API_BASE_URL}/api/certificates/${id}`),
 
+    // Project Types
+    getProjectTypes: () => axios.get(`${API_BASE_URL}/api/project-types`),
+    createProjectType: (data: any) => axios.post(`${API_BASE_URL}/api/project-types`, data),
+    deleteProjectType: (id: string) => axios.delete(`${API_BASE_URL}/api/project-types/${id}`),
+
     // Upload
     uploadImage: (file: File) => {
         const formData = new FormData();

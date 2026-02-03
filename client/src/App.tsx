@@ -127,7 +127,7 @@ function App() {
       <div className="z-[998] absolute inset-0">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/projectdetail" element={<ProjectDetail />} />
+          <Route path="/project/:slug" element={<ProjectDetail />} />
           <Route path="/login" element={<Login />} />
 
           {/* Protected Admin Routes */}
