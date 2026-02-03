@@ -2,7 +2,7 @@
     "name": "portfolio-monorepo",
     "private": true,
     "scripts": {
-        "install-client": "cd client && npm install",
+        "install-client": "cd client && npm install --legacy-peer-deps",
         "install-server": "cd server && npm install --legacy-peer-deps",
         "postinstall": "npm run install-client && npm run install-server",
         "build": "cd client && npm run build"
