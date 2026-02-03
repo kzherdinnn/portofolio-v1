@@ -8,6 +8,6 @@
         "build": "cd client && npm run build"
     },
     "engines": {
-        "node": "22.x"
+        "node": "24.x"
     }
 }
