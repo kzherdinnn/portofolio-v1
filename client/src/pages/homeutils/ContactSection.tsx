@@ -37,7 +37,7 @@ function ContactSection() {
         setSubmitStatus({ type: null, message: '' });
 
         try {
-            const response = await fetch('https://herdinkz-portofolio.vercel.app/api/contact', {
+            const response = await fetch('https://kzherdin.onesite.my.id/api/contact', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

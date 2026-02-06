@@ -102,7 +102,7 @@ curl -X POST http://localhost:5000/api/seed/projects
 
 **Herdin**
 - **GitHub:** [@kzherdinnn](https://github.com/kzherdinnn)
-- **Portfolio:** [https://herdinkz-portofolio.vercel.app/](https://herdinkz-portofolio.vercel.app/)
+- **Portfolio:** [https://kzherdin.onesite.my.id/](https://kzherdin.onesite.my.id/)
 
 ---
 *Built with ❤️ and ☕ by Herdin*

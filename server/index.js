@@ -12,7 +12,7 @@ const app = express();
 // Middleware
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://herdinkz-portofolio.vercel.app'
+  'https://kzherdin.onesite.my.id'
 ];
 
 app.use(cors({
