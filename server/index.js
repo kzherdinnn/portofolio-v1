@@ -12,7 +12,7 @@ const app = express();
 // Middleware
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://kzherdin.onesite.my.id'
+  'https://www.kzherdin.onesite.my.id'
 ];
 
 app.use(cors({

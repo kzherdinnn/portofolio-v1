@@ -21,7 +21,7 @@ function AdminComments() {
 
     const fetchComments = async () => {
         try {
-            const response = await fetch('https://kzherdin.onesite.my.id/api/comments');
+            const response = await fetch('https://www.kzherdin.onesite.my.id/api/comments');
             const data = await response.json();
             if (data.success) {
                 setComments(data.data);
@@ -36,7 +36,7 @@ function AdminComments() {
     const handleTogglePin = async (id: string) => {
         setActionLoading(id);
         try {
-            const response = await fetch(`https://kzherdin.onesite.my.id/api/comments/${id}/pin`, {
+            const response = await fetch(`https://www.kzherdin.onesite.my.id/api/comments/${id}/pin`, {
                 method: 'PATCH',
             });
 
@@ -58,7 +58,7 @@ function AdminComments() {
 
         setActionLoading(id);
         try {
-            const response = await fetch(`https://kzherdin.onesite.my.id/api/comments/${id}`, {
+            const response = await fetch(`https://www.kzherdin.onesite.my.id/api/comments/${id}`, {
                 method: 'DELETE',
             });
 
