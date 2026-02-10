@@ -139,14 +139,18 @@ const AdminDashboard = () => {
                         <label className={labelClass}>Certificate Title</label>
                         <input className={inputClass} placeholder="AWS Certified Solutions Architect" value={formData.title || ''} onChange={e => setFormData({ ...formData, title: e.target.value })} />
                     </div>
+                    <div>
+                        <label className={labelClass}>Issuer</label>
+                        <input className={inputClass} placeholder="Amazon Web Services" value={formData.issuer || ''} onChange={e => setFormData({ ...formData, issuer: e.target.value })} />
+                    </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className={labelClass}>Issuer</label>
-                            <input className={inputClass} placeholder="Amazon Web Services" value={formData.issuer || ''} onChange={e => setFormData({ ...formData, issuer: e.target.value })} />
+                            <label className={labelClass}>Issue Date</label>
+                            <input className={inputClass} placeholder="e.g. June 2025" value={formData.issueDate || ''} onChange={e => setFormData({ ...formData, issueDate: e.target.value })} />
                         </div>
                         <div>
-                            <label className={labelClass}>Issue Date</label>
-                            <input type="date" className={inputClass} value={formData.issueDate || ''} onChange={e => setFormData({ ...formData, issueDate: e.target.value })} />
+                            <label className={labelClass}>Expiration Date</label>
+                            <input className={inputClass} placeholder="e.g. June 2028" value={formData.expirationDate || ''} onChange={e => setFormData({ ...formData, expirationDate: e.target.value })} />
                         </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4">

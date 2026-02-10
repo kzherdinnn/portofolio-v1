@@ -117,6 +117,18 @@ function CertificateDetail() {
                                         </div>
                                     </div>
 
+                                    {certificate.expirationDate && (
+                                        <div className="flex items-center gap-4 group">
+                                            <div className="w-12 h-12 rounded bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-[#02ffff]/50 transition-colors">
+                                                <MdDateRange className="w-6 h-6 text-orange-400" />
+                                            </div>
+                                            <div>
+                                                <p className="text-xs text-gray-500 uppercase tracking-tighter">Expiration Date</p>
+                                                <p className="text-xl font-bold text-white">{certificate.expirationDate}</p>
+                                            </div>
+                                        </div>
+                                    )}
+
                                     {certificate.credentialId && (
                                         <div className="flex items-center gap-4 group">
                                             <div className="w-12 h-12 rounded bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-[#02ffff]/50 transition-colors">
@@ -196,7 +208,7 @@ function CertificateDetail() {
                                 </div>
                                 <div className="p-8 font-mono text-sm text-gray-400 space-y-4 leading-relaxed">
                                     <p><span className="text-[#02ffff]">STATUS:</span> COMPLETED</p>
-                                    <p><span className="text-[#02ffff]">VALIDITY:</span> PERMANENT</p>
+                                    <p><span className="text-[#02ffff]">VALIDITY:</span> {certificate.expirationDate || "PERMANENT"}</p>
                                     <p><span className="text-[#02ffff]">METADATA:</span> This certification represents technical proficiency in {certificate.issuer}'s curriculum, validated through rigorous assessment and project-based evaluation.</p>
                                     <div className="mt-8 pt-8 border-t border-gray-800 text-[10px] text-gray-600">
                                         ID_AUTO_GENERATED: {id}<br />

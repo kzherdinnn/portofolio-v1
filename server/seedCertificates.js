@@ -8,6 +8,17 @@ dotenv.config({ path: path.join(__dirname, '.env') });
 
 const certificateData = [
     {
+        title: 'Belajar Fundamental Aplikasi Android',
+        issuer: 'Dicoding Indonesia',
+        issueDate: 'Juni 2025',
+        expirationDate: 'Juni 2028',
+        credentialId: '4EXGVMGLQXRL',
+        credentialUrl: 'https://www.dicoding.com/certificates/4EXGVMGLQXRL',
+        image: 'https://images.unsplash.com/photo-1607252650355-f7fd0460ccdb?q=80&w=2070&auto=format&fit=crop',
+        skills: ['Kotlin', 'Android Development', 'Mobile App Development'],
+        displayOrder: 1
+    },
+    {
         title: 'Full Stack Web Development Professional Certificate',
         issuer: 'Meta',
         issueDate: 'December 2023',
