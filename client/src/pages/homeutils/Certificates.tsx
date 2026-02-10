@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Animate from "../../utils/animations/Animate";
 import { FaChevronDown, FaChevronUp, FaCertificate, FaExternalLinkAlt } from "react-icons/fa";
+import { LuMoveRight } from "react-icons/lu";
 import { api } from "../../utils/api";
 
 const DUMMY_CERTIFICATES = [
@@ -56,6 +58,7 @@ const DUMMY_CERTIFICATES = [
 ];
 
 function Certificates() {
+    const navigate = useNavigate();
     const [certificates, setCertificates] = useState<any[]>(DUMMY_CERTIFICATES);
     const [showAll, setShowAll] = useState(false);
 
@@ -161,8 +164,8 @@ function Certificates() {
                                         )}
                                     </div>
 
-                                    {cert.link && (
-                                        <div className="pt-4 border-t border-foreground/10 group-hover:border-primary/20 transition-colors duration-300">
+                                    <div className="pt-4 border-t border-foreground/10 group-hover:border-primary/20 transition-colors duration-300 flex items-center justify-between">
+                                        {cert.link ? (
                                             <a
                                                 href={cert.link}
                                                 target="_blank"
@@ -172,8 +175,15 @@ function Certificates() {
                                                 View Certificate
                                                 <FaExternalLinkAlt className="w-3 h-3" />
                                             </a>
-                                        </div>
-                                    )}
+                                        ) : <div />}
+
+                                        <button
+                                            onClick={() => navigate(`/certificate/${cert._id || cert.id || cert.title?.toLowerCase().replace(/\s+/g, '-')}`)}
+                                            className="flex items-center text-gray-400 group-hover:text-white text-sm font-medium transition-colors gap-1"
+                                        >
+                                            Details <LuMoveRight className="transition-transform group-hover:translate-x-1" />
+                                        </button>
+                                    </div>
                                 </div>
                                 <div className="absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-primary/0 group-hover:border-primary/40 rounded-tr-xl transition-all duration-500"></div>
                             </div>
