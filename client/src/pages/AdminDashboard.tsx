@@ -14,6 +14,8 @@ const AdminDashboard = () => {
     const [formData, setFormData] = useState<any>({});
     const [editingId, setEditingId] = useState<string | null>(null);
     const [uploading, setUploading] = useState(false);
+    const [showMediaInput, setShowMediaInput] = useState(false);
+    const [showSkillInput, setShowSkillInput] = useState(false);
 
     const fetchData = async () => {
         setLoading(true);
@@ -93,6 +95,8 @@ const AdminDashboard = () => {
             setFormData({});
             setEditingId(null);
         }
+        setShowMediaInput(false);
+        setShowSkillInput(false);
         setIsModalOpen(true);
     };
 
@@ -109,6 +113,29 @@ const AdminDashboard = () => {
             } finally {
                 setUploading(false);
             }
+        }
+    };
+
+    const handleFetchMetadata = async (url: string) => {
+        if (!url) {
+            alert('Please enter a URL first');
+            return;
+        }
+
+        setUploading(true);
+        try {
+            const response = await api.fetchMetadata(url);
+            if (response.data.success && response.data.image) {
+                setFormData({ ...formData, image: response.data.image });
+                alert('Media fetched successfully!');
+            } else {
+                alert('Could not auto-fetch image. Please upload manually.');
+            }
+        } catch (error) {
+            console.error('Fetch metadata error:', error);
+            alert('Failed to fetch media from URL');
+        } finally {
+            setUploading(false);
         }
     };
 
@@ -133,57 +160,166 @@ const AdminDashboard = () => {
         }
 
         if (activeTab === 'CERTIFICATES') {
+            const months = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+            const currentYear = new Date().getFullYear();
+            const years = Array.from({ length: 20 }, (_, i) => currentYear - 10 + i);
+
+            const splitDate = (dateStr: string) => {
+                if (!dateStr) return { month: '', year: '' };
+                const parts = dateStr.split(' ');
+                return { month: parts[0] || '', year: parts[1] || '' };
+            };
+
+            const issue = splitDate(formData.issueDate);
+            const expiry = splitDate(formData.expirationDate);
+
             return (
-                <div className="space-y-4">
+                <div className="space-y-6 text-gray-200">
+                    <p className="text-sm text-gray-400">* Wajib diisi</p>
+
                     <div>
-                        <label className={labelClass}>Certificate Title</label>
-                        <input className={inputClass} placeholder="AWS Certified Solutions Architect" value={formData.title || ''} onChange={e => setFormData({ ...formData, title: e.target.value })} />
+                        <label className={labelClass}>Nama*</label>
+                        <input className={inputClass} placeholder="Mis.: Microsoft certified network associate security" value={formData.title || ''} onChange={e => setFormData({ ...formData, title: e.target.value })} />
                     </div>
+
                     <div>
-                        <label className={labelClass}>Issuer</label>
-                        <input className={inputClass} placeholder="Amazon Web Services" value={formData.issuer || ''} onChange={e => setFormData({ ...formData, issuer: e.target.value })} />
+                        <label className={labelClass}>Organisasi penerbit*</label>
+                        <input className={inputClass} placeholder="Mis.: Microsoft" value={formData.issuer || ''} onChange={e => setFormData({ ...formData, issuer: e.target.value })} />
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className={labelClass}>Issue Date</label>
-                            <input className={inputClass} placeholder="e.g. June 2025" value={formData.issueDate || ''} onChange={e => setFormData({ ...formData, issueDate: e.target.value })} />
-                        </div>
-                        <div>
-                            <label className={labelClass}>Expiration Date</label>
-                            <input className={inputClass} placeholder="e.g. June 2028" value={formData.expirationDate || ''} onChange={e => setFormData({ ...formData, expirationDate: e.target.value })} />
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className={labelClass}>Credential ID</label>
-                            <input className={inputClass} placeholder="Optional" value={formData.credentialId || ''} onChange={e => setFormData({ ...formData, credentialId: e.target.value })} />
-                        </div>
-                        <div>
-                            <label className={labelClass}>Credential URL</label>
-                            <input className={inputClass} placeholder="https://..." value={formData.credentialUrl || ''} onChange={e => setFormData({ ...formData, credentialUrl: e.target.value })} />
-                        </div>
-                    </div>
+
                     <div>
-                        <label className={labelClass}><FaImage className="inline mr-2" />Certificate Image</label>
-                        <div className="border-2 border-dashed border-gray-800 rounded-lg p-6 text-center hover:border-[#02ffff] transition-colors">
-                            {formData.image ? (
-                                <div className="space-y-3">
-                                    <img src={formData.image} alt="Preview" className="mx-auto h-40 object-cover rounded-lg" />
-                                    <button type="button" onClick={() => setFormData({ ...formData, image: '' })} className="text-red-400 hover:text-red-300 text-sm">Remove Image</button>
-                                </div>
-                            ) : (
-                                <label className="cursor-pointer block">
-                                    <FaUpload className="mx-auto text-4xl text-gray-400 mb-2" />
-                                    <span className="text-gray-400">Click to upload or drag and drop</span>
-                                    <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e, 'image')} disabled={uploading} />
-                                    {uploading && <p className="text-[#02ffff] mt-2">Uploading...</p>}
-                                </label>
-                            )}
+                        <label className={labelClass}>Tanggal terbit</label>
+                        <div className="flex gap-4">
+                            <select
+                                className={`${inputClass} appearance-none cursor-pointer`}
+                                value={issue.month}
+                                onChange={e => setFormData({ ...formData, issueDate: `${e.target.value} ${issue.year}`.trim() })}
+                            >
+                                <option value="">Bulan</option>
+                                {months.map(m => <option key={m} value={m}>{m}</option>)}
+                            </select>
+                            <select
+                                className={`${inputClass} appearance-none cursor-pointer`}
+                                value={issue.year}
+                                onChange={e => setFormData({ ...formData, issueDate: `${issue.month} ${e.target.value}`.trim() })}
+                            >
+                                <option value="">Tahun</option>
+                                {years.map(y => <option key={y} value={y}>{y}</option>)}
+                            </select>
                         </div>
                     </div>
+
                     <div>
-                        <label className={labelClass}>Skills (comma separated)</label>
-                        <input className={inputClass} placeholder="Cloud Computing, AWS, Security" value={formData.skills?.join(',') || ''} onChange={e => setFormData({ ...formData, skills: e.target.value.split(',').map((s: string) => s.trim()) })} />
+                        <label className={labelClass}>Tanggal kedaluwarsa</label>
+                        <div className="flex gap-4">
+                            <select
+                                className={`${inputClass} appearance-none cursor-pointer`}
+                                value={expiry.month}
+                                onChange={e => setFormData({ ...formData, expirationDate: `${e.target.value} ${expiry.year}`.trim() })}
+                            >
+                                <option value="">Bulan</option>
+                                {months.map(m => <option key={m} value={m}>{m}</option>)}
+                            </select>
+                            <select
+                                className={`${inputClass} appearance-none cursor-pointer`}
+                                value={expiry.year}
+                                onChange={e => setFormData({ ...formData, expirationDate: `${expiry.month} ${e.target.value}`.trim() })}
+                            >
+                                <option value="">Tahun</option>
+                                {years.map(y => <option key={y} value={y}>{y}</option>)}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className={labelClass}>ID Kredensial</label>
+                        <input className={inputClass} value={formData.credentialId || ''} onChange={e => setFormData({ ...formData, credentialId: e.target.value })} />
+                    </div>
+
+                    <div>
+                        <label className={labelClass}>URL Kredensial</label>
+                        <input className={inputClass} value={formData.credentialUrl || ''} onChange={e => setFormData({ ...formData, credentialUrl: e.target.value })} />
+                    </div>
+
+                    <div className="pt-2">
+                        <h3 className="text-xl font-semibold mb-1">Keahlian</h3>
+                        <p className="text-sm text-gray-400 mb-4">Kaitkan minimal 1 keahlian ke lisensi atau sertifikasi ini. Akan ditampilkan juga di bagian Keahlian.</p>
+
+                        {(showSkillInput || (formData.skills && formData.skills.length > 0)) ? (
+                            <div className="space-y-2">
+                                <input
+                                    className={inputClass}
+                                    placeholder="Ex: Kotlin, Android Development (comma separated)"
+                                    value={formData.skills?.join(', ') || ''}
+                                    onChange={e => setFormData({ ...formData, skills: e.target.value.split(',').map((s: string) => s.trim()) })}
+                                    autoFocus
+                                />
+                            </div>
+                        ) : (
+                            <button type="button" onClick={() => setShowSkillInput(true)} className="flex items-center gap-2 text-blue-400 hover:bg-blue-400/10 px-4 py-2 rounded-full border border-blue-400 transition-colors font-semibold">
+                                <FaPlus /> Tambahkan keahlian
+                            </button>
+                        )}
+                    </div>
+
+                    <div className="pt-2">
+                        <h3 className="text-xl font-semibold mb-1">Media</h3>
+                        <p className="text-sm text-gray-400 mb-4">Tambahkan media seperti gambar, dokumen, website, atau presentasi. Pelajari lebih lanjut tentang jenis file media yang didukung</p>
+
+                        {(showMediaInput || formData.image) ? (
+                            <div className="border border-gray-700 rounded-lg p-4 space-y-4 animate-in fade-in slide-in-from-top-2">
+                                {formData.image ? (
+                                    <div className="relative group w-full aspect-video bg-black/50 rounded-lg overflow-hidden border border-gray-700">
+                                        <img src={formData.image} alt="Preview" className="w-full h-full object-contain" />
+                                        <button
+                                            type="button"
+                                            onClick={() => setFormData({ ...formData, image: '' })}
+                                            className="absolute top-2 right-2 bg-red-600 p-2 rounded-full text-white hover:bg-red-700 transition-colors"
+                                            title="Remove"
+                                        >
+                                            <FaTimes />
+                                        </button>
+                                        <div className="absolute bottom-0 left-0 right-0 bg-black/80 text-[#02ffff] text-xs p-2 text-center">
+                                            Media Attached
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-1 gap-4">
+                                        <div className="border border-dashed border-gray-600 rounded-lg p-6 flex flex-col items-center justify-center gap-2 hover:border-[#02ffff] hover:bg-[#02ffff]/5 transition-all text-center">
+                                            <FaUpload className="text-3xl text-gray-500 mb-2" />
+                                            <label className="cursor-pointer text-blue-400 hover:underline">
+                                                Upload Media
+                                                <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e, 'image')} disabled={uploading} />
+                                            </label>
+                                            <span className="text-xs text-gray-500">Supported formats: JPG, PNG</span>
+                                        </div>
+
+                                        <div className="flex gap-2">
+                                            <input
+                                                className={inputClass}
+                                                placeholder="Paste URL to fetch image..."
+                                                value={formData.tempUrl || formData.credentialUrl || ''}
+                                                onChange={e => setFormData({ ...formData, tempUrl: e.target.value })}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => handleFetchMetadata(formData.tempUrl || formData.credentialUrl)}
+                                                className="bg-[#02ffff]/10 text-[#02ffff] px-4 rounded hover:bg-[#02ffff]/20 whitespace-nowrap border border-[#02ffff]/50"
+                                            >
+                                                Fetch
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <button type="button" onClick={() => setShowMediaInput(true)} className="flex items-center gap-2 text-blue-400 hover:bg-blue-400/10 px-4 py-2 rounded-full border border-blue-400 transition-colors font-semibold">
+                                <FaPlus /> Tambah media
+                            </button>
+                        )}
                     </div>
                 </div>
             );
@@ -403,14 +539,18 @@ const AdminDashboard = () => {
                     <div className="flex min-h-full items-center justify-center p-4">
                         <div className="w-full max-w-2xl rounded-xl border border-gray-800 bg-gray-900 shadow-2xl relative">
                             <div className="flex justify-between items-center p-6 border-b border-gray-800">
-                                <h2 className="text-2xl font-bold text-white">{editingId ? 'Edit Item' : 'Add New Item'}</h2>
+                                <h2 className="text-2xl font-bold text-white">
+                                    {activeTab === 'CERTIFICATES'
+                                        ? 'Tambahkan lisensi atau sertifikasi'
+                                        : (editingId ? 'Edit Item' : 'Add New Item')}
+                                </h2>
                                 <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-white transition-colors"><FaTimes size={24} /></button>
                             </div>
                             <form onSubmit={handleSubmit} className="p-6">
                                 {renderFormFields()}
                                 <div className="flex gap-3 mt-6">
                                     <button type="submit" disabled={uploading} className="flex-1 bg-[#02ffff] hover:bg-[#02ffff]/90 disabled:bg-gray-600 text-black py-3 rounded-lg font-medium transition-colors">
-                                        {uploading ? 'Uploading...' : 'Save Changes'}
+                                        {uploading ? 'Uploading...' : (activeTab === 'CERTIFICATES' ? 'Simpan' : 'Save Changes')}
                                     </button>
                                     <button type="button" onClick={() => setIsModalOpen(false)} className="px-6 bg-gray-800 hover:bg-gray-700 text-white py-3 rounded-lg font-medium transition-colors">Cancel</button>
                                 </div>
