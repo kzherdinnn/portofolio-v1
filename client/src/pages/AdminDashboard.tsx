@@ -268,7 +268,7 @@ const AdminDashboard = () => {
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className={labelClass}>Role</label>
-                            <input className={inputClass} placeholder="Software Engineer" value={formData.role || ''} onChange={e => setFormData({ ...formData, role: e.target.value })} />
+                            <input className={inputClass} placeholder="Full-Stack Web Developer" value={formData.role || ''} onChange={e => setFormData({ ...formData, role: e.target.value })} />
                         </div>
                         <div>
                             <label className={labelClass}>Company</label>

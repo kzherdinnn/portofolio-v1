@@ -56,7 +56,8 @@ const Terminal = () => {
             case "about":
                 setHistory(prev => [...prev,
                     "Undergraduate Informatics Engineering at UIN Sunan Gunung Djati Bandung.",
-                    "Focus: Full-Stack Dev, Data Science, NLP, Mobile Apps, and QA."
+                    "Professional: Full-Stack Web Developer.",
+                    "Focus: Data Science, NLP, Mobile Apps, and QA."
                 ]);
                 break;
             case "skills":

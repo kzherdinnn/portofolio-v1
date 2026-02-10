@@ -78,7 +78,8 @@ function BottomNav() {
         <Animate delay={200} type="slideDown">
           <div className="w-full flex flex-col gap-2 lg:flex-row lg:justify-between lg:px-20">
             <div className="flex items-center justify-center text-foreground/40 text-xs lg:text-md">
-              © 2026 HerdinKz — Software Engineer
+              © <span className="text-emerald-500 font-bold mx-1">2026</span> HerdinKz —
+              <span className="text-emerald-500/80 ml-1">Full-Stack Web Developer</span>
             </div>
 
             <div className="flex flex-col gap-2 mb-10 text-center items-center justify-center text-foreground/40 text-xs lg:text-md font-mono">

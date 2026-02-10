@@ -294,11 +294,11 @@ function AboutMe() {
                                 <Animate key={stat.label} delay={600 + (index * 100)} type="slideUp">
                                     <div className="group relative bg-foreground/5 border-2 border-foreground/10 rounded-lg p-6 hover:border-primary/50 hover:bg-foreground/10 transition-all duration-300">
                                         <div className="flex items-start justify-between mb-4">
-                                            <Icon className="w-8 h-8 text-primary/60 group-hover:text-primary transition-colors duration-300" />
-                                            <span className="text-4xl font-bold text-primary">{stat.number}</span>
+                                            <Icon className="w-8 h-8 text-emerald-500/60 group-hover:text-emerald-400 transition-colors duration-300" />
+                                            <span className="text-4xl font-bold text-emerald-500">{stat.number}</span>
                                         </div>
 
-                                        <h4 className="text-sm font-semibold text-foreground/60 mb-2 tracking-wider">
+                                        <h4 className="text-sm font-semibold text-emerald-500/60 mb-2 tracking-wider">
                                             {stat.label}
                                         </h4>
 
