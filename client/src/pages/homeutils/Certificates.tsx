@@ -84,8 +84,8 @@ function Certificates() {
     }, []);
 
     const safeCertificates = Array.isArray(certificates) ? certificates : DUMMY_CERTIFICATES;
-    const displayedCertificates = showAll ? safeCertificates : safeCertificates.slice(0, 4);
-    const hasMoreCertificates = safeCertificates.length > 4;
+    const displayedCertificates = showAll ? safeCertificates : safeCertificates.slice(0, 6);
+    const hasMoreCertificates = safeCertificates.length > 6;
 
     return (
         <div className="mt-8 px-4 max-w-7xl mx-auto">
@@ -97,7 +97,7 @@ function Certificates() {
                     </div>
                 </Animate>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 w-full">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
                     {displayedCertificates.map((cert: any, index: number) => (
                         <Animate key={index} delay={200 + (index * 100)} type="slideUp">
                             <div className="group relative bg-foreground/5 border-2 border-foreground/10 rounded-xl p-6 hover:border-primary/50 hover:bg-foreground/10 transition-all duration-500 hover:shadow-[0_0_30px_rgba(2,255,255,0.1)] h-full flex flex-col">
@@ -195,7 +195,7 @@ function Certificates() {
                             ) : (
                                 <>
                                     <FaChevronDown className="w-4 h-4" />
-                                    Explore More ({safeCertificates.length - 4} more)
+                                    Explore More ({safeCertificates.length - 6} more)
                                 </>
                             )}
                         </button>
