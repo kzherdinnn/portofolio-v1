@@ -1,7 +1,6 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import ProjectDetail from "./pages/projectDetail";
-import CertificateDetail from "./pages/CertificateDetail";
 import Animate from "./utils/animations/Animate";
 import { FaGithub, FaInstagram } from "react-icons/fa";
 import { CiLinkedin } from "react-icons/ci";
@@ -129,7 +128,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/project/:slug" element={<ProjectDetail />} />
-          <Route path="/certificate/:id" element={<CertificateDetail />} />
           <Route path="/login" element={<Login />} />
 
           {/* Protected Admin Routes */}
