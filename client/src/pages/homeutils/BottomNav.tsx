@@ -32,12 +32,12 @@ function BottomNav() {
       <div className="flex flex-col gap-10 lg:gap-3 text-center">
         <Animate delay={200} type="slideLeft">
           <h1 className="text-2xl lg:text-[40px] font-semibold">
-            Tersedia untuk proyek freelance dan kolaborasi
+            Available for freelance projects and collaboration
           </h1>
         </Animate>
         <Animate delay={400} type="slideLeft">
           <p className="font-semibold lg:text-xs">
-            Butuh pengembang full-stack, insinyur AI/ML, atau pengembang aplikasi seluler?
+            Need a full-stack developer, AI/ML engineer, or mobile app developer?
           </p>
         </Animate>
       </div>
@@ -89,9 +89,9 @@ function BottomNav() {
             </div>
 
             <div className="flex flex-col gap-2 mb-10 text-center items-center justify-center text-foreground/40 text-xs lg:text-md">
-              <div>Pengembang Full-Stack | Penggemar AI/ML</div>
+              <div>Full-Stack Developer | AI/ML Enthusiast</div>
               <div className="flex items-center">
-                Dibangun dengan React + Node.js + MongoDB
+                Built with React + Node.js + MongoDB
               </div>
             </div>
           </div>

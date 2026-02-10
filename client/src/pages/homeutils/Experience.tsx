@@ -31,7 +31,7 @@ function Experience() {
           <Animate delay={300} type="slideLeft">
             <div>
               <h2 className="text-4xl lg:text-[50px] font-semibold text-center neon-glow">
-                Pengalaman Profesional
+                Professional Experience
               </h2>
             </div>
           </Animate>

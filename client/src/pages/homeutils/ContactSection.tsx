@@ -79,10 +79,10 @@ function ContactSection() {
                 {/* Title */}
                 <Animate delay={200} type="slideUp">
                     <h2 className="text-3xl lg:text-4xl font-bold text-center mb-2">
-                        Hubungi Saya
+                        Contact Me
                     </h2>
                     <p className="text-center text-foreground/70 mb-12">
-                        Ada yang ingin didiskusikan? Kirim saya pesan, dan mari kita bicara!
+                        Have something to discuss? Send me a message, and let's talk!
                     </p>
                 </Animate>
 
@@ -98,14 +98,14 @@ function ContactSection() {
                                 <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                 </svg>
-                                <h3 className="text-xl font-bold">Hubungi</h3>
+                                <h3 className="text-xl font-bold">Contact</h3>
                             </div>
 
                             <form onSubmit={handleSubmit} className="space-y-5">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                     <div>
                                         <label htmlFor="name" className="block text-sm font-medium mb-2">
-                                            Nama Anda
+                                            Your Name
                                         </label>
                                         <input
                                             type="text"
@@ -115,13 +115,13 @@ function ContactSection() {
                                             onChange={handleChange}
                                             required
                                             className="w-full px-4 py-2.5 bg-foreground/5 border border-foreground/20 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors text-sm"
-                                            placeholder="Nama Anda"
+                                            placeholder="Your Name"
                                         />
                                     </div>
 
                                     <div>
                                         <label htmlFor="email" className="block text-sm font-medium mb-2">
-                                            Email Anda
+                                            Your Email
                                         </label>
                                         <input
                                             type="email"
@@ -138,7 +138,7 @@ function ContactSection() {
 
                                 <div>
                                     <label htmlFor="subject" className="block text-sm font-medium mb-2">
-                                        Subjek
+                                        Subject
                                     </label>
                                     <input
                                         type="text"
@@ -148,13 +148,13 @@ function ContactSection() {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2.5 bg-foreground/5 border border-foreground/20 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors text-sm"
-                                        placeholder="Tentang apa ini?"
+                                        placeholder="What is this about?"
                                     />
                                 </div>
 
                                 <div>
                                     <label htmlFor="message" className="block text-sm font-medium mb-2">
-                                        Pesan Anda
+                                        Your Message
                                     </label>
                                     <textarea
                                         id="message"
@@ -164,7 +164,7 @@ function ContactSection() {
                                         required
                                         rows={5}
                                         className="w-full px-4 py-2.5 bg-foreground/5 border border-foreground/20 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none text-sm"
-                                        placeholder="Tulis pesan Anda di sini..."
+                                        placeholder="Write your message here..."
                                     />
                                 </div>
 
@@ -190,7 +190,7 @@ function ContactSection() {
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                                     </svg>
-                                    {isSubmitting ? 'Mengirim...' : 'Kirim Pesan'}
+                                    {isSubmitting ? 'Sending...' : 'Send Message'}
                                 </button>
                             </form>
                         </div>

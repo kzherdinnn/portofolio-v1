@@ -32,9 +32,9 @@ function Certificates() {
             <div className="text-center py-20">
                 <div className="max-w-2xl mx-auto p-12 bg-foreground/5 border border-foreground/10 rounded-lg">
                     <FaCertificate className="w-16 h-16 text-primary mx-auto mb-4" />
-                    <h3 className="text-2xl font-bold mb-4 neon-glow">Sertifikat</h3>
+                    <h3 className="text-2xl font-bold mb-4 neon-glow">Certificates</h3>
                     <p className="text-foreground/70">
-                        Bagian ini akan segera hadir. Nantikan sertifikasi dan pencapaian profesional saya!
+                        This section is coming soon. Stay tuned for my professional certifications and achievements!
                     </p>
                 </div>
             </div>
@@ -79,13 +79,13 @@ function Certificates() {
 
                                     {cert.issuer && (
                                         <p className="text-sm text-foreground/60">
-                                            <span className="font-semibold">Diterbitkan oleh:</span> {cert.issuer}
+                                            <span className="font-semibold">Issued by:</span> {cert.issuer}
                                         </p>
                                     )}
 
                                     {cert.date && (
                                         <p className="text-sm text-foreground/50">
-                                            <span className="font-semibold">Tanggal:</span> {cert.date}
+                                            <span className="font-semibold">Date:</span> {cert.date}
                                         </p>
                                     )}
 
@@ -104,7 +104,7 @@ function Certificates() {
                                             className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors duration-300 mt-2"
                                         >
                                             <FaExternalLinkAlt className="w-3 h-3" />
-                                            Lihat Sertifikat
+                                            View Certificate
                                         </a>
                                     )}
                                 </div>
@@ -126,12 +126,12 @@ function Certificates() {
                             {showAll ? (
                                 <>
                                     <FaChevronUp className="w-4 h-4" />
-                                    Lihat Lebih Sedikit
+                                    See Less
                                 </>
                             ) : (
                                 <>
                                     <FaChevronDown className="w-4 h-4" />
-                                    Lihat Seterusnya ({certificates.length - 3} sertifikat lagi)
+                                    See More ({certificates.length - 3} more certificates)
                                 </>
                             )}
                         </button>

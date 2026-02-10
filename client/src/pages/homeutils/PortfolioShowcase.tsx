@@ -10,9 +10,9 @@ function PortfolioShowcase() {
     const [activeTab, setActiveTab] = useState<"projects" | "certificates" | "techstack">("projects");
 
     const tabs = [
-        { id: "projects", label: "Proyek", icon: FaCode },
-        { id: "certificates", label: "Sertifikat", icon: FaCertificate },
-        { id: "techstack", label: "Teknologi", icon: FaLayerGroup },
+        { id: "projects", label: "Projects", icon: FaCode },
+        { id: "certificates", label: "Certificates", icon: FaCertificate },
+        { id: "techstack", label: "Technology", icon: FaLayerGroup },
     ];
 
     return (
@@ -26,13 +26,13 @@ function PortfolioShowcase() {
                 <div className="text-center mb-12">
                     <Animate delay={200} type="slideDown">
                         <h1 className="text-4xl lg:text-5xl font-bold neon-glow mb-4">
-                            Pameran Portofolio
+                            Portfolio Showcase
                         </h1>
                     </Animate>
                     <Animate delay={300} type="slideDown">
                         <p className="text-foreground/70 max-w-3xl mx-auto leading-relaxed">
-                            Jelajahi perjalanan saya melalui proyek, sertifikasi, dan keahlian teknis. Setiap
-                            bagian mewakili pencapaian dalam jalur pembelajaran berkelanjutan saya.
+                            Explore my journey through projects, certifications, and technical expertise. Each
+                            section represents a milestone in my continuous learning path.
                         </p>
                     </Animate>
                 </div>

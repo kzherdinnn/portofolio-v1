@@ -54,7 +54,7 @@ function Home() {
                 onClick={handleHireMeClick}
                 className="glitch-effect hover:lg:scale-110 hover:lg:bg-[#02ffff]/90 bg-[#02ffff] w-fit px-6 lg:px-12 lg:text-xl cursor-pointer py-2 lg:py-3 flex items-center rounded-full text-black font-bold"
               >
-                &lt;/&gt; Pekerjakan Saya
+                &lt;/&gt; Hire Me
               </div>
             </Animate>
             <a

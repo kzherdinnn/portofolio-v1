@@ -72,7 +72,7 @@ function Projects() {
                   : "text-foreground/50"
                   } hover:border-b border-primary hover:scale-105 hover:text-primary transition-all duration-300`}
               >
-                Filter SEMUA
+                Filter ALL
               </h3>
             </div>
             <div className="ml-4 lg:ml-2"> /</div>
@@ -139,12 +139,12 @@ function Projects() {
               {showAll ? (
                 <>
                   <FaChevronUp className="w-4 h-4" />
-                  Lihat Lebih Sedikit
+                  See Less
                 </>
               ) : (
                 <>
                   <FaChevronDown className="w-4 h-4" />
-                  Lihat Seterusnya ({filteredProjects.length - 3} proyek lagi)
+                  See More ({filteredProjects.length - 3} more projects)
                 </>
               )}
             </button>

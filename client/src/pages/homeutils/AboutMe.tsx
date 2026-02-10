@@ -7,20 +7,20 @@ function AboutMe() {
         {
             icon: FaCode,
             number: "15+",
-            label: "TOTAL PROYEK",
-            description: "Solusi web inovatif telah dibuat"
+            label: "TOTAL PROJECTS",
+            description: "Innovative web solutions created"
         },
         {
             icon: FaCertificate,
             number: "8",
-            label: "SERTIFIKAT",
-            description: "Keahlian profesional tervalidasi"
+            label: "CERTIFICATES",
+            description: "Validated professional expertise"
         },
         {
             icon: FaGlobe,
             number: "4",
-            label: "TAHUN PENGALAMAN",
-            description: "Perjalanan belajar tanpa henti"
+            label: "YEARS OF EXPERIENCE",
+            description: "Continuous learning journey"
         }
     ];
 
@@ -35,13 +35,13 @@ function AboutMe() {
                 <div className="text-center mb-16">
                     <Animate delay={200} type="slideDown">
                         <h1 className="text-4xl lg:text-5xl font-bold neon-glow mb-4">
-                            Tentang Saya
+                            About Me
                         </h1>
                     </Animate>
                     <Animate delay={300} type="slideDown">
                         <p className="text-foreground/70 flex items-center justify-center gap-2">
                             <span className="text-primary">✨</span>
-                            Mengubah ide menjadi pengalaman digital
+                            Transforming ideas into digital experiences
                             <span className="text-primary">✨</span>
                         </p>
                     </Animate>
@@ -55,7 +55,7 @@ function AboutMe() {
                             <div className="space-y-6">
                                 <div>
                                     <h2 className="text-2xl lg:text-3xl font-bold mb-2">
-                                        Halo, Saya
+                                        Hello, I'm
                                     </h2>
                                     <h3 className="text-3xl lg:text-5xl font-bold text-primary mb-6">
                                         HerdinKz
@@ -63,16 +63,16 @@ function AboutMe() {
                                 </div>
 
                                 <p className="text-foreground/80 leading-relaxed text-justify">
-                                    Seorang lulusan Teknik Jaringan Komputer dan Telekomunikasi yang memiliki
-                                    ketertarikan besar dalam pengembangan Front-End. Saya berfokus pada menciptakan
-                                    pengalaman digital yang menarik dan selalu berusaha memberikan solusi terbaik
-                                    dalam setiap proyek yang saya kerjakan.
+                                    A Computer and Telecommunication Network Engineering graduate with a strong
+                                    passion for Front-End development. I focus on creating engaging digital
+                                    experiences and always strive to provide the best solutions in every project
+                                    I work on.
                                 </p>
 
                                 {/* Quote */}
                                 <div className="border-l-4 border-primary/50 pl-4 py-2 bg-primary/5 rounded-r-lg">
                                     <p className="text-foreground/70 italic">
-                                        "Memanfaatkan AI sebagai alat profesional, bukan pengganti."
+                                        "Leveraging AI as a professional tool, not a replacement."
                                     </p>
                                 </div>
 
@@ -80,11 +80,11 @@ function AboutMe() {
                                 <div className="flex flex-wrap gap-4 pt-4">
                                     <button className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-black font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105">
                                         <FaDownload />
-                                        Unduh CV
+                                        Download CV
                                     </button>
                                     <button className="flex items-center gap-2 bg-foreground/10 hover:bg-foreground/20 border-2 border-primary/50 text-primary font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105">
                                         <FaEye />
-                                        Lihat Proyek
+                                        View Projects
                                     </button>
                                 </div>
                             </div>
