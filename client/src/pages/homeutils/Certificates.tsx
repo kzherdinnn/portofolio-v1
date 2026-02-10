@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import Animate from "../../utils/animations/Animate";
-import { FaChevronDown, FaChevronUp, FaCertificate, FaExternalLinkAlt } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaExternalLinkAlt } from "react-icons/fa";
+import { LuMoveRight } from "react-icons/lu";
 import { api } from "../../utils/api";
+import { useNavigate } from "react-router-dom";
 
 const DUMMY_CERTIFICATES = [
     {
+        _id: 'meta-fs',
         title: 'Full Stack Web Development Professional Certificate',
         issuer: 'Meta',
         date: 'December 2023',
@@ -14,6 +17,7 @@ const DUMMY_CERTIFICATES = [
         image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop',
     },
     {
+        _id: 'udemy-react',
         title: 'Advanced React and Redux',
         issuer: 'Udemy',
         date: 'October 2023',
@@ -22,6 +26,7 @@ const DUMMY_CERTIFICATES = [
         image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop',
     },
     {
+        _id: 'udemy-node',
         title: 'Node.js Developer Course',
         issuer: 'Andrew Mead (Udemy)',
         date: 'August 2023',
@@ -30,6 +35,7 @@ const DUMMY_CERTIFICATES = [
         image: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=2070&auto=format&fit=crop',
     },
     {
+        _id: 'fcc-js',
         title: 'JavaScript Algorithms and Data Structures',
         issuer: 'freeCodeCamp',
         date: 'June 2023',
@@ -38,6 +44,7 @@ const DUMMY_CERTIFICATES = [
         image: 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?q=80&w=2070&auto=format&fit=crop',
     },
     {
+        _id: 'fcc-rwd',
         title: 'Responsive Web Design',
         issuer: 'freeCodeCamp',
         date: 'April 2023',
@@ -46,6 +53,7 @@ const DUMMY_CERTIFICATES = [
         image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=2051&auto=format&fit=crop',
     },
     {
+        _id: 'aws-cp',
         title: 'AWS Certified Cloud Practitioner',
         issuer: 'Amazon Web Services',
         date: 'February 2023',
@@ -56,6 +64,7 @@ const DUMMY_CERTIFICATES = [
 ];
 
 function Certificates() {
+    const navigate = useNavigate();
     const [certificates, setCertificates] = useState<any[]>(DUMMY_CERTIFICATES);
     const [showAll, setShowAll] = useState(false);
 
@@ -83,6 +92,11 @@ function Certificates() {
         fetchCertificates();
     }, []);
 
+    const handleDetailClick = (cert: any) => {
+        const id = cert._id || cert.id || cert.title?.toLowerCase().replace(/\s+/g, '-');
+        navigate(`/certificate/${id}`);
+    };
+
     const safeCertificates = Array.isArray(certificates) ? certificates : DUMMY_CERTIFICATES;
     const displayedCertificates = showAll ? safeCertificates : safeCertificates.slice(0, 6);
     const hasMoreCertificates = safeCertificates.length > 6;
@@ -100,13 +114,16 @@ function Certificates() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
                     {displayedCertificates.map((cert: any, index: number) => (
                         <Animate key={index} delay={200 + (index * 100)} type="slideUp">
-                            <div className="group relative bg-foreground/5 border-2 border-foreground/10 rounded-xl p-6 hover:border-primary/50 hover:bg-foreground/10 transition-all duration-500 hover:shadow-[0_0_30px_rgba(2,255,255,0.1)] h-full flex flex-col">
-                                {/* Certificate Image */}
-                                <div className="relative w-full h-56 mb-6 rounded-lg overflow-hidden border border-foreground/10 group-hover:border-primary/30 transition-colors duration-500">
+                            <div
+                                onClick={() => handleDetailClick(cert)}
+                                className="group relative bg-[#0f111a] border-2 border-foreground/10 rounded-xl p-6 hover:border-primary transition-all duration-500 hover:shadow-[0_0_30px_rgba(2,255,255,0.15)] h-full flex flex-col cursor-pointer"
+                            >
+                                {/* Certificate Preview */}
+                                <div className="relative w-full h-48 mb-6 rounded-lg overflow-hidden border border-foreground/5 group-hover:border-primary/30 transition-all duration-500">
                                     <img
-                                        src={cert.image || "https://images.unsplash.com/photo-1589330694653-96b6f7091448?q=80&w=2070&auto=format&fit=crop"}
+                                        src={cert.image}
                                         alt={cert.title}
-                                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-100 group-hover:scale-110"
+                                        className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
                                         onError={(e) => {
                                             const target = e.currentTarget;
                                             if (!target.dataset.fallbackUsed) {
@@ -115,67 +132,43 @@ function Certificates() {
                                             }
                                         }}
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    <div className="absolute bottom-4 left-4 right-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                                        <div className="bg-primary/20 backdrop-blur-md border border-primary/30 rounded-md px-3 py-1 text-xs text-primary font-bold inline-block">
-                                            Verified Credential
-                                        </div>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#0f111a] via-transparent to-transparent"></div>
+                                </div>
+
+                                {/* Content */}
+                                <div className="space-y-4 flex-grow">
+                                    <h3 className="text-lg font-bold text-white group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                                        {cert.title}
+                                    </h3>
+
+                                    <div className="space-y-1">
+                                        <p className="text-xs text-gray-500 font-mono tracking-tighter uppercase whitespace-nowrap overflow-hidden text-ellipsis">
+                                            {cert.issuer}
+                                        </p>
+                                        <p className="text-[10px] text-[#02ffff]/50 font-mono">
+                                            {cert.date}
+                                        </p>
                                     </div>
                                 </div>
 
-                                {/* Certificate Info */}
-                                <div className="space-y-4 flex-grow">
-                                    <div className="flex items-start justify-between gap-4">
-                                        <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300 line-clamp-2">
-                                            {cert.title}
-                                        </h3>
-                                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-300">
-                                            <FaCertificate className="w-5 h-5 text-primary/70 group-hover:text-primary transition-all duration-300" />
-                                        </div>
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        {cert.issuer && (
-                                            <div className="flex items-center gap-2 text-foreground/70">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-primary/40"></div>
-                                                <p className="text-sm">
-                                                    <span className="font-semibold text-foreground/90">Issued by:</span> {cert.issuer}
-                                                </p>
-                                            </div>
-                                        )}
-
-                                        {cert.date && (
-                                            <div className="flex items-center gap-2 text-foreground/70">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-primary/40"></div>
-                                                <p className="text-sm">
-                                                    <span className="font-semibold text-foreground/90">Date:</span> {cert.date}
-                                                </p>
-                                            </div>
-                                        )}
-
-                                        {cert.credentialId && (
-                                            <div className="flex items-center gap-2 text-foreground/50 font-mono">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-foreground/20"></div>
-                                                <p className="text-xs">ID: {cert.credentialId}</p>
-                                            </div>
-                                        )}
-                                    </div>
-
+                                {/* Footer Actions */}
+                                <div className="mt-6 pt-4 border-t border-gray-800/50 flex items-center justify-between">
+                                    <button className="flex items-center text-xs font-mono text-gray-400 group-hover:text-[#02ffff] transition-colors gap-2">
+                                        CERT_DETAILS <LuMoveRight className="transition-transform group-hover:translate-x-1" />
+                                    </button>
                                     {cert.link && (
-                                        <div className="pt-4 border-t border-foreground/10 group-hover:border-primary/20 transition-colors duration-300">
-                                            <a
-                                                href={cert.link}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary/80 transition-all duration-300 hover:gap-3"
-                                            >
-                                                View Certificate
-                                                <FaExternalLinkAlt className="w-3 h-3" />
-                                            </a>
-                                        </div>
+                                        <a
+                                            href={cert.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            onClick={(e) => e.stopPropagation()}
+                                            className="text-gray-600 hover:text-primary transition-colors"
+                                            title="View Original"
+                                        >
+                                            <FaExternalLinkAlt className="w-3 h-3" />
+                                        </a>
                                     )}
                                 </div>
-                                <div className="absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-primary/0 group-hover:border-primary/40 rounded-tr-xl transition-all duration-500"></div>
                             </div>
                         </Animate>
                     ))}
