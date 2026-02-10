@@ -6,8 +6,8 @@ import { API_BASE_URL } from "../config";
 const Terminal = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [history, setHistory] = useState<string[]>([
-        "Selamat Datang di Portfolio OS v1.0.0",
-        "Ketik 'bantuan' untuk melihat perintah yang tersedia.",
+        "Welcome to Portfolio OS v1.0.0",
+        "Type 'help' to see available commands.",
     ]);
     const [input, setInput] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
@@ -36,29 +36,27 @@ const Terminal = () => {
 
         switch (baseCmd) {
             case "help":
-            case "bantuan":
                 setHistory(prev => [...prev,
-                    "Perintah yang tersedia:",
-                    "  tentang  - Siapa saya?",
-                    "  bantuan  - Lihat bantuan",
-                    "  skill    - Keahlian teknis saya",
-                    "  kontak   - Hubungi saya",
-                    "  proyek   - Lihat karya saya",
-                    "  login    - Akses portal admin",
-                    "  logout   - Keluar dari admin",
-                    "  waktu    - Tampilkan waktu saat ini",
-                    "  whoami   - Info pengguna saat ini",
-                    "  ls       - Daftar direktori",
-                    "  cd <dir> - Pindah direktori",
-                    "  bersih   - Bersihkan terminal",
-                    "  keluar   - Tutup terminal"
+                    "Available commands:",
+                    "  about    - Who am I?",
+                    "  help     - Show help",
+                    "  skills   - My technical expertise",
+                    "  contact  - Get in touch",
+                    "  projects - View my work",
+                    "  login    - Access admin portal",
+                    "  logout   - Sign out from admin",
+                    "  date     - Show current time",
+                    "  whoami   - Current user info",
+                    "  ls       - List directories",
+                    "  cd <dir> - Change directory",
+                    "  clear    - Clear terminal",
+                    "  exit     - Close terminal"
                 ]);
                 break;
             case "about":
-            case "tentang":
                 setHistory(prev => [...prev,
-                    "Saya adalah seorang Software Engineer yang bersemangat membangun aplikasi web yang skalabel,",
-                    "model AI, dan memecahkan masalah kompleks dengan kode."
+                    "I am a Software Engineer passionate about building scalable web applications,",
+                    "AI models, and solving complex problems with code."
                 ]);
                 break;
             case "skills":
@@ -70,19 +68,17 @@ const Terminal = () => {
                 ]);
                 break;
             case "contact":
-            case "kontak":
                 setHistory(prev => [...prev,
                     "Email: kzherdin03@gmail.com",
                     "GitHub: github.com/kzherdinnn"
                 ]);
                 break;
             case "projects":
-            case "proyek":
-                setHistory(prev => [...prev, "Menavigasi ke bagian Proyek untuk melihat karya saya!"]);
+                setHistory(prev => [...prev, "Navigating to Projects section to see my work!"]);
                 // Optional: trigger scroll to projects
                 break;
             case "login":
-                setHistory(prev => [...prev, "Memulai koneksi aman ke portal admin..."]);
+                setHistory(prev => [...prev, "Starting secure connection to admin portal..."]);
                 setTimeout(() => {
                     setIsOpen(false);
                     navigate("/login");
@@ -96,21 +92,20 @@ const Terminal = () => {
                     });
                     const data = await res.json();
                     if (data.success) {
-                        setHistory(prev => [...prev, "Berhasil keluar.", "Mengalihkan ke beranda..."]);
+                        setHistory(prev => [...prev, "Successfully logged out.", "Redirecting to home..."]);
                         setTimeout(() => {
                             setIsOpen(false);
                             navigate("/");
                             window.location.reload(); // Ensure complete state reset
                         }, 1000);
                     } else {
-                        setHistory(prev => [...prev, "Gagal keluar atau Anda belum login."]);
+                        setHistory(prev => [...prev, "Logout failed or you are not logged in."]);
                     }
                 } catch (e) {
-                    setHistory(prev => [...prev, "Kesalahan saat keluar."]);
+                    setHistory(prev => [...prev, "Error during logout."]);
                 }
                 break;
             case "date":
-            case "waktu":
                 setHistory(prev => [...prev, new Date().toLocaleString()]);
                 break;
             case "whoami":
@@ -120,12 +115,12 @@ const Terminal = () => {
                     const user = data.success ? `root (admin: ${data.user.username})` : "guest";
                     setHistory(prev => [...prev, user]);
                 } catch (e) {
-                    setHistory(prev => [...prev, "tamu (offline)"]);
+                    setHistory(prev => [...prev, "guest (offline)"]);
                 }
                 break;
             case "ls":
                 setHistory(prev => [...prev,
-                    "Direktori:",
+                    "Directories:",
                     "  home/",
                     "  projects/",
                     "  admin/",
@@ -135,7 +130,7 @@ const Terminal = () => {
             case "cd":
                 const dir = args[1];
                 if (!dir) {
-                    setHistory(prev => [...prev, "Penggunaan: cd <direktori>"]);
+                    setHistory(prev => [...prev, "Usage: cd <directory>"]);
                 } else {
                     switch (dir) {
                         case "home":
@@ -143,7 +138,6 @@ const Terminal = () => {
                             navigate("/");
                             break;
                         case "projects":
-                        case "proyek":
                             setIsOpen(false);
                             navigate("/projectdetail"); // Note: users might expect /projects but route is projectdetail
                             break;
@@ -156,32 +150,29 @@ const Terminal = () => {
                             navigate("/login");
                             break;
                         case "..":
-                            setHistory(prev => [...prev, "Tidak bisa naik dari root."]);
+                            setHistory(prev => [...prev, "Cannot go up from root."]);
                             break;
                         default:
-                            setHistory(prev => [...prev, `Direktori tidak ditemukan: ${dir}`]);
+                            setHistory(prev => [...prev, `Directory not found: ${dir}`]);
                     }
                 }
                 break;
             case "sudo":
-                setHistory(prev => [...prev, "Akses ditolak: Anda tidak mengucapkan kata ajaib."]);
+                setHistory(prev => [...prev, "Access denied: You didn't say the magic word."]);
                 break;
             case "secret":
-            case "rahasia":
-                setHistory(prev => [...prev, "Tidak ada sendok."]);
+                setHistory(prev => [...prev, "There is no spoon."]);
                 break;
             case "clear":
-            case "bersih":
                 setHistory([]);
                 return;
             case "exit":
-            case "keluar":
                 setIsOpen(false);
                 return;
             case "":
                 break;
             default:
-                setHistory(prev => [...prev, `Perintah tidak ditemukan: '${trimmedCmd}'. Ketik 'bantuan' untuk opsi.`]);
+                setHistory(prev => [...prev, `Command not found: '${trimmedCmd}'. Type 'help' for options.`]);
         }
     };
 
