@@ -10,7 +10,7 @@ function AboutMe() {
     const [counts, setCounts] = useState({
         projects: 0,
         certificates: 0,
-        experienceYears: 0
+        experienceCount: 0
     });
 
     useEffect(() => {
@@ -42,11 +42,11 @@ function AboutMe() {
                 setCounts({
                     projects: Array.isArray(projRes.data) ? projRes.data.length : 0,
                     certificates: certRes.data.success ? certRes.data.data.length : 0,
-                    experienceYears: Math.max(years, 1)
+                    experienceCount: Array.isArray(expRes.data) ? expRes.data.length : 0
                 });
             } catch (error) {
                 console.error("Error fetching stats:", error);
-                setCounts(prev => ({ ...prev, experienceYears: 5 }));
+                setCounts(prev => ({ ...prev, experienceCount: 4 }));
             }
         };
 
@@ -61,27 +61,27 @@ function AboutMe() {
     };
 
     const handleDownloadCV = () => {
-        window.open('/Venky resume.pdf', '_blank');
+        window.open('/cv_herdin.pdf', '_blank');
     };
 
     const stats = [
         {
             icon: FaCode,
             number: counts.projects > 0 ? `${counts.projects}+` : "15+",
-            label: "TOTAL PROJECTS",
-            description: "End-to-end development from concept to deployment"
+            label: "PROJECTS",
+            description: "Built & Deployed"
         },
         {
             icon: FaCertificate,
             number: counts.certificates > 0 ? counts.certificates : "8",
-            label: "CERTIFICATES",
-            description: "Industry-standard technical certifications"
+            label: "CERTIFICATIONS",
+            description: "Technical skills"
         },
         {
             icon: FaGlobe,
-            number: `${counts.experienceYears || 5}+`,
-            label: "YEARS OF EXPERIENCE",
-            description: "Professional journey and technical growth"
+            number: `${counts.experienceCount || 4}+`,
+            label: "EXPERIENCES",
+            description: "Professional roles"
         }
     ];
 
@@ -101,9 +101,7 @@ function AboutMe() {
                     </Animate>
                     <Animate delay={300} type="slideDown">
                         <p className="text-foreground/70 flex items-center justify-center gap-2">
-                            <span className="text-primary">✨</span>
                             Transforming ideas into digital experiences
-                            <span className="text-primary">✨</span>
                         </p>
                     </Animate>
                 </div>

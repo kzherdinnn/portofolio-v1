@@ -58,7 +58,7 @@ function Home() {
               </div>
             </Animate>
             <a
-              href="Alex_Chen_Resume.pdf"
+              href="cv_herdin.pdf"
               download={true}
               ref={resumeRef}
               className="hidden"
