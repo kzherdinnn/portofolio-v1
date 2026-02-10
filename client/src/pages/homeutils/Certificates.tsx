@@ -200,5 +200,3 @@ function Certificates() {
 }
 
 export default Certificates;
-/ /   D e p l o y m e n t   t r i g g e r  
- 
