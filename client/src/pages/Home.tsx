@@ -97,6 +97,7 @@ function Home() {
         <div ref={scrollView === "EXPERIENCE" ? targetDivRef : null}>
           <Experience />
         </div>
+
         <div ref={scrollView === "CONTACT" ? targetDivRef : null}>
           <ContactSection />
           <BottomNav />
