@@ -57,16 +57,22 @@ function AboutMe() {
                                     <h2 className="text-2xl lg:text-3xl font-bold mb-2">
                                         Hello, I'm
                                     </h2>
-                                    <h3 className="text-3xl lg:text-5xl font-bold text-primary mb-6">
+                                    <h3 className="text-3xl lg:text-5xl font-bold text-primary mb-2">
                                         HerdinKz
                                     </h3>
+                                    <h4 className="text-lg lg:text-xl font-mono text-indigo-400 mb-6">
+                                        Informatics Engineering Student @ UIN Sunan Gunung Djati Bandung
+                                    </h4>
                                 </div>
 
                                 <p className="text-foreground/80 leading-relaxed text-justify">
-                                    A Computer and Telecommunication Network Engineering graduate with a strong
-                                    passion for Front-End development. I focus on creating engaging digital
-                                    experiences and always strive to provide the best solutions in every project
-                                    I work on.
+                                    I am an Informatics Engineering undergraduate student with a versatile
+                                    technical background and a passion for building comprehensive digital
+                                    ecosystems. My expertise spans across <strong>Fullstack Web Development</strong>,
+                                    <strong> Mobile Applications</strong>, and <strong>Quality Assurance</strong>.
+                                    Beyond core development, I am deeply interested in <strong>Data Science</strong>
+                                    and <strong>Natural Language Processing (NLP)</strong>, always seeking to
+                                    integrate intelligent insights into user-centric applications.
                                 </p>
 
                                 {/* Quote */}

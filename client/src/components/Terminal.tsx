@@ -55,8 +55,8 @@ const Terminal = () => {
                 break;
             case "about":
                 setHistory(prev => [...prev,
-                    "I am a Software Engineer passionate about building scalable web applications,",
-                    "AI models, and solving complex problems with code."
+                    "Undergraduate Informatics Engineering student at UIN Sunan Gunung Djati Bandung.",
+                    "Passionate about Fullstack Dev, AI (NLP/Data Science), Mobile Apps, and QA."
                 ]);
                 break;
             case "skills":

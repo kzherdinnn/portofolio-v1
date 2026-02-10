@@ -36,8 +36,8 @@ function BottomNav() {
           </h1>
         </Animate>
         <Animate delay={400} type="slideLeft">
-          <p className="font-semibold lg:text-xs">
-            Need a full-stack developer, AI/ML engineer, or mobile app developer?
+          <p className="text-gray-400 lg:text-md">
+            Need a full-stack developer, data scientist, or mobile app developer? Let's work together to bring your ideas to life.
           </p>
         </Animate>
       </div>
@@ -88,8 +88,8 @@ function BottomNav() {
               – Software Engineer
             </div>
 
-            <div className="flex flex-col gap-2 mb-10 text-center items-center justify-center text-foreground/40 text-xs lg:text-md">
-              <div>Full-Stack Developer | AI/ML Enthusiast</div>
+            <div className="flex flex-col gap-2 mb-10 text-center items-center justify-center text-foreground/40 text-xs lg:text-md font-mono">
+              <div>Full-Stack Developer | Data Science | NLP | Mobile | QA</div>
               <div className="flex items-center">
                 Built with React + Node.js + MongoDB
               </div>
