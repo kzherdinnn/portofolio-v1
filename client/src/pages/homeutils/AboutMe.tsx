@@ -61,15 +61,15 @@ function AboutMe() {
                                         HerdinKz
                                     </h3>
                                     <h4 className="text-lg lg:text-xl font-mono text-indigo-400 mb-6">
-                                        Informatics Engineering Student @ UIN Sunan Gunung Djati Bandung
+                                        Undergraduate Informatics Engineering at UIN Sunan Gunung Djati Bandung
                                     </h4>
                                 </div>
 
                                 <p className="text-foreground/80 leading-relaxed text-justify">
                                     I am an Informatics Engineering undergraduate student with a versatile
                                     technical background and a passion for building comprehensive digital
-                                    ecosystems. My expertise spans across <strong>Fullstack Web Development</strong>,
-                                    <strong> Mobile Applications</strong>, and <strong>Quality Assurance</strong>.
+                                    ecosystems. My expertise spans across <strong>Full-Stack Web Development</strong>,
+                                    <strong> Mobile Applications</strong>, and <strong>Quality Assurance (QA)</strong>.
                                     Beyond core development, I am deeply interested in <strong>Data Science</strong>
                                     and <strong>Natural Language Processing (NLP)</strong>, always seeking to
                                     integrate intelligent insights into user-centric applications.
