@@ -73,22 +73,6 @@ function AboutMe() {
                     api.getExperience()
                 ]);
 
-                // Calculate years of experience
-                let years = 5;
-                if (Array.isArray(expRes.data) && expRes.data.length > 0) {
-                    const dates = expRes.data.map((exp: any) => {
-                        const start = exp.period.split(' - ')[0];
-                        return new Date(start);
-                    }).filter((d: any) => !isNaN(d.getTime()));
-
-                    if (dates.length > 0) {
-                        const earliest = new Date(Math.min(...dates.map((d: any) => d.getTime())));
-                        const now = new Date();
-                        years = now.getFullYear() - earliest.getFullYear();
-                        if (now.getMonth() < earliest.getMonth()) years--;
-                    }
-                }
-
                 setCounts({
                     projects: Array.isArray(projRes.data) ? projRes.data.length : 0,
                     certificates: certRes.data.success ? certRes.data.data.length : 0,
@@ -96,7 +80,6 @@ function AboutMe() {
                 });
             } catch (error) {
                 console.error("Error fetching stats:", error);
-                setCounts(prev => ({ ...prev, experienceCount: 4 }));
             }
         };
 
@@ -117,19 +100,19 @@ function AboutMe() {
     const stats = [
         {
             icon: FaCode,
-            number: counts.projects > 0 ? `${counts.projects}+` : "15+",
+            number: counts.projects > 0 ? `${counts.projects}+` : "0",
             label: "PROJECTS",
             description: "Built & Deployed"
         },
         {
             icon: FaCertificate,
-            number: counts.certificates > 0 ? counts.certificates : "8",
+            number: counts.certificates,
             label: "CERTIFICATIONS",
             description: "Technical skills"
         },
         {
             icon: FaGlobe,
-            number: `${counts.experienceCount || 4}+`,
+            number: counts.experienceCount > 0 ? `${counts.experienceCount}+` : "0",
             label: "EXPERIENCES",
             description: "Professional roles"
         }
