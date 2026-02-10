@@ -1,9 +1,59 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Animate from "../../utils/animations/Animate";
 import { FaCode, FaCertificate, FaGlobe, FaDownload, FaEye } from "react-icons/fa";
 import ParticleNetwork from "../../components/ParticleNetwork";
 import { useAppContext } from "../../utils/AppContext";
 import { api } from "../../utils/api";
+
+const PRO_QUOTES = [
+    "Building high-performance digital solutions with precision and purpose.",
+    "Transforming complex business logic into elegant user experiences.",
+    "Engineering scalable systems at the intersection of data and design."
+];
+
+function TypewriterQuotes() {
+    const [index, setIndex] = useState(0);
+    const [displayText, setDisplayText] = useState("");
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [typingSpeed, setTypingSpeed] = useState(100);
+
+    const handleTyping = useCallback(() => {
+        const currentQuote = PRO_QUOTES[index];
+        const isFinished = !isDeleting && displayText === currentQuote;
+        const isDeleted = isDeleting && displayText === "";
+
+        if (isFinished) {
+            setTimeout(() => setIsDeleting(true), 2000);
+            return;
+        }
+
+        if (isDeleted) {
+            setIsDeleting(false);
+            setIndex((prev) => (prev + 1) % PRO_QUOTES.length);
+            setTypingSpeed(100);
+            return;
+        }
+
+        const nextText = isDeleting
+            ? currentQuote.substring(0, displayText.length - 1)
+            : currentQuote.substring(0, displayText.length + 1);
+
+        setDisplayText(nextText);
+        setTypingSpeed(isDeleting ? 50 : 100);
+    }, [displayText, isDeleting, index]);
+
+    useEffect(() => {
+        const timer = setTimeout(handleTyping, typingSpeed);
+        return () => clearTimeout(timer);
+    }, [handleTyping, typingSpeed]);
+
+    return (
+        <p className="text-foreground/80 italic font-mono text-sm lg:text-base leading-relaxed">
+            "{displayText}"
+            <span className="inline-block w-[2px] h-[1.2rem] bg-emerald-500 ml-1 animate-pulse align-middle"></span>
+        </p>
+    );
+}
 
 function AboutMe() {
     const { dispatch } = useAppContext();
@@ -134,11 +184,9 @@ function AboutMe() {
                                     integrate intelligent insights into user-centric applications.
                                 </p>
 
-                                {/* Quote */}
-                                <div className="border-l-4 border-primary/50 pl-4 py-2 bg-primary/5 rounded-r-lg">
-                                    <p className="text-foreground/70 italic">
-                                        "Leveraging AI as a professional tool, not a replacement."
-                                    </p>
+                                {/* Rotating Pro Quote with Typewriter Effect */}
+                                <div className="border-l-4 border-emerald-500/50 pl-4 py-3 bg-emerald-500/5 rounded-r-lg min-h-[80px] flex items-center">
+                                    <TypewriterQuotes />
                                 </div>
 
                                 {/* Buttons */}
