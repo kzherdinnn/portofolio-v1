@@ -1,26 +1,87 @@
+import { useState, useEffect } from "react";
 import Animate from "../../utils/animations/Animate";
 import { FaCode, FaCertificate, FaGlobe, FaDownload, FaEye } from "react-icons/fa";
 import ParticleNetwork from "../../components/ParticleNetwork";
+import { useAppContext } from "../../utils/AppContext";
+import { api } from "../../utils/api";
 
 function AboutMe() {
+    const { dispatch } = useAppContext();
+    const [counts, setCounts] = useState({
+        projects: 0,
+        certificates: 0,
+        experienceYears: 0
+    });
+
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                // Fetch all data in parallel
+                const [projRes, certRes, expRes] = await Promise.all([
+                    api.getProjects(),
+                    api.getCertificates(),
+                    api.getExperience()
+                ]);
+
+                // Calculate years of experience
+                let years = 5;
+                if (Array.isArray(expRes.data) && expRes.data.length > 0) {
+                    const dates = expRes.data.map((exp: any) => {
+                        const start = exp.period.split(' - ')[0];
+                        return new Date(start);
+                    }).filter((d: any) => !isNaN(d.getTime()));
+
+                    if (dates.length > 0) {
+                        const earliest = new Date(Math.min(...dates.map((d: any) => d.getTime())));
+                        const now = new Date();
+                        years = now.getFullYear() - earliest.getFullYear();
+                        if (now.getMonth() < earliest.getMonth()) years--;
+                    }
+                }
+
+                setCounts({
+                    projects: Array.isArray(projRes.data) ? projRes.data.length : 0,
+                    certificates: certRes.data.success ? certRes.data.data.length : 0,
+                    experienceYears: Math.max(years, 1)
+                });
+            } catch (error) {
+                console.error("Error fetching stats:", error);
+                setCounts(prev => ({ ...prev, experienceYears: 5 }));
+            }
+        };
+
+        fetchStats();
+    }, []);
+
+    const handleViewProjects = () => {
+        dispatch({ type: "setScrollView", payload: "WORK" });
+        setTimeout(() => {
+            dispatch({ type: "setScrollView", payload: undefined });
+        }, 400);
+    };
+
+    const handleDownloadCV = () => {
+        window.open('/Venky resume.pdf', '_blank');
+    };
+
     const stats = [
         {
             icon: FaCode,
-            number: "15+",
+            number: counts.projects > 0 ? `${counts.projects}+` : "15+",
             label: "TOTAL PROJECTS",
-            description: "Innovative web solutions created"
+            description: "End-to-end development from concept to deployment"
         },
         {
             icon: FaCertificate,
-            number: "8",
+            number: counts.certificates > 0 ? counts.certificates : "8",
             label: "CERTIFICATES",
-            description: "Validated professional expertise"
+            description: "Industry-standard technical certifications"
         },
         {
             icon: FaGlobe,
-            number: "4",
+            number: `${counts.experienceYears || 5}+`,
             label: "YEARS OF EXPERIENCE",
-            description: "Continuous learning journey"
+            description: "Professional journey and technical growth"
         }
     ];
 
@@ -84,11 +145,17 @@ function AboutMe() {
 
                                 {/* Buttons */}
                                 <div className="flex flex-wrap gap-4 pt-4">
-                                    <button className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-black font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105">
+                                    <button
+                                        onClick={handleDownloadCV}
+                                        className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-black font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105"
+                                    >
                                         <FaDownload />
                                         Download CV
                                     </button>
-                                    <button className="flex items-center gap-2 bg-foreground/10 hover:bg-foreground/20 border-2 border-primary/50 text-primary font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105">
+                                    <button
+                                        onClick={handleViewProjects}
+                                        className="flex items-center gap-2 bg-foreground/10 hover:bg-foreground/20 border-2 border-primary/50 text-primary font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105"
+                                    >
                                         <FaEye />
                                         View Projects
                                     </button>
