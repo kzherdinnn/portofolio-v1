@@ -268,93 +268,22 @@ const AdminDashboard = () => {
                     </div>
 
                     <div className="pt-2">
-                        <h3 className="text-xl font-semibold mb-1">Media</h3>
-                        <p className="text-sm text-gray-400 mb-4">Tambahkan media seperti gambar, dokumen, website, atau presentasi. Pelajari lebih lanjut tentang jenis file media yang didukung</p>
-
-                        {formData.image ? (
-                            <div className="border border-gray-700 rounded-lg p-4 space-y-4 animate-in fade-in slide-in-from-top-2">
-                                <div className="relative group w-full aspect-video bg-black/50 rounded-lg overflow-hidden border border-gray-700">
-                                    <img src={formData.image} alt="Preview" className="w-full h-full object-contain" />
-                                    <button
-                                        type="button"
-                                        onClick={() => setFormData({ ...formData, image: '' })}
-                                        className="absolute top-2 right-2 bg-red-600 p-2 rounded-full text-white hover:bg-red-700 transition-colors"
-                                        title="Remove"
-                                    >
-                                        <FaTimes />
-                                    </button>
-                                    <div className="absolute bottom-0 left-0 right-0 bg-black/80 text-[#02ffff] text-xs p-2 text-center">
-                                        Media Attached
-                                    </div>
+                        <label className={labelClass}><FaImage className="inline mr-2" />Media (Sertifikat)</label>
+                        <div className="border-2 border-dashed border-gray-800 rounded-lg p-6 text-center hover:border-[#02ffff] transition-colors">
+                            {formData.image ? (
+                                <div className="space-y-3">
+                                    <img src={formData.image} alt="Preview" className="mx-auto h-40 object-cover rounded-lg" />
+                                    <button type="button" onClick={() => setFormData({ ...formData, image: '' })} className="text-red-400 hover:text-red-300 text-sm">Remove Media</button>
                                 </div>
-                            </div>
-                        ) : mediaInputType === 'LINK' ? (
-                            <div className="border border-gray-700 rounded-lg p-4 space-y-4 animate-in fade-in slide-in-from-top-2">
-                                <div className="flex justify-between items-center mb-2">
-                                    <h4 className="font-semibold">Tambahkan link</h4>
-                                    <button onClick={() => setMediaInputType('NONE')} className="text-gray-400 hover:text-white"><FaTimes /></button>
-                                </div>
-                                <div className="flex gap-2">
-                                    <input
-                                        className={inputClass}
-                                        placeholder="Paste URL (e.g. Credential URL)..."
-                                        value={formData.tempUrl || ''}
-                                        onChange={e => setFormData({ ...formData, tempUrl: e.target.value })}
-                                        autoFocus
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => handleFetchMetadata(formData.tempUrl)}
-                                        className="bg-[#02ffff]/10 text-[#02ffff] px-6 rounded hover:bg-[#02ffff]/20 whitespace-nowrap border border-[#02ffff]/50 font-semibold"
-                                    >
-                                        Add
-                                    </button>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="relative inline-block">
-                                <button
-                                    type="button"
-                                    onClick={() => setIsMediaMenuOpen(!isMediaMenuOpen)}
-                                    className="flex items-center gap-2 text-blue-400 hover:bg-blue-400/10 px-4 py-2 rounded-full border border-blue-400 transition-colors font-semibold"
-                                >
-                                    <FaPlus /> Tambah media
-                                </button>
-
-                                {isMediaMenuOpen && (
-                                    <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-lg shadow-xl z-50 overflow-hidden text-black animate-in fade-in zoom-in-95 duration-200">
-                                        <div
-                                            className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-start gap-3 transition-colors"
-                                            onClick={() => {
-                                                setMediaInputType('LINK');
-                                                setIsMediaMenuOpen(false);
-                                                if (formData.credentialUrl) setFormData({ ...formData, tempUrl: formData.credentialUrl });
-                                            }}
-                                        >
-                                            <FaLink className="text-gray-600 mt-1" />
-                                            <div>
-                                                <p className="font-semibold text-sm">Tambahkan link</p>
-                                                <p className="text-xs text-gray-500">Gunakan untuk video, artikel, dan situs web</p>
-                                            </div>
-                                        </div>
-                                        <div className="border-t border-gray-200"></div>
-                                        <label
-                                            className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-start gap-3 transition-colors"
-                                        >
-                                            <FaImage className="text-gray-600 mt-1" />
-                                            <div>
-                                                <p className="font-semibold text-sm">Tambahkan media</p>
-                                                <p className="text-xs text-gray-500">Mengunggah gambar, presentasi, atau dokumen</p>
-                                                <input type="file" accept="image/*" className="hidden" onChange={(e) => {
-                                                    handleImageUpload(e, 'image');
-                                                    setIsMediaMenuOpen(false);
-                                                }} disabled={uploading} />
-                                            </div>
-                                        </label>
-                                    </div>
-                                )}
-                            </div>
-                        )}
+                            ) : (
+                                <label className="cursor-pointer block">
+                                    <FaUpload className="mx-auto text-4xl text-gray-400 mb-2" />
+                                    <span className="text-gray-400">Click to upload certificate image</span>
+                                    <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e, 'image')} disabled={uploading} />
+                                    {uploading && <p className="text-[#02ffff] mt-2">Uploading...</p>}
+                                </label>
+                            )}
+                        </div>
                     </div>
                 </div>
             );
