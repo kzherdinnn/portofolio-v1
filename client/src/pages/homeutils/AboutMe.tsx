@@ -50,7 +50,7 @@ function TypewriterQuotes() {
     return (
         <p className="text-foreground/80 italic font-mono text-sm lg:text-base leading-relaxed">
             "{displayText}"
-            <span className="inline-block w-[2px] h-[1.2rem] bg-emerald-500 ml-1 animate-pulse align-middle"></span>
+            <span className="inline-block w-[2px] h-[1.2rem] bg-[#02ffff] ml-1 animate-pulse align-middle"></span>
         </p>
     );
 }
@@ -168,7 +168,7 @@ function AboutMe() {
                                 </p>
 
                                 {/* Rotating Pro Quote with Typewriter Effect */}
-                                <div className="border-l-4 border-emerald-500/50 pl-4 py-3 bg-emerald-500/5 rounded-r-lg min-h-[80px] flex items-center">
+                                <div className="border-l-4 border-[#02ffff]/50 pl-4 py-3 bg-[#02ffff]/5 rounded-r-lg min-h-[80px] flex items-center">
                                     <TypewriterQuotes />
                                 </div>
 
@@ -325,11 +325,11 @@ function AboutMe() {
                                 <Animate key={stat.label} delay={600 + (index * 100)} type="slideUp">
                                     <div className="group relative bg-foreground/5 border-2 border-foreground/10 rounded-lg p-6 hover:border-primary/50 hover:bg-foreground/10 transition-all duration-300">
                                         <div className="flex items-start justify-between mb-4">
-                                            <Icon className="w-8 h-8 text-emerald-500/60 group-hover:text-emerald-400 transition-colors duration-300" />
-                                            <span className="text-4xl font-bold text-emerald-500">{stat.number}</span>
+                                            <Icon className="w-8 h-8 text-[#02ffff]/60 group-hover:text-[#02ffff] transition-colors duration-300" />
+                                            <span className="text-4xl font-bold text-[#02ffff]">{stat.number}</span>
                                         </div>
 
-                                        <h4 className="text-sm font-semibold text-emerald-500/60 mb-2 tracking-wider">
+                                        <h4 className="text-sm font-semibold text-[#02ffff]/60 mb-2 tracking-wider">
                                             {stat.label}
                                         </h4>
 
