@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../utils/api';
-import { FaEdit, FaTrash, FaPlus, FaTimes, FaImage, FaUpload, FaComments, FaLink } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaPlus, FaTimes, FaImage, FaUpload, FaComments } from 'react-icons/fa';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -15,8 +15,7 @@ const AdminDashboard = () => {
     const [editingId, setEditingId] = useState<string | null>(null);
     const [uploading, setUploading] = useState(false);
     const [showSkillInput, setShowSkillInput] = useState(false);
-    const [isMediaMenuOpen, setIsMediaMenuOpen] = useState(false);
-    const [mediaInputType, setMediaInputType] = useState<'LINK' | 'UPLOAD' | 'NONE'>('NONE');
+
 
     const fetchData = async () => {
         setLoading(true);
@@ -96,8 +95,6 @@ const AdminDashboard = () => {
             setFormData({});
             setEditingId(null);
         }
-        setIsMediaMenuOpen(false);
-        setMediaInputType('NONE');
         setShowSkillInput(false);
         setIsModalOpen(true);
     };
@@ -118,28 +115,7 @@ const AdminDashboard = () => {
         }
     };
 
-    const handleFetchMetadata = async (url: string) => {
-        if (!url) {
-            alert('Please enter a URL first');
-            return;
-        }
 
-        setUploading(true);
-        try {
-            const response = await api.fetchMetadata(url);
-            if (response.data.success && response.data.image) {
-                setFormData({ ...formData, image: response.data.image });
-                alert('Media fetched successfully!');
-            } else {
-                alert('Could not auto-fetch image. Please upload manually.');
-            }
-        } catch (error) {
-            console.error('Fetch metadata error:', error);
-            alert('Failed to fetch media from URL');
-        } finally {
-            setUploading(false);
-        }
-    };
 
     const renderFormFields = () => {
         const inputClass = "w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-800 focus:border-[#02ffff] focus:outline-none transition-colors";
