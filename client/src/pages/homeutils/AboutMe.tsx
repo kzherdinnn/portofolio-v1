@@ -152,7 +152,7 @@ function AboutMe() {
                                     <h3 className="text-3xl lg:text-5xl font-bold text-primary mb-2">
                                         HerdinKz
                                     </h3>
-                                    <h4 className="text-lg lg:text-xl font-mono text-indigo-400 mb-6">
+                                    <h4 className="text-lg lg:text-xl font-mono text-[#02ffff]/70 mb-6">
                                         Undergraduate Informatics Engineering at UIN Sunan Gunung Djati Bandung
                                     </h4>
                                 </div>
