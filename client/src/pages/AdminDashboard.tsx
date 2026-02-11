@@ -141,30 +141,6 @@ const AdminDashboard = () => {
         }
     };
 
-    const handleQuickFetchMetadata = async (item: any) => {
-        const url = item.credentialUrl || item.link;
-        if (!url) return;
-
-        setLoading(true);
-        try {
-            const response = await api.fetchMetadata(url);
-            if (response.data.success && response.data.image) {
-                const updatedItem = { ...item, image: response.data.image };
-                if (activeTab === 'CERTIFICATES') await api.updateCertificate(item._id, updatedItem);
-                else if (activeTab === 'PROJECTS') await api.updateProject(item._id, updatedItem);
-                fetchData();
-                alert('Image updated successfully!');
-            } else {
-                alert('No image found for this URL.');
-            }
-        } catch (error) {
-            console.error('Quick fetch error:', error);
-            alert('Failed to fetch image.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
     const renderFormFields = () => {
         const inputClass = "w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-800 focus:border-[#02ffff] focus:outline-none transition-colors";
         const labelClass = "block text-sm font-medium mb-2 text-gray-300";
@@ -267,26 +243,7 @@ const AdminDashboard = () => {
 
                     <div>
                         <label className={labelClass}>URL Kredensial</label>
-                        <div className="flex gap-2">
-                            <input
-                                className={inputClass}
-                                value={formData.credentialUrl || ''}
-                                onChange={e => {
-                                    setFormData({ ...formData, credentialUrl: e.target.value, tempUrl: e.target.value });
-                                }}
-                                placeholder="https://..."
-                            />
-                            {formData.credentialUrl && !formData.image && (
-                                <button
-                                    type="button"
-                                    onClick={() => handleFetchMetadata(formData.credentialUrl)}
-                                    disabled={uploading}
-                                    className="bg-blue-600/20 text-blue-400 px-4 rounded-lg hover:bg-blue-600/30 border border-blue-600/50 text-sm font-semibold transition-colors disabled:opacity-50"
-                                >
-                                    {uploading ? '...' : 'Fetch Image'}
-                                </button>
-                            )}
-                        </div>
+                        <input className={inputClass} value={formData.credentialUrl || ''} onChange={e => setFormData({ ...formData, credentialUrl: e.target.value })} />
                     </div>
 
                     <div className="pt-2">
@@ -598,16 +555,7 @@ const AdminDashboard = () => {
                                         <div className="flex-1">
                                             <h3 className="font-bold text-xl text-white mb-2">{item.heading || item.title || item.role || item.name}</h3>
                                             <p className="text-gray-400 line-clamp-2">{item.desc || item.description || item.category || item.label}</p>
-                                            {item.image ? (
-                                                <img src={item.image} alt="" className="mt-3 h-20 object-cover rounded border border-gray-800" />
-                                            ) : (item.credentialUrl || item.link) && (
-                                                <button
-                                                    onClick={() => handleQuickFetchMetadata(item)}
-                                                    className="mt-3 flex items-center gap-2 bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 px-4 py-2 rounded border border-blue-600/30 text-sm transition-all"
-                                                >
-                                                    <FaLink /> Fetch Image from URL
-                                                </button>
-                                            )}
+                                            {item.image && <img src={item.image} alt="" className="mt-3 h-20 object-cover rounded" />}
                                         </div>
                                         <div className="flex gap-2 ml-4">
                                             <button onClick={() => openModal(item)} className="p-3 bg-yellow-600 hover:bg-yellow-700 rounded-lg transition-colors"><FaEdit /></button>
