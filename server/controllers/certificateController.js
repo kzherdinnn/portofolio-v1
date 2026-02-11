@@ -54,3 +54,22 @@ exports.deleteCertificate = async (req, res) => {
         res.status(500).json({ success: false, message: 'Error deleting certificate' });
     }
 };
+// Reorder certificates
+exports.reorderCertificates = async (req, res) => {
+    try {
+        const { orders } = req.body; // Array of { id, displayOrder }
+        if (!Array.isArray(orders)) {
+            return res.status(400).json({ success: false, message: 'Orders array is required' });
+        }
+
+        const updates = orders.map(item => 
+            Certificate.findByIdAndUpdate(item.id, { displayOrder: item.displayOrder })
+        );
+
+        await Promise.all(updates);
+        res.json({ success: true, message: 'Certificates reordered successfully' });
+    } catch (error) {
+        console.error('Error reordering certificates:', error);
+        res.status(500).json({ success: false, message: 'Error reordering certificates' });
+    }
+};

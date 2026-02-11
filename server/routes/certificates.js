@@ -7,5 +7,6 @@ router.get('/', certificateController.getCertificates);
 router.post('/', protect, certificateController.createCertificate);
 router.put('/:id', protect, certificateController.updateCertificate);
 router.delete('/:id', protect, certificateController.deleteCertificate);
+router.post('/reorder', protect, certificateController.reorderCertificates);
 
 module.exports = router;

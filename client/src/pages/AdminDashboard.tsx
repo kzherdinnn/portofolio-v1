@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../utils/api';
-import { FaEdit, FaTrash, FaPlus, FaTimes, FaImage, FaUpload, FaComments } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaPlus, FaTimes, FaImage, FaUpload, FaComments, FaArrowUp, FaArrowDown } from 'react-icons/fa';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -31,13 +31,18 @@ const AdminDashboard = () => {
             else if (activeTab === 'CATEGORIES') response = { data: typesResponse.data };
 
             const responseData = response?.data;
+            let data: any[] = [];
             if (Array.isArray(responseData)) {
-                setItems(responseData);
+                data = responseData;
             } else if (responseData?.data && Array.isArray(responseData.data)) {
-                setItems(responseData.data);
-            } else {
-                setItems([]);
+                data = responseData.data;
             }
+
+            // For certificates, ensure they are sorted by displayOrder
+            if (activeTab === 'CERTIFICATES') {
+                data.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+            }
+            setItems(data);
         } catch (error) {
             console.error('Fetch error:', error);
             setItems([]);
@@ -49,6 +54,33 @@ const AdminDashboard = () => {
     useEffect(() => {
         fetchData();
     }, [activeTab]);
+
+    const handleMove = async (index: number, direction: 'UP' | 'DOWN') => {
+        if (activeTab !== 'CERTIFICATES') return;
+
+        const newItems = [...items];
+        const targetIndex = direction === 'UP' ? index - 1 : index + 1;
+
+        if (targetIndex < 0 || targetIndex >= newItems.length) return;
+
+        // Swap items
+        [newItems[index], newItems[targetIndex]] = [newItems[targetIndex], newItems[index]];
+
+        // Update displayOrder for all items to match their horizontal index
+        const orders = newItems.map((item, idx) => ({
+            id: item._id,
+            displayOrder: idx
+        }));
+
+        setItems(newItems); // Optimistic update
+
+        try {
+            await api.reorderCertificates(orders);
+        } catch (error) {
+            console.error('Reorder error:', error);
+            fetchData(); // Rollback
+        }
+    };
 
     const handleDelete = async (id: string) => {
         if (!window.confirm('Are you sure you want to delete this item?')) return;
@@ -454,7 +486,7 @@ const AdminDashboard = () => {
                                 <p className="text-gray-400 text-lg">No items yet. Click "Add New" to create one!</p>
                             </div>
                         ) : (
-                            items.map((item) => (
+                            items.map((item, index) => (
                                 <div key={item._id} className="bg-gray-900 border border-gray-800 p-6 rounded-lg hover:border-[#02ffff] transition-all">
                                     <div className="flex justify-between items-start">
                                         <div className="flex-1">
@@ -462,9 +494,31 @@ const AdminDashboard = () => {
                                             <p className="text-gray-400 line-clamp-2">{item.desc || item.description || item.category || item.label}</p>
                                             {item.image && <img src={item.image} alt="" className="mt-3 h-20 object-cover rounded" />}
                                         </div>
-                                        <div className="flex gap-2 ml-4">
-                                            <button onClick={() => openModal(item)} className="p-3 bg-yellow-600 hover:bg-yellow-700 rounded-lg transition-colors"><FaEdit /></button>
-                                            <button onClick={() => handleDelete(item._id)} className="p-3 bg-red-600 hover:bg-red-700 rounded-lg transition-colors"><FaTrash /></button>
+                                        <div className="flex items-center gap-4 ml-4">
+                                            {activeTab === 'CERTIFICATES' && (
+                                                <div className="flex flex-col gap-1">
+                                                    <button
+                                                        disabled={index === 0}
+                                                        onClick={() => handleMove(index, 'UP')}
+                                                        className="p-2 bg-gray-800 hover:bg-gray-700 disabled:opacity-30 rounded transition-colors"
+                                                        title="Move Up"
+                                                    >
+                                                        <FaArrowUp size={14} />
+                                                    </button>
+                                                    <button
+                                                        disabled={index === items.length - 1}
+                                                        onClick={() => handleMove(index, 'DOWN')}
+                                                        className="p-2 bg-gray-800 hover:bg-gray-700 disabled:opacity-30 rounded transition-colors"
+                                                        title="Move Down"
+                                                    >
+                                                        <FaArrowDown size={14} />
+                                                    </button>
+                                                </div>
+                                            )}
+                                            <div className="flex gap-2">
+                                                <button onClick={() => openModal(item)} className="p-3 bg-yellow-600 hover:bg-yellow-700 rounded-lg transition-colors"><FaEdit /></button>
+                                                <button onClick={() => handleDelete(item._id)} className="p-3 bg-red-600 hover:bg-red-700 rounded-lg transition-colors"><FaTrash /></button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

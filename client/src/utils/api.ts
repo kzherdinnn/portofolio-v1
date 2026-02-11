@@ -21,6 +21,7 @@ export const api = {
     createCertificate: (data: any) => axios.post(`${API_BASE_URL}/api/certificates`, data),
     updateCertificate: (id: string, data: any) => axios.put(`${API_BASE_URL}/api/certificates/${id}`, data),
     deleteCertificate: (id: string) => axios.delete(`${API_BASE_URL}/api/certificates/${id}`),
+    reorderCertificates: (orders: { id: string, displayOrder: number }[]) => axios.post(`${API_BASE_URL}/api/certificates/reorder`, { orders }),
 
     // Project Types
     getProjectTypes: () => axios.get(`${API_BASE_URL}/api/project-types`),
