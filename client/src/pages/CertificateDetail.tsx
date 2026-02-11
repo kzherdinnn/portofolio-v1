@@ -102,7 +102,7 @@ function CertificateDetail() {
                                             <LuAward className="w-6 h-6 text-[#02ffff]" />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-gray-500 uppercase tracking-tighter">Issuing Organization</p>
+                                            <p className="text-xs text-gray-500 uppercase tracking-tighter">Organisasi penerbit</p>
                                             <p className="text-xl font-bold text-white">{certificate.issuer}</p>
                                         </div>
                                     </div>
@@ -112,7 +112,7 @@ function CertificateDetail() {
                                             <MdDateRange className="w-6 h-6 text-purple-400" />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-gray-500 uppercase tracking-tighter">Issue Date</p>
+                                            <p className="text-xs text-gray-500 uppercase tracking-tighter">Tanggal terbit</p>
                                             <p className="text-xl font-bold text-white">{certificate.date}</p>
                                         </div>
                                     </div>
@@ -123,7 +123,7 @@ function CertificateDetail() {
                                                 <MdDateRange className="w-6 h-6 text-orange-400" />
                                             </div>
                                             <div>
-                                                <p className="text-xs text-gray-500 uppercase tracking-tighter">Expiration Date</p>
+                                                <p className="text-xs text-gray-500 uppercase tracking-tighter">Tanggal kedaluwarsa</p>
                                                 <p className="text-xl font-bold text-white">{certificate.expirationDate}</p>
                                             </div>
                                         </div>
@@ -135,7 +135,7 @@ function CertificateDetail() {
                                                 <MdVerified className="w-6 h-6 text-emerald-400" />
                                             </div>
                                             <div>
-                                                <p className="text-xs text-gray-500 uppercase tracking-tighter">Credential ID</p>
+                                                <p className="text-xs text-gray-500 uppercase tracking-tighter">ID Kredensial</p>
                                                 <p className="text-sm font-mono text-gray-300 bg-white/5 px-2 py-1 rounded inline-block mt-1">{certificate.credentialId}</p>
                                             </div>
                                         </div>
@@ -146,7 +146,7 @@ function CertificateDetail() {
                                 {certificate.skills && certificate.skills.length > 0 && (
                                     <div className="pt-6 border-t border-gray-800 mt-4">
                                         <h3 className="text-sm font-mono text-gray-500 mb-4 flex items-center gap-2 uppercase tracking-widest">
-                                            <span className="text-[#02ffff]">&gt;</span> Skills_Validated
+                                            <span className="text-[#02ffff]">&gt;</span> Keahlian
                                         </h3>
                                         <div className="flex flex-wrap gap-2 text-xs">
                                             {certificate.skills.map((skill: string, i: number) => (
@@ -168,7 +168,7 @@ function CertificateDetail() {
                                             className="w-full bg-[#02ffff]/10 border border-[#02ffff]/50 hover:bg-[#02ffff]/20 hover:border-[#02ffff] text-[#02ffff] py-4 rounded flex items-center justify-center gap-3 font-mono text-sm transition-all group shadow-[0_0_15px_rgba(2,255,255,0.1)] hover:shadow-[0_0_25px_rgba(2,255,255,0.3)] uppercase tracking-[0.2em]"
                                         >
                                             <LuExternalLink className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                                            Verify Credential
+                                            Lihat Kredensial
                                         </a>
                                     </div>
                                 )}
