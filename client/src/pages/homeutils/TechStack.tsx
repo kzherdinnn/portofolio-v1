@@ -1,41 +1,60 @@
 import Animate from "../../utils/animations/Animate";
 import {
-    SiHtml5,
-    SiCss3,
-    SiJavascript,
     SiTailwindcss,
     SiReact,
-    SiVite,
     SiNodedotjs,
-    SiBootstrap,
-    SiFirebase,
-    SiMaterialdesign,
-    SiVercel,
+    SiFlutter,
+    SiKotlin,
+    SiPython,
+    SiScikitlearn,
+    SiHuggingface,
+    SiPytorch,
+    SiTensorflow,
+    SiSelenium,
+    SiCypress,
     SiTypescript,
     SiMongodb,
-    SiExpress,
+    SiPostgresql,
+    SiNumpy,
+    SiPandas,
     SiGit,
-    SiGithub
+    SiGithub,
+    SiJest
 } from "react-icons/si";
 
 function TechStack() {
     const techStack = [
-        { name: "HTML", icon: SiHtml5, color: "#E34F26" },
-        { name: "CSS", icon: SiCss3, color: "#1572B6" },
-        { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E" },
-        { name: "Tailwind CSS", icon: SiTailwindcss, color: "#06B6D4" },
-        { name: "ReactJS", icon: SiReact, color: "#61DAFB" },
-        { name: "Vite", icon: SiVite, color: "#646CFF" },
-        { name: "Node.js", icon: SiNodedotjs, color: "#339933" },
-        { name: "Bootstrap", icon: SiBootstrap, color: "#7952B3" },
-        { name: "Firebase", icon: SiFirebase, color: "#FFCA28" },
-        { name: "TypeScript", icon: SiTypescript, color: "#3178C6" },
-        { name: "MongoDB", icon: SiMongodb, color: "#47A248" },
-        { name: "Express", icon: SiExpress, color: "#000000" },
-        { name: "Git", icon: SiGit, color: "#F05032" },
-        { name: "GitHub", icon: SiGithub, color: "#181717" },
-        { name: "Vercel", icon: SiVercel, color: "#000000" },
-        { name: "Material UI", icon: SiMaterialdesign, color: "#0081CB" },
+        // Full-Stack
+        { name: "ReactJS", icon: SiReact, color: "#61DAFB", category: "Full-Stack" },
+        { name: "Node.js", icon: SiNodedotjs, color: "#339933", category: "Full-Stack" },
+        { name: "TypeScript", icon: SiTypescript, color: "#3178C6", category: "Full-Stack" },
+        { name: "PostgreSQL", icon: SiPostgresql, color: "#4169E1", category: "Full-Stack" },
+        { name: "MongoDB", icon: SiMongodb, color: "#47A248", category: "Full-Stack" },
+        { name: "Tailwind CSS", icon: SiTailwindcss, color: "#06B6D4", category: "Full-Stack" },
+
+        // Data Science
+        { name: "Python", icon: SiPython, color: "#3776AB", category: "Data Science" },
+        { name: "Pandas", icon: SiPandas, color: "#150458", category: "Data Science" },
+        { name: "NumPy", icon: SiNumpy, color: "#013243", category: "Data Science" },
+        { name: "Scikit-Learn", icon: SiScikitlearn, color: "#F7931E", category: "Data Science" },
+
+        // NLP
+        { name: "Hugging Face", icon: SiHuggingface, color: "#FFD21E", category: "NLP" },
+        { name: "PyTorch", icon: SiPytorch, color: "#EE4C2C", category: "NLP" },
+        { name: "TensorFlow", icon: SiTensorflow, color: "#FF6F00", category: "NLP" },
+
+        // Mobile
+        { name: "Flutter", icon: SiFlutter, color: "#02569B", category: "Mobile" },
+        { name: "Kotlin", icon: SiKotlin, color: "#7F52FF", category: "Mobile" },
+
+        // QA
+        { name: "Selenium", icon: SiSelenium, color: "#43B02A", category: "QA" },
+        { name: "Cypress", icon: SiCypress, color: "#17202C", category: "QA" },
+        { name: "Jest", icon: SiJest, color: "#C21325", category: "QA" },
+
+        // Tools
+        { name: "Git", icon: SiGit, color: "#F05032", category: "Tools" },
+        { name: "GitHub", icon: SiGithub, color: "#181717", category: "Tools" },
     ];
 
     return (
