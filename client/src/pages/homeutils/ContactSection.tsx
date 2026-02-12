@@ -36,14 +36,16 @@ function ContactSection() {
         setIsSubmitting(true);
         setSubmitStatus({ type: null, message: '' });
 
-        // Web3Forms Payload
+        // Web3Forms Payload - Optimized for Professional Email format
         const payload = {
-            access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || "YOUR_ACCESS_KEY_HERE", // Replace with your Web3Forms Access Key
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-            message: formData.message,
-            subject: `[Portfolio] New Message from ${formData.name}`
+            access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || "YOUR_ACCESS_KEY_HERE",
+            from_name: "Portfolio Notification",
+            subject: `Pesan Baru dari ${formData.name} via Portfolio`,
+            "Nama Lengkap": formData.name,
+            "Alamat Email": formData.email,
+            "Nomor Telepon": formData.phone,
+            "Pesan": formData.message,
+            replyto: formData.email,
         };
 
         try {
