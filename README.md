@@ -1,108 +1,125 @@
 # 🚀 Cyber-Tech Portfolio - Herdin
 
-A modern, high-performance portfolio website built with a **Full-Stack Architecture**. This project features a distinctive cyber/tech aesthetic with dynamic content management, an admin dashboard, and immersive user experiences.
+<div align="center">
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" />
+  <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+  <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" />
+</div>
+
+---
+
+## 📝 Description
+A modern, high-performance portfolio website built with a **MERN Stack Architecture**. This project features a distinctive cyber/tech aesthetic with dynamic content management, an integrated admin dashboard, and immersive user experiences. It is designed to be fully responsive, lightning-fast, and easy to maintain.
+
+### 📅 Last Update
+> **February 12, 2026**
+> - Refactored Contact Form (Phone Number integration & Web3Forms)
+> - Enhanced SEO Assets & Fixed Redirection issues
+> - Unified Website Color Scheme (Cyan Accent Theme)
+> - Improved Certificate Media Handling
+
+---
 
 ## ✨ Key Features
 
-### 🎨 Frontend (Client)
-- **Cyber/Tech Aesthetic:** "Matrix" rain, glitch effects, neon glows, and terminal-style layouts.
-- **Dynamic Routing:** Individual project pages with slug-based routing (`/project/:slug`).
-- **Responsive Design:** Optimized for all devices with unique "Mobile Terminal" vibes.
-- **Interactive UI:** Smooth animations, custom cursors, and 3D card effects.
-- **Tech Stack:** React 18, TypeScript, Tailwind CSS, Vite, Framer Motion.
+### 🖥️ Frontend (Client)
+- **Cyber-Tech Aesthetic:** Matrix rain effects, glitch transitions, neon glows, and terminal-inspired layouts.
+- **Dynamic Content:** Individual project pages with slug-based routing (`/project/:slug`).
+- **Responsive Layout:** Mobile-first approach with a unique "Mobile Terminal" vibe.
+- **Micro-interactions:** Custom cursors, smooth Framer Motion animations, and 3D card effects.
+- **Modern Stack:** Built with **React 18**, **TypeScript**, and **Vite** for blistering speed.
 
-### 🛠 Backend (Server)
-- **RESTful API:** Built with Node.js and Express.
-- **MongoDB Database:** Stores Projects, Experience, Certificates, and Messages.
-- **Admin Dashboard:** Secure interface to manage all portfolio content (CRUD operations).
-- **Data Seeding:** Scripts to populate the database with dummy data for testing.
-- **Security:** Standard security practices with CORS and environment variable protection.
+### ⚙️ Backend (Server)
+- **RESTful API:** Robust Node.js/Express backend following clean architecture.
+- **Persistence:** MongoDB integration via Mongoose for Projects, Experience, and Certificates.
+- **Admin Command Center:** Secure dashboard for full CRUD operations on portfolio content.
+- **Cloud Media:** Integrated with **Cloudinary** for seamless image hosting.
+- **Security:** JWT authentication, Bcrypt encryption, and CORS protection.
+
+---
+
+## 🛠️ Tech Stack
+
+| Frontend | Backend | DevOps / Tools |
+| :--- | :--- | :--- |
+| React 18 & TypeScript | Node.js & Express | Vercel (Frontend Hosting) |
+| Tailwind CSS | MongoDB & Mongoose | Cloudinary (Assets) |
+| Framer Motion | JSON Web Token (JWT) | Web3Forms (Contact) |
+| React Router 7 | Bcrypt.js | Vite & PostCSS |
+
+---
 
 ## 📂 Project Structure
 
 ```bash
 portfolio/
-├── client/                 # Frontend Application
+├── client/              # Frontend Application (React + Vite)
 │   ├── src/
-│   │   ├── pages/          # Home, ProjectDetail, AdminDashboard, etc.
-│   │   ├── components/     # Reusable UI components
-│   │   ├── hooks/          # Custom React hooks
-│   │   └── utils/          # Helper functions and API services
+│   │   ├── pages/       # Page components (Home, Admin, etc.)
+│   │   ├── components/  # Reusable UI Blocks
+│   │   ├── hooks/       # Custom React logic
+│   │   └── utils/       # API services & Helpers
 │   └── ...
-├── server/                 # Backend Application
-│   ├── models/             # Mongoose Schemas (Project, Experience, etc.)
-│   ├── routes/             # API Routes
-│   ├── controllers/        # Business logic
+├── server/              # Backend Application (Express)
+│   ├── models/          # Database Schemas
+│   ├── routes/          # Express Route definitions
+│   ├── controllers/     # Business Logic
 │   └── ...
-└── ...
+└── api/                 # Vercel Serverless entry points
 ```
 
-## 🚀 Quick Start
+---
 
-### 1. clone the repository
+## 🚀 Getting Started
+
+### 1. Clone the repository
 ```bash
 git clone https://github.com/kzherdinnn/portofolio-v1.git
 cd portofolio-v1
 ```
 
 ### 2. Install Dependencies
-Quickly install dependencies for both client and server:
+Install all dependencies for both client and server:
 ```bash
-# Root directory
+# From root directory
 npm run install-all
 ```
-*Or manually:*
-```bash
-cd client && npm install
-cd ../server && npm install
-```
 
-### 3. Environment Setup
+### 3. Environment Configuration
 Create a `.env` file in the `server/` directory:
 ```env
 PORT=5000
 MONGODB_URI=your_mongodb_connection_string
-# Add other necessary keys if any
+JWT_SECRET=your_secret_key
+CLOUDINARY_CLOUD_NAME=your_name
+CLOUDINARY_API_KEY=your_key
+CLOUDINARY_API_SECRET=your_secret
 ```
 
-### 4. Run Development Servers
-You can run both client and server concurrently (if configured) or in separate terminals.
-
-**Terminal 1 (Backend):**
+### 4. Running Locally
+**Backend:**
 ```bash
-cd server
-npm run dev
+cd server && npm run dev
 ```
 
-**Terminal 2 (Frontend):**
+**Frontend:**
 ```bash
-cd client
-npm run dev
+cd client && npm run dev
 ```
 
-The frontend will run on `http://localhost:5173` and the backend on `http://localhost:5000`.
+---
 
-## 🛡️ Admin Dashboard
-Access the endpoint `/admin` to manage your content.
-*Note: Ensure you have authentication set up or allow-list your IP in production if strictly internal.*
-
-## 💾 Data Seeding
-To populate your database with initial data (Projects, etc.):
-```bash
-# Make a POST request to the seed endpoint (dev mode only recommended)
-curl -X POST http://localhost:5000/api/seed/projects
-```
-
-## 🚢 Deployment
-
-**Frontend:** Deployed on **Vercel** for optimal performance and CD.
-**Backend:** Can be deployed on **Render**, **Railway**, or **Vercel** (as serverless functions if adapted).
-
-## 👨‍💻 Author
+## � Author
 
 **Herdin**
 - **GitHub:** [@kzherdinnn](https://github.com/kzherdinnn)
-- **Portfolio:** [https://www.kzherdin.onesite.my.id/](https://www.kzherdin.onesite.my.id/)
+- **Portfolio:** [kzherdin.onesite.my.id](https://kzherdin.onesite.my.id/)
+- **LinkedIn:** [kzherdin](https://linkedin.com/in/kzherdin)
 
 ---
-*Built with ❤️ and ☕ by Herdin*
+<div align="center">
+  Built with 💙, ☕, and a lot of debugging.
+</div>
