@@ -6,7 +6,7 @@ import ParticleNetwork from '../../components/ParticleNetwork';
 interface ContactFormData {
     name: string;
     email: string;
-    subject: string;
+    phone: string;
     message: string;
 }
 
@@ -14,7 +14,7 @@ function ContactSection() {
     const [formData, setFormData] = useState<ContactFormData>({
         name: '',
         email: '',
-        subject: '',
+        phone: '',
         message: ''
     });
 
@@ -36,13 +36,24 @@ function ContactSection() {
         setIsSubmitting(true);
         setSubmitStatus({ type: null, message: '' });
 
+        // Web3Forms Payload
+        const payload = {
+            access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || "YOUR_ACCESS_KEY_HERE", // Replace with your Web3Forms Access Key
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            message: formData.message,
+            subject: `[Portfolio] New Message from ${formData.name}`
+        };
+
         try {
-            const response = await fetch('https://www.kzherdin.onesite.my.id/api/contact', {
+            const response = await fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(payload)
             });
 
             const data = await response.json();
@@ -50,9 +61,9 @@ function ContactSection() {
             if (data.success) {
                 setSubmitStatus({
                     type: 'success',
-                    message: data.message
+                    message: 'Message sent successfully! (Pesan terkirim!)'
                 });
-                setFormData({ name: '', email: '', subject: '', message: '' });
+                setFormData({ name: '', email: '', phone: '', message: '' });
             } else {
                 setSubmitStatus({
                     type: 'error',
@@ -62,7 +73,7 @@ function ContactSection() {
         } catch (error) {
             setSubmitStatus({
                 type: 'error',
-                message: 'Network error. Please make sure the backend server is running.'
+                message: 'Network error. Please make sure you are connected to the internet.'
             });
         } finally {
             setIsSubmitting(false);
@@ -137,18 +148,18 @@ function ContactSection() {
                                 </div>
 
                                 <div>
-                                    <label htmlFor="subject" className="block text-sm font-medium mb-2">
-                                        Subject
+                                    <label htmlFor="phone" className="block text-sm font-medium mb-2">
+                                        Phone Number
                                     </label>
                                     <input
-                                        type="text"
-                                        id="subject"
-                                        name="subject"
-                                        value={formData.subject}
+                                        type="tel"
+                                        id="phone"
+                                        name="phone"
+                                        value={formData.phone}
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2.5 bg-foreground/5 border border-foreground/20 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors text-sm"
-                                        placeholder="What is this about?"
+                                        placeholder="Your phone number..."
                                     />
                                 </div>
 
