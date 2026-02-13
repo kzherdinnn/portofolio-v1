@@ -38,6 +38,4 @@ export const api = {
             },
         });
     },
-    // Metadata
-    fetchMetadata: (url: string) => axios.post(`${API_BASE_URL}/api/metadata/fetch`, { url }),
 };

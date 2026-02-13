@@ -15,11 +15,11 @@
 A modern, high-performance portfolio website built with a **MERN Stack Architecture**. This project features a distinctive cyber/tech aesthetic with dynamic content management, an integrated admin dashboard, and immersive user experiences. It is designed to be fully responsive, lightning-fast, and easy to maintain.
 
 ### 📅 Last Update
-> **February 12, 2026**
-> - Refactored Contact Form (Phone Number integration & Web3Forms)
-> - Enhanced SEO Assets & Fixed Redirection issues
-> - Unified Website Color Scheme (Cyan Accent Theme)
-> - Improved Certificate Media Handling
+> **February 13, 2026**
+> - Project Cleanup: Removed unused models, routes, and controllers.
+> - Database Optimization: Cleaned up legacy collections (`logs`, `contacts`, `expertise`).
+> - Frontend Refactoring: Optimized API utilities and removed dead code.
+> - Color Scheme: Finalized Cyan Accent Theme across all components.
 
 ---
 

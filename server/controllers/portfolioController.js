@@ -1,5 +1,4 @@
 const Project = require('../models/Project');
-const Expertise = require('../models/Expertise');
 const Experience = require('../models/Experience');
 
 // --- Projects ---
@@ -42,51 +41,6 @@ exports.deleteProject = async (req, res) => {
     
     await project.deleteOne();
     res.json({ message: 'Project deleted' });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-// --- Expertise ---
-exports.getExpertise = async (req, res) => {
-  try {
-    const expertise = await Expertise.find().sort({ displayOrder: 1 });
-    res.json(expertise);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-exports.createExpertise = async (req, res) => {
-  try {
-    const expertise = new Expertise(req.body);
-    const newExpertise = await expertise.save();
-    res.status(201).json(newExpertise);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-};
-
-exports.updateExpertise = async (req, res) => {
-  try {
-    const expertise = await Expertise.findById(req.params.id);
-    if (!expertise) return res.status(404).json({ message: 'Expertise not found' });
-    
-    Object.assign(expertise, req.body);
-    const updatedExpertise = await expertise.save();
-    res.json(updatedExpertise);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-};
-
-exports.deleteExpertise = async (req, res) => {
-  try {
-    const expertise = await Expertise.findById(req.params.id);
-    if (!expertise) return res.status(404).json({ message: 'Expertise not found' });
-    
-    await expertise.deleteOne();
-    res.json({ message: 'Expertise deleted' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
