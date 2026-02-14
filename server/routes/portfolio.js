@@ -9,11 +9,7 @@ router.post('/projects', protect, portfolioController.createProject);
 router.put('/projects/:id', protect, portfolioController.updateProject);
 router.delete('/projects/:id', protect, portfolioController.deleteProject);
 
-// Expertise Routes
-router.get('/expertise', portfolioController.getExpertise);
-router.post('/expertise', protect, portfolioController.createExpertise);
-router.put('/expertise/:id', protect, portfolioController.updateExpertise);
-router.delete('/expertise/:id', protect, portfolioController.deleteExpertise);
+
 
 // Experience Routes
 router.get('/experience', portfolioController.getExperience);
