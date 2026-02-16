@@ -209,7 +209,7 @@ function CertificateDetail() {
                                 <div className="p-8 font-mono text-sm text-gray-400 space-y-4 leading-relaxed">
                                     <p><span className="text-[#02ffff]">STATUS:</span> COMPLETED</p>
                                     <p><span className="text-[#02ffff]">VALIDITY:</span> {certificate.expirationDate || "PERMANENT"}</p>
-                                    <p><span className="text-[#02ffff]">METADATA:</span> This certification represents technical proficiency in {certificate.issuer}'s curriculum, validated through rigorous assessment and project-based evaluation.</p>
+                                    <p><span className="text-[#02ffff]">METADATA:</span> This certification validates the technical proficiency and professional expertise acquired through {certificate.issuer}, serving as a verified record of achievement.</p>
                                     <div className="mt-8 pt-8 border-t border-gray-800 text-[10px] text-gray-600">
                                         ID_AUTO_GENERATED: {id}<br />
                                         SYSTEM_CHECK: PASS<br />
