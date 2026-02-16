@@ -15,7 +15,17 @@ const AdminDashboard = () => {
     const [editingId, setEditingId] = useState<string | null>(null);
     const [uploading, setUploading] = useState(false);
     const [showSkillInput, setShowSkillInput] = useState(false);
+    const [sortBy, setSortBy] = useState<string>('manual'); // 'manual', 'date-newest', 'date-oldest', 'title-az'
 
+
+
+    const parseDate = (dateStr: string) => {
+        if (!dateStr) return 0;
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const [month, year] = dateStr.split(' ');
+        const monthIdx = months.indexOf(month);
+        return new Date(parseInt(year), monthIdx || 0).getTime();
+    };
 
     const fetchData = async () => {
         setLoading(true);
@@ -38,9 +48,17 @@ const AdminDashboard = () => {
                 data = responseData.data;
             }
 
-            // For certificates, ensure they are sorted by displayOrder
+            // For certificates, apply sorting based on sortBy
             if (activeTab === 'CERTIFICATES') {
-                data.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+                if (sortBy === 'manual') {
+                    data.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+                } else if (sortBy === 'date-newest') {
+                    data.sort((a, b) => parseDate(b.issueDate) - parseDate(a.issueDate));
+                } else if (sortBy === 'date-oldest') {
+                    data.sort((a, b) => parseDate(a.issueDate) - parseDate(b.issueDate));
+                } else if (sortBy === 'title-az') {
+                    data.sort((a, b) => a.title.localeCompare(b.title));
+                }
             }
             setItems(data);
         } catch (error) {
@@ -53,10 +71,16 @@ const AdminDashboard = () => {
 
     useEffect(() => {
         fetchData();
-    }, [activeTab]);
+    }, [activeTab, sortBy]);
+
 
     const handleMove = async (index: number, direction: 'UP' | 'DOWN') => {
         if (activeTab !== 'CERTIFICATES') return;
+
+        // If not in manual mode, we should stay in current mode but effectively we're creating a manual order
+        if (sortBy !== 'manual') {
+            setSortBy('manual');
+        }
 
         const newItems = [...items];
         const targetIndex = direction === 'UP' ? index - 1 : index + 1;
@@ -474,7 +498,57 @@ const AdminDashboard = () => {
                     </div>
                 </div>
 
+                {activeTab === 'CERTIFICATES' && (
+                    <div className="flex flex-wrap items-center justify-between gap-4 mb-6 bg-gray-900/50 p-4 rounded-xl border border-gray-800">
+                        <div className="flex items-center gap-3">
+                            <span className="text-gray-400 font-medium">Urutkan Berdasarkan:</span>
+                            <select
+                                value={sortBy}
+                                onChange={(e) => setSortBy(e.target.value)}
+                                className="bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-700 focus:border-[#02ffff] outline-none transition-colors cursor-pointer"
+                            >
+                                <option value="manual">Urutan Manual (Custom)</option>
+                                <option value="date-newest">Tanggal (Terbaru)</option>
+                                <option value="date-oldest">Tanggal (Terlama)</option>
+                                <option value="title-az">Judul (A-Z)</option>
+                            </select>
+                        </div>
+
+                        {sortBy !== 'manual' && (
+                            <button
+                                onClick={async () => {
+                                    if (!window.confirm('Simpan urutan saat ini sebagai urutan manual baru?')) return;
+                                    const orders = items.map((item, idx) => ({
+                                        id: item._id,
+                                        displayOrder: idx
+                                    }));
+                                    try {
+                                        setLoading(true);
+                                        await api.reorderCertificates(orders);
+                                        setSortBy('manual');
+                                        fetchData();
+                                    } catch (error) {
+                                        console.error('Save order error:', error);
+                                        alert('Gagal menyimpan urutan');
+                                    } finally {
+                                        setLoading(false);
+                                    }
+                                }}
+                                className="bg-green-600/20 text-green-400 hover:bg-green-600/30 border border-green-600/50 px-4 py-2 rounded-lg transition-all text-sm font-semibold flex items-center gap-2"
+                            >
+                                <FaPlus size={12} /> Simpan sebagai Urutan Manual
+                            </button>
+                        )}
+                        <p className="text-sm text-gray-500 italic">
+                            {sortBy === 'manual'
+                                ? "Gunakan panah pada item untuk mengatur urutan secara manual."
+                                : "Urutan di atas hanya untuk tampilan sementara. Klik 'Simpan' untuk menjadikannya urutan tetap."}
+                        </p>
+                    </div>
+                )}
+
                 {loading ? (
+
                     <div className="text-center py-20">
                         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#02ffff] mx-auto"></div>
                         <p className="text-gray-400 mt-4">Loading...</p>

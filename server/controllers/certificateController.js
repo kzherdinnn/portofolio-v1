@@ -14,7 +14,13 @@ exports.getCertificates = async (req, res) => {
 // Create certificate
 exports.createCertificate = async (req, res) => {
     try {
-        const certificate = new Certificate(req.body);
+        const lastCertificate = await Certificate.findOne().sort({ displayOrder: -1 });
+        const nextOrder = lastCertificate ? (lastCertificate.displayOrder || 0) + 1 : 0;
+        
+        const certificate = new Certificate({
+            ...req.body,
+            displayOrder: nextOrder
+        });
         await certificate.save();
         res.json({ success: true, data: certificate });
     } catch (error) {
@@ -22,6 +28,7 @@ exports.createCertificate = async (req, res) => {
         res.status(500).json({ success: false, message: 'Error creating certificate' });
     }
 };
+
 
 // Update certificate
 exports.updateCertificate = async (req, res) => {
