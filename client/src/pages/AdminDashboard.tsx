@@ -126,8 +126,7 @@ const AdminDashboard = () => {
                 if (activeTab === 'PROJECTS') await api.updateProject(editingId, formData);
                 else if (activeTab === 'EXPERIENCE') await api.updateExperience(editingId, formData);
                 else if (activeTab === 'CERTIFICATES') await api.updateCertificate(editingId, formData);
-                // Note: Categories usually don't need update if ID is the key, but we might want to update label
-                else if (activeTab === 'CATEGORIES') await api.createProjectType(formData); // Simple overwrite/add for now or implement update
+                else if (activeTab === 'CATEGORIES') await api.updateProjectType(editingId, formData);
             } else {
                 if (activeTab === 'PROJECTS') await api.createProject(formData);
                 else if (activeTab === 'EXPERIENCE') await api.createExperience(formData);

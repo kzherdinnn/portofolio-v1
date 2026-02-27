@@ -26,6 +26,7 @@ export const api = {
     // Project Types
     getProjectTypes: () => axios.get(`${API_BASE_URL}/api/project-types`),
     createProjectType: (data: any) => axios.post(`${API_BASE_URL}/api/project-types`, data),
+    updateProjectType: (id: string, data: any) => axios.put(`${API_BASE_URL}/api/project-types/${id}`, data),
     deleteProjectType: (id: string) => axios.delete(`${API_BASE_URL}/api/project-types/${id}`),
 
     // Upload
