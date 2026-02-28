@@ -26,6 +26,10 @@ const ProjectSchema = new mongoose.Schema({
   features: [String],
   link: String,
   github: String,
+  displayOrder: {
+    type: Number,
+    default: 0
+  },
   createdAt: {
     type: Date,
     default: Date.now

@@ -10,6 +10,10 @@ const ProjectTypeSchema = new mongoose.Schema({
     type: String,
     required: true // e.g., "Full-Stack Development"
   },
+  displayOrder: {
+    type: Number,
+    default: 0
+  },
   createdAt: {
     type: Date,
     default: Date.now

@@ -6,14 +6,14 @@ const { protect } = require('../middleware/authMiddleware');
 // Projects Routes
 router.get('/projects', portfolioController.getProjects);
 router.post('/projects', protect, portfolioController.createProject);
+router.post('/projects/reorder', protect, portfolioController.reorderProjects);
 router.put('/projects/:id', protect, portfolioController.updateProject);
 router.delete('/projects/:id', protect, portfolioController.deleteProject);
-
-
 
 // Experience Routes
 router.get('/experience', portfolioController.getExperience);
 router.post('/experience', protect, portfolioController.createExperience);
+router.post('/experience/reorder', protect, portfolioController.reorderExperience);
 router.put('/experience/:id', protect, portfolioController.updateExperience);
 router.delete('/experience/:id', protect, portfolioController.deleteExperience);
 

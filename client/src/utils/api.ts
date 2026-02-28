@@ -9,12 +9,14 @@ export const api = {
     createProject: (data: any) => axios.post(`${API_URL}/projects`, data),
     updateProject: (id: string, data: any) => axios.put(`${API_URL}/projects/${id}`, data),
     deleteProject: (id: string) => axios.delete(`${API_URL}/projects/${id}`),
+    reorderProjects: (orders: { id: string, displayOrder: number }[]) => axios.post(`${API_URL}/projects/reorder`, { orders }),
 
     // Experience
     getExperience: () => axios.get(`${API_URL}/experience`),
     createExperience: (data: any) => axios.post(`${API_URL}/experience`, data),
     updateExperience: (id: string, data: any) => axios.put(`${API_URL}/experience/${id}`, data),
     deleteExperience: (id: string) => axios.delete(`${API_URL}/experience/${id}`),
+    reorderExperience: (orders: { id: string, displayOrder: number }[]) => axios.post(`${API_URL}/experience/reorder`, { orders }),
 
     // Certificates
     getCertificates: () => axios.get(`${API_BASE_URL}/api/certificates`),
@@ -28,6 +30,7 @@ export const api = {
     createProjectType: (data: any) => axios.post(`${API_BASE_URL}/api/project-types`, data),
     updateProjectType: (id: string, data: any) => axios.put(`${API_BASE_URL}/api/project-types/${id}`, data),
     deleteProjectType: (id: string) => axios.delete(`${API_BASE_URL}/api/project-types/${id}`),
+    reorderProjectTypes: (orders: { id: string, displayOrder: number }[]) => axios.post(`${API_BASE_URL}/api/project-types/reorder`, { orders }),
 
     // Upload
     uploadImage: (file: File) => {

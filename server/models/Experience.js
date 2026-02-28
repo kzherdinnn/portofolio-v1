@@ -33,6 +33,10 @@ const ExperienceSchema = new mongoose.Schema({
     default: '#1d4ed8' // Default blue-700
   },
   skills: [String],
+  displayOrder: {
+    type: Number,
+    default: 0
+  },
   createdAt: {
     type: Date,
     default: Date.now

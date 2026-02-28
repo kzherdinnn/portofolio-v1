@@ -1,8 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../utils/api';
-import { FaEdit, FaTrash, FaPlus, FaTimes, FaImage, FaUpload, FaComments, FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaPlus, FaTimes, FaImage, FaUpload, FaComments, FaGripVertical, FaSort } from 'react-icons/fa';
+
+// ---- DRAG & DROP TYPES ----
+interface DragState {
+    dragIndex: number | null;
+    overIndex: number | null;
+}
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -15,9 +21,13 @@ const AdminDashboard = () => {
     const [editingId, setEditingId] = useState<string | null>(null);
     const [uploading, setUploading] = useState(false);
     const [showSkillInput, setShowSkillInput] = useState(false);
-    const [sortBy, setSortBy] = useState<string>('manual'); // 'manual', 'date-newest', 'date-oldest', 'title-az'
+    const [sortBy, setSortBy] = useState<string>('manual');
+    const [isSaving, setIsSaving] = useState(false);
 
-
+    // Drag & drop state
+    const [drag, setDrag] = useState<DragState>({ dragIndex: null, overIndex: null });
+    const dragItem = useRef<number | null>(null);
+    const dragOverItem = useRef<number | null>(null);
 
     const parseDate = (dateStr: string) => {
         if (!dateStr) return 0;
@@ -27,10 +37,78 @@ const AdminDashboard = () => {
         return new Date(parseInt(year), monthIdx || 0).getTime();
     };
 
+    const getSortOptions = () => {
+        const base = [{ value: 'manual', label: 'Urutan Manual (Drag & Drop)' }];
+        if (activeTab === 'CERTIFICATES') {
+            return [
+                ...base,
+                { value: 'date-newest', label: 'Tanggal Terbit (Terbaru)' },
+                { value: 'date-oldest', label: 'Tanggal Terbit (Terlama)' },
+                { value: 'title-az', label: 'Judul (A–Z)' },
+                { value: 'title-za', label: 'Judul (Z–A)' },
+            ];
+        }
+        if (activeTab === 'PROJECTS') {
+            return [
+                ...base,
+                { value: 'title-az', label: 'Judul (A–Z)' },
+                { value: 'title-za', label: 'Judul (Z–A)' },
+                { value: 'date-newest', label: 'Tanggal Dibuat (Terbaru)' },
+                { value: 'date-oldest', label: 'Tanggal Dibuat (Terlama)' },
+            ];
+        }
+        if (activeTab === 'EXPERIENCE') {
+            return [
+                ...base,
+                { value: 'title-az', label: 'Role (A–Z)' },
+                { value: 'title-za', label: 'Role (Z–A)' },
+            ];
+        }
+        if (activeTab === 'CATEGORIES') {
+            return [
+                ...base,
+                { value: 'title-az', label: 'Nama (A–Z)' },
+                { value: 'title-za', label: 'Nama (Z–A)' },
+            ];
+        }
+        return base;
+    };
+
+    const applySortToData = (data: any[], tab: string, sort: string) => {
+        const sorted = [...data];
+        if (sort === 'manual') {
+            sorted.sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
+        } else if (sort === 'date-newest') {
+            if (tab === 'CERTIFICATES') {
+                sorted.sort((a, b) => parseDate(b.issueDate) - parseDate(a.issueDate));
+            } else {
+                sorted.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+            }
+        } else if (sort === 'date-oldest') {
+            if (tab === 'CERTIFICATES') {
+                sorted.sort((a, b) => parseDate(a.issueDate) - parseDate(b.issueDate));
+            } else {
+                sorted.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+            }
+        } else if (sort === 'title-az') {
+            sorted.sort((a, b) => {
+                const aKey = a.title || a.role || a.name || '';
+                const bKey = b.title || b.role || b.name || '';
+                return aKey.localeCompare(bKey);
+            });
+        } else if (sort === 'title-za') {
+            sorted.sort((a, b) => {
+                const aKey = a.title || a.role || a.name || '';
+                const bKey = b.title || b.role || b.name || '';
+                return bKey.localeCompare(aKey);
+            });
+        }
+        return sorted;
+    };
+
     const fetchData = async () => {
         setLoading(true);
         try {
-            // Always fetch types for dropdown
             const typesResponse = await api.getProjectTypes();
             setProjectTypes(typesResponse.data);
 
@@ -48,19 +126,7 @@ const AdminDashboard = () => {
                 data = responseData.data;
             }
 
-            // For certificates, apply sorting based on sortBy
-            if (activeTab === 'CERTIFICATES') {
-                if (sortBy === 'manual') {
-                    data.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
-                } else if (sortBy === 'date-newest') {
-                    data.sort((a, b) => parseDate(b.issueDate) - parseDate(a.issueDate));
-                } else if (sortBy === 'date-oldest') {
-                    data.sort((a, b) => parseDate(a.issueDate) - parseDate(b.issueDate));
-                } else if (sortBy === 'title-az') {
-                    data.sort((a, b) => a.title.localeCompare(b.title));
-                }
-            }
-            setItems(data);
+            setItems(applySortToData(data, activeTab, sortBy));
         } catch (error) {
             console.error('Fetch error:', error);
             setItems([]);
@@ -71,43 +137,90 @@ const AdminDashboard = () => {
 
     useEffect(() => {
         fetchData();
-    }, [activeTab, sortBy]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activeTab]);
 
+    useEffect(() => {
+        setItems(prev => applySortToData(prev, activeTab, sortBy));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sortBy]);
 
-    const handleMove = async (index: number, direction: 'UP' | 'DOWN') => {
-        if (activeTab !== 'CERTIFICATES') return;
+    // Reset sort when switching tabs
+    useEffect(() => {
+        setSortBy('manual');
+    }, [activeTab]);
 
-        // If not in manual mode, we should stay in current mode but effectively we're creating a manual order
-        if (sortBy !== 'manual') {
-            setSortBy('manual');
+    // ---- DRAG & DROP HANDLERS ----
+    const handleDragStart = (index: number) => {
+        dragItem.current = index;
+        setDrag({ dragIndex: index, overIndex: index });
+    };
+
+    const handleDragEnter = (index: number) => {
+        dragOverItem.current = index;
+        setDrag(prev => ({ ...prev, overIndex: index }));
+    };
+
+    const handleDragEnd = async () => {
+        const from = dragItem.current;
+        const to = dragOverItem.current;
+
+        if (from === null || to === null || from === to) {
+            setDrag({ dragIndex: null, overIndex: null });
+            dragItem.current = null;
+            dragOverItem.current = null;
+            return;
         }
 
         const newItems = [...items];
-        const targetIndex = direction === 'UP' ? index - 1 : index + 1;
+        const [moved] = newItems.splice(from, 1);
+        newItems.splice(to, 0, moved);
 
-        if (targetIndex < 0 || targetIndex >= newItems.length) return;
+        // Assign new displayOrder values
+        const orders = newItems.map((item, idx) => ({ id: item._id, displayOrder: idx }));
+        setItems(newItems);
+        setDrag({ dragIndex: null, overIndex: null });
+        dragItem.current = null;
+        dragOverItem.current = null;
 
-        // Swap items
-        [newItems[index], newItems[targetIndex]] = [newItems[targetIndex], newItems[index]];
+        // Persist only if already in manual mode
+        if (sortBy === 'manual') {
+            try {
+                setIsSaving(true);
+                if (activeTab === 'PROJECTS') await api.reorderProjects(orders);
+                else if (activeTab === 'EXPERIENCE') await api.reorderExperience(orders);
+                else if (activeTab === 'CERTIFICATES') await api.reorderCertificates(orders);
+                else if (activeTab === 'CATEGORIES') await api.reorderProjectTypes(orders);
+            } catch (error) {
+                console.error('Reorder error:', error);
+                fetchData();
+            } finally {
+                setIsSaving(false);
+            }
+        }
+    };
 
-        // Update displayOrder for all items to match their horizontal index
-        const orders = newItems.map((item, idx) => ({
-            id: item._id,
-            displayOrder: idx
-        }));
-
-        setItems(newItems); // Optimistic update
-
+    const saveCurrentOrderAsManual = async () => {
+        if (!window.confirm('Simpan urutan tampilan saat ini sebagai urutan manual?')) return;
         try {
-            await api.reorderCertificates(orders);
+            setIsSaving(true);
+            const orders = items.map((item, idx) => ({ id: item._id, displayOrder: idx }));
+            if (activeTab === 'PROJECTS') await api.reorderProjects(orders);
+            else if (activeTab === 'EXPERIENCE') await api.reorderExperience(orders);
+            else if (activeTab === 'CERTIFICATES') await api.reorderCertificates(orders);
+            else if (activeTab === 'CATEGORIES') await api.reorderProjectTypes(orders);
+            setSortBy('manual');
+            fetchData();
         } catch (error) {
-            console.error('Reorder error:', error);
-            fetchData(); // Rollback
+            console.error('Save order error:', error);
+            alert('Gagal menyimpan urutan');
+        } finally {
+            setIsSaving(false);
         }
     };
 
     const handleDelete = async (id: string) => {
-        if (!window.confirm('Are you sure you want to delete this item?')) return;
+        if (!window.confirm('Yakin ingin menghapus item ini?')) return;
         try {
             if (activeTab === 'PROJECTS') await api.deleteProject(id);
             else if (activeTab === 'EXPERIENCE') await api.deleteExperience(id);
@@ -169,8 +282,6 @@ const AdminDashboard = () => {
             }
         }
     };
-
-
 
     const renderFormFields = () => {
         const inputClass = "w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-800 focus:border-[#02ffff] focus:outline-none transition-colors";
@@ -279,7 +390,7 @@ const AdminDashboard = () => {
 
                     <div className="pt-2">
                         <h3 className="text-xl font-semibold mb-1">Keahlian</h3>
-                        <p className="text-sm text-gray-400 mb-4">Kaitkan minimal 1 keahlian ke lisensi atau sertifikasi ini. Akan ditampilkan juga di bagian Keahlian.</p>
+                        <p className="text-sm text-gray-400 mb-4">Kaitkan minimal 1 keahlian ke lisensi atau sertifikasi ini.</p>
 
                         {(showSkillInput || (formData.skills && formData.skills.length > 0)) ? (
                             <div className="space-y-2">
@@ -459,8 +570,12 @@ const AdminDashboard = () => {
         return null;
     };
 
+    const getItemLabel = (item: any) => item.heading || item.title || item.role || item.name || '';
+    const getItemSub = (item: any) => item.desc || item.description || item.label || item.company || item.issuer || '';
+
     return (
         <div className="min-h-screen bg-black text-white">
+            {/* Header */}
             <div className="bg-black border-b border-gray-800 sticky top-0 z-40">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                     <div className="flex justify-between items-center">
@@ -473,10 +588,11 @@ const AdminDashboard = () => {
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                {/* Tab + Action Bar */}
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                     <div className="flex gap-2 bg-gray-900 p-2 rounded-lg w-fit border border-gray-800 overflow-x-auto">
-                        {['PROJECTS', 'EXPERIENCE', 'CERTIFICATES', 'CATEGORIES'].map((tab) => (
-                            <button key={tab} onClick={() => setActiveTab(tab as any)} className={`px-6 py-3 rounded-lg font-medium transition-all ${activeTab === tab ? 'bg-[#02ffff] text-black shadow-lg' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}>
+                        {(['PROJECTS', 'EXPERIENCE', 'CERTIFICATES', 'CATEGORIES'] as const).map((tab) => (
+                            <button key={tab} onClick={() => setActiveTab(tab)} className={`px-6 py-3 rounded-lg font-medium transition-all ${activeTab === tab ? 'bg-[#02ffff] text-black shadow-lg' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}>
                                 {tab}
                             </button>
                         ))}
@@ -497,110 +613,131 @@ const AdminDashboard = () => {
                     </div>
                 </div>
 
-                {activeTab === 'CERTIFICATES' && (
-                    <div className="flex flex-wrap items-center justify-between gap-4 mb-6 bg-gray-900/50 p-4 rounded-xl border border-gray-800">
-                        <div className="flex items-center gap-3">
-                            <span className="text-gray-400 font-medium">Urutkan Berdasarkan:</span>
-                            <select
-                                value={sortBy}
-                                onChange={(e) => setSortBy(e.target.value)}
-                                className="bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-700 focus:border-[#02ffff] outline-none transition-colors cursor-pointer"
-                            >
-                                <option value="manual">Urutan Manual (Custom)</option>
-                                <option value="date-newest">Tanggal (Terbaru)</option>
-                                <option value="date-oldest">Tanggal (Terlama)</option>
-                                <option value="title-az">Judul (A-Z)</option>
-                            </select>
-                        </div>
+                {/* Sort & Order Control Bar */}
+                <div className="flex flex-wrap items-center justify-between gap-4 mb-6 bg-gray-900/60 p-4 rounded-xl border border-gray-800">
+                    <div className="flex items-center gap-3 flex-wrap">
+                        <FaSort className="text-[#02ffff]" />
+                        <span className="text-gray-300 font-medium text-sm">Urutkan:</span>
+                        <select
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value)}
+                            className="bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-700 focus:border-[#02ffff] outline-none transition-colors cursor-pointer text-sm"
+                        >
+                            {getSortOptions().map(opt => (
+                                <option key={opt.value} value={opt.value}>{opt.label}</option>
+                            ))}
+                        </select>
+                        {isSaving && (
+                            <span className="text-[#02ffff] text-sm animate-pulse flex items-center gap-1">
+                                <div className="w-3 h-3 border-b border-[#02ffff] rounded-full animate-spin" />
+                                Menyimpan urutan...
+                            </span>
+                        )}
+                    </div>
 
+                    <div className="flex items-center gap-3">
                         {sortBy !== 'manual' && (
                             <button
-                                onClick={async () => {
-                                    if (!window.confirm('Simpan urutan saat ini sebagai urutan manual baru?')) return;
-                                    const orders = items.map((item, idx) => ({
-                                        id: item._id,
-                                        displayOrder: idx
-                                    }));
-                                    try {
-                                        setLoading(true);
-                                        await api.reorderCertificates(orders);
-                                        setSortBy('manual');
-                                        fetchData();
-                                    } catch (error) {
-                                        console.error('Save order error:', error);
-                                        alert('Gagal menyimpan urutan');
-                                    } finally {
-                                        setLoading(false);
-                                    }
-                                }}
-                                className="bg-green-600/20 text-green-400 hover:bg-green-600/30 border border-green-600/50 px-4 py-2 rounded-lg transition-all text-sm font-semibold flex items-center gap-2"
+                                onClick={saveCurrentOrderAsManual}
+                                disabled={isSaving}
+                                className="bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600/30 border border-emerald-600/50 px-4 py-2 rounded-lg transition-all text-sm font-semibold disabled:opacity-50"
                             >
-                                <FaPlus size={12} /> Simpan sebagai Urutan Manual
+                                💾 Simpan sebagai Urutan Manual
                             </button>
                         )}
-                        <p className="text-sm text-gray-500 italic">
+                        <p className="text-xs text-gray-500 italic max-w-xs">
                             {sortBy === 'manual'
-                                ? "Gunakan panah pada item untuk mengatur urutan secara manual."
-                                : "Urutan di atas hanya untuk tampilan sementara. Klik 'Simpan' untuk menjadikannya urutan tetap."}
+                                ? '🎯 Drag & drop item untuk mengatur urutan tampilan.'
+                                : '⚠️ Urutan ini sementara. Klik "Simpan" untuk menjadikannya urutan tetap.'}
                         </p>
                     </div>
-                )}
+                </div>
 
+                {/* Content */}
                 {loading ? (
-
                     <div className="text-center py-20">
                         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#02ffff] mx-auto"></div>
                         <p className="text-gray-400 mt-4">Loading...</p>
                     </div>
                 ) : (
-                    <div className="grid gap-4">
+                    <div className="grid gap-3">
                         {items.length === 0 ? (
                             <div className="text-center py-20 bg-gray-900 rounded-lg border border-gray-800">
-                                <p className="text-gray-400 text-lg">No items yet. Click "Add New" to create one!</p>
+                                <p className="text-gray-400 text-lg">Belum ada item. Klik "Add New" untuk membuat baru!</p>
                             </div>
                         ) : (
-                            items.map((item, index) => (
-                                <div key={item._id} className="bg-gray-900 border border-gray-800 p-6 rounded-lg hover:border-[#02ffff] transition-all">
-                                    <div className="flex justify-between items-start">
-                                        <div className="flex-1">
-                                            <h3 className="font-bold text-xl text-white mb-2">{item.heading || item.title || item.role || item.name}</h3>
-                                            <p className="text-gray-400 line-clamp-2">{item.desc || item.description || item.category || item.label}</p>
-                                            {item.image && <img src={item.image} alt="" className="mt-3 h-20 object-cover rounded" />}
-                                        </div>
-                                        <div className="flex items-center gap-4 ml-4">
-                                            {activeTab === 'CERTIFICATES' && (
-                                                <div className="flex flex-col gap-1">
-                                                    <button
-                                                        disabled={index === 0}
-                                                        onClick={() => handleMove(index, 'UP')}
-                                                        className="p-2 bg-gray-800 hover:bg-gray-700 disabled:opacity-30 rounded transition-colors"
-                                                        title="Move Up"
-                                                    >
-                                                        <FaArrowUp size={14} />
-                                                    </button>
-                                                    <button
-                                                        disabled={index === items.length - 1}
-                                                        onClick={() => handleMove(index, 'DOWN')}
-                                                        className="p-2 bg-gray-800 hover:bg-gray-700 disabled:opacity-30 rounded transition-colors"
-                                                        title="Move Down"
-                                                    >
-                                                        <FaArrowDown size={14} />
-                                                    </button>
+                            items.map((item, index) => {
+                                const isDragging = drag.dragIndex === index;
+                                const isOver = drag.overIndex === index && drag.dragIndex !== index;
+
+                                return (
+                                    <div
+                                        key={item._id}
+                                        draggable={sortBy === 'manual'}
+                                        onDragStart={() => handleDragStart(index)}
+                                        onDragEnter={() => handleDragEnter(index)}
+                                        onDragEnd={handleDragEnd}
+                                        onDragOver={(e) => e.preventDefault()}
+                                        className={`
+                                            group bg-gray-900 border rounded-lg p-5 transition-all duration-200 select-none
+                                            ${isDragging ? 'opacity-40 scale-[0.98] border-[#02ffff]/50 shadow-lg shadow-[#02ffff]/10' : ''}
+                                            ${isOver ? 'border-[#02ffff] bg-[#02ffff]/5 shadow-md shadow-[#02ffff]/20 translate-y-1' : 'border-gray-800 hover:border-gray-600'}
+                                            ${sortBy === 'manual' ? 'cursor-grab active:cursor-grabbing' : ''}
+                                        `}
+                                    >
+                                        <div className="flex justify-between items-center gap-4">
+                                            {/* Drag handle + info */}
+                                            <div className="flex items-center gap-4 flex-1 min-w-0">
+                                                {sortBy === 'manual' && (
+                                                    <div className="flex-shrink-0 text-gray-600 group-hover:text-gray-400 transition-colors">
+                                                        <FaGripVertical size={18} />
+                                                    </div>
+                                                )}
+                                                <div className="flex-shrink-0 w-7 h-7 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-xs text-gray-400 font-mono">
+                                                    {index + 1}
                                                 </div>
-                                            )}
-                                            <div className="flex gap-2">
-                                                <button onClick={() => openModal(item)} className="p-3 bg-yellow-600 hover:bg-yellow-700 rounded-lg transition-colors"><FaEdit /></button>
-                                                <button onClick={() => handleDelete(item._id)} className="p-3 bg-red-600 hover:bg-red-700 rounded-lg transition-colors"><FaTrash /></button>
+                                                {item.image && (
+                                                    <img src={item.image} alt="" className="flex-shrink-0 h-12 w-16 object-cover rounded-md" />
+                                                )}
+                                                {item.logo && !item.image && (
+                                                    <img src={item.logo} alt="" className="flex-shrink-0 h-10 w-10 object-contain rounded bg-white p-1" />
+                                                )}
+                                                <div className="min-w-0">
+                                                    <h3 className="font-semibold text-white truncate">{getItemLabel(item)}</h3>
+                                                    <p className="text-gray-400 text-sm line-clamp-1">{getItemSub(item)}</p>
+                                                    {item.type && <span className="inline-block mt-1 text-xs bg-gray-800 text-gray-400 px-2 py-0.5 rounded-full">{item.type}</span>}
+                                                    {item.period && <span className="inline-block mt-1 text-xs bg-gray-800 text-gray-400 px-2 py-0.5 rounded-full ml-1">{item.period}</span>}
+                                                    {item.issueDate && <span className="inline-block mt-1 text-xs bg-gray-800 text-gray-400 px-2 py-0.5 rounded-full ml-1">📅 {item.issueDate}</span>}
+                                                </div>
+                                            </div>
+
+                                            {/* Action buttons */}
+                                            <div className="flex items-center gap-2 flex-shrink-0">
+                                                <button
+                                                    onClick={() => openModal(item)}
+                                                    className="p-2.5 bg-yellow-600 hover:bg-yellow-700 rounded-lg transition-colors"
+                                                    title="Edit"
+                                                >
+                                                    <FaEdit size={14} />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(item._id)}
+                                                    className="p-2.5 bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
+                                                    title="Delete"
+                                                >
+                                                    <FaTrash size={14} />
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))
+                                );
+                            })
                         )}
                     </div>
                 )}
             </div>
 
+            {/* Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm">
                     <div className="flex min-h-full items-center justify-center p-4">
