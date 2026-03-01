@@ -6,8 +6,32 @@
             "destination": "/api/index.js"
         },
         {
-            "source": "/(.*)\\.(.*)",
-            "destination": "/client/dist/$1.$2"
+            "source": "/sitemap.xml",
+            "destination": "/client/dist/sitemap.xml"
+        },
+        {
+            "source": "/robots.txt",
+            "destination": "/client/dist/robots.txt"
+        },
+        {
+            "source": "/favicon.ico",
+            "destination": "/client/dist/favicon.ico"
+        },
+        {
+            "source": "/profile.png",
+            "destination": "/client/dist/profile.png"
+        },
+        {
+            "source": "/cover.jpg",
+            "destination": "/client/dist/cover.jpg"
+        },
+        {
+            "source": "/cv_herdin.pdf",
+            "destination": "/client/dist/cv_herdin.pdf"
+        },
+        {
+            "source": "/assets/(.*)",
+            "destination": "/client/dist/assets/$1"
         },
         {
             "source": "/(.*)",
