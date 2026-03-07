@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Animate from '../utils/animations/Animate';
+import { API_BASE_URL } from '../config';
 
 interface Comment {
     _id: string;
@@ -21,7 +22,7 @@ function AdminComments() {
 
     const fetchComments = async () => {
         try {
-            const response = await fetch('https://www.kzherdin.onesite.my.id/api/comments');
+            const response = await fetch(`${API_BASE_URL}/api/comments`);
             const data = await response.json();
             if (data.success) {
                 setComments(data.data);
@@ -36,7 +37,7 @@ function AdminComments() {
     const handleTogglePin = async (id: string) => {
         setActionLoading(id);
         try {
-            const response = await fetch(`https://www.kzherdin.onesite.my.id/api/comments/${id}/pin`, {
+            const response = await fetch(`${API_BASE_URL}/api/comments/${id}/pin`, {
                 method: 'PATCH',
             });
 
@@ -58,7 +59,7 @@ function AdminComments() {
 
         setActionLoading(id);
         try {
-            const response = await fetch(`https://www.kzherdin.onesite.my.id/api/comments/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/api/comments/${id}`, {
                 method: 'DELETE',
             });
 

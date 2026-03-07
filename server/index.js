@@ -12,7 +12,7 @@ const app = express();
 // Middleware
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://www.kzherdin.onesite.my.id'
+  'https://www.kzherdin.my.id'
 ];
 
 app.use(cors({
@@ -23,7 +23,7 @@ app.use(cors({
       // For now, in dev, we might want to be lenient or strictly check
       // return callback(new Error('The CORS policy for this site does not allow access from the specified Origin.'), false);
       // Warning: relaxing this for dev convenience if origin is localhost
-      return callback(null, true); 
+      return callback(null, true);
     }
     return callback(null, true);
   },
@@ -60,8 +60,8 @@ app.use('/uploads', express.static('uploads'));
 
 // Health Check
 app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
+  res.json({
+    status: 'OK',
     message: 'Portfolio Backend API is running',
     timestamp: new Date().toISOString()
   });
@@ -70,8 +70,8 @@ app.get('/api/health', (req, res) => {
 // Error Handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ 
-    success: false, 
+  res.status(500).json({
+    success: false,
     message: 'Something went wrong!',
     error: process.env.NODE_ENV === 'development' ? err.message : undefined
   });

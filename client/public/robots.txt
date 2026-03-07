@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /login
 
-Sitemap: https://www.kzherdin.onesite.my.id/sitemap.xml
+Sitemap: https://www.kzherdin.my.id/sitemap.xml

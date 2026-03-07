@@ -116,7 +116,7 @@ cd client && npm run dev
 
 **Herdin**
 - **GitHub:** [@kzherdinnn](https://github.com/kzherdinnn)
-- **Portfolio:** [kzherdin.onesite.my.id](https://kzherdin.onesite.my.id/)
+- **Portfolio:** [kzherdin.my.id](https://kzherdin.my.id/)
 - **LinkedIn:** [kzherdin](https://linkedin.com/in/kzherdin)
 
 ---
