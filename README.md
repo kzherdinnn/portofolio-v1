@@ -7,6 +7,7 @@
   <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
   <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" />
+  <img src="https://img.shields.io/badge/Clerk-6C47FF?style=for-the-badge&logo=clerk&logoColor=white" />
 </div>
 
 ---
@@ -15,6 +16,11 @@
 A modern, high-performance portfolio website built with a **MERN Stack Architecture**. This project features a distinctive cyber/tech aesthetic with dynamic content management, an integrated admin dashboard, and immersive user experiences. It is designed to be fully responsive, lightning-fast, and easy to maintain.
 
 ### 📅 Last Update
+> **March 7, 2026**
+> - Domain Update: Migrated live site to custom domain [`kzherdin.my.id`](https://kzherdin.my.id/).
+> - Config: Simplified `config.ts` — API base URL now uses Vercel serverless functions in production (empty string fallback).
+> - Auth: Clerk authentication fully migrated to production environment.
+
 > **February 13, 2026**
 > - Project Cleanup: Removed unused models, routes, and controllers.
 > - Database Optimization: Cleaned up legacy collections (`logs`, `contacts`, `expertise`).
